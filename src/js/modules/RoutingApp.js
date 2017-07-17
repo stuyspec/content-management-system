@@ -19,7 +19,7 @@ class RoutingApp extends Component
                     <div>
                       <MainApp>
                           <Route
-                            exact path="/"
+                            path="/create_article"
                             component={ ArticleEditor }
                           />
                         <Link to="/"> Home </Link>
