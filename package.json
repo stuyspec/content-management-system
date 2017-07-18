@@ -66,6 +66,7 @@
     "express": "^4.15.3",
     "material-ui": "^0.18.6",
     "react-ckeditor-wrapper": "^1.0.22",
+    "react-inlinesvg": "^0.6.2",
     "reselect": "^3.0.1",
     "yargs": "^8.0.2"
   }

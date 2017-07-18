@@ -10,10 +10,14 @@ import { connect }            from 'react-redux'
 import Paper                  from 'material-ui/Paper'
 
 const styles = {
+  editorContainer: {
+    padding: "5%"
+  },
   editor: {
     display: "flex",
     flexDirection: "column",
-    padding: "5%"
+    padding: "5%",
+
   },
   button: {
     maxWidth: "100px",
@@ -57,7 +61,7 @@ class ArticleEditor extends Component {
   render() {
     const { classes, contributors } = this.props;
     return (
-    <div>
+    <div className={classes.editorContainer}>
       <h2> Article Editor </h2>
       <Paper
         className={classes.editor}
