@@ -2,6 +2,7 @@ import Provider from 'react-redux/lib/components/Provider';
 import React, { Component } from 'react';
 import appHistory from 'tools/appHistory';
 import ArticleEditor from './forms/components/ArticleEditor';
+import ArticlesList from './core/components/ArticlesList'
 import ConnectedRouter from 'react-router-redux/ConnectedRouter';
 import store from '../store';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -21,8 +22,11 @@ class RoutingApp extends Component
                         path="/"
                         component={ MainApp }
                       />
+                      <Route exact path="/articles"
+                             component={ ArticlesList }
+                      />
                       <Route
-                        path="/create_article"
+                        path="/articles/new"
                         component={ ArticleEditor }
                       />
                     </div>

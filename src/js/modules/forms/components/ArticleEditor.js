@@ -9,6 +9,7 @@ import { createArticle }      from './../actions'
 import { connect }            from 'react-redux'
 import Paper                  from 'material-ui/Paper'
 import { saveArticleData }    from './../actions'
+import RaisedButton           from 'material-ui/RaisedButton'
 
 const styles = {
   editorContainer: {
@@ -88,7 +89,7 @@ class ArticleEditor extends Component {
         />
 
         <div className={classes.button}>
-          <input type="submit" value="Submit" />
+          <RaisedButton primary={true} label="Submit" />
         </div>
       </form>
       </Paper>

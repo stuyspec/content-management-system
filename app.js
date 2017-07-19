@@ -74,7 +74,7 @@ console.log(__dirname + '/' + codeDir);
 
 app.get('/', (req,res)=>
 {
-  res.render(__dirname + '/' + codeDir + '/index.html');
+    res.render(__dirname + '/' + codeDir + '/index.html');
 });
 
 
