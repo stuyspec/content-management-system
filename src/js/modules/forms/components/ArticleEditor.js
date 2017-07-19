@@ -1,13 +1,14 @@
 import React, { Component }   from "react";
-import ArticleTitleInput      from "./EditorInputs/TitleInput";
-import ContentInput    from "./EditorInputs/ContentInput";
-import SectionInput from "./EditorInputs/SectionInput";
+import TitleInput             from "./EditorInputs/TitleInput";
+import ContentInput           from "./EditorInputs/ContentInput";
+import SectionInput           from "./EditorInputs/SectionInput";
 import ContributorsList       from './ContributorsList'
 import ContributorsInput      from "./EditorInputs/Contributors/ContributorsInput";
 import injectSheet            from 'react-jss'
 import { createArticle }      from './../actions'
 import { connect }            from 'react-redux'
 import Paper                  from 'material-ui/Paper'
+import { saveArticleData }    from './../actions'
 
 const styles = {
   editorContainer: {
@@ -27,28 +28,30 @@ const styles = {
 class ArticleEditor extends Component {
   constructor(props) {
     super(props);
+    const { title, content, section} = this.props;
     this.state = {
-      title: "",
-      content: "",
-      author: "",
-      section: "A&E"
+      title,
+      content,
+      section
     };
   }
+
+  componentWillUnmount() {
+    const { title, content, section } = this.state;
+    this.props.saveArticleData(title, content, section);
+  }
+
 
   handleContentChange = content => {
     this.setState({ content: content });
   };
 
   handleTitleChange = event => {
-    this.setState({ title: event.target.searchText });
+    this.setState({ title: event.target.value });
   };
 
-  handleAuthorChange = event => {
-    this.setState({ author: event.target.searchText });
-  };
-
-  handleSectionChange = event => {
-    this.setState({ section: event.target.searchText })
+  handleSectionChange = (event, index, value) => {
+    this.setState({ section: value })
   };
 
   handleSubmit = event => {
@@ -68,15 +71,12 @@ class ArticleEditor extends Component {
         zDepth={2}
       >
       <form onSubmit={this.handleSubmit}>
-        <ArticleTitleInput
+        <TitleInput
           title={this.state.title}
           onTitleChange={this.handleTitleChange}
         />
         { contributors.length > 0 && <ContributorsList /> }
-        <ContributorsInput
-          author={this.state.author}
-          onAuthorChange={this.handleAuthorChange}
-        />
+        <ContributorsInput />
 
         <SectionInput
           section={this.state.section}
@@ -99,18 +99,21 @@ class ArticleEditor extends Component {
 
 export default connect(
   state => ({
-    contributors: state.forms.contributors
+    contributors: state.forms.contributors,
+    title: state.forms.title,
+    content: state.forms.content,
+    section: state.forms.section
   }),
   dispatch => ({
     onSubmit: (title,
                content,
-               author,
-               section,
-               contributors) => {
+               section) => {
       dispatch(
-        createArticle(title, content, author, section, contributors)
+        createArticle(title, content, section)
       )
+    },
+    saveArticleData: (title, content, section ) => {
+      dispatch(saveArticleData(title, content, section))
     }
   }),
-
 )(injectSheet(styles)(ArticleEditor));

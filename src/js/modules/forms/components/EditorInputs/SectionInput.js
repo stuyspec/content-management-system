@@ -10,31 +10,32 @@ import MenuItem from 'material-ui/MenuItem'
 const styles = {
   ArticleDepartmentInput: {
     maxWidth: "200px",
-    wordSpacing: "10px",
   }
 };
 
+
 const SectionInput = ({ classes,
-                           currentSection,
-                           onSectionChange,
-                           sections }) => (
-  <div
-    className={classes.ArticleDepartmentInput}
-  >
-  <SelectField
-    floatingLabelText="Section"
-    value={currentSection}
-    onChange={onSectionChange}
-  >
+                        section,
+                        onSectionChange,
+                        sections }) => (
+  <div className={classes.ArticleDepartmentInput}>
+    <SelectField
+      floatingLabelText="Section"
+      value={section}
+      onChange={onSectionChange}
+    >
     { sections.map(section => (
-      <MenuItem value={section.name} key={section.id}>
-        { section.name }
-      </MenuItem>
+      <MenuItem
+        value={section.id}
+        key={section.id}
+        primaryText={section.name}
+      />
       )
     )}
   </SelectField>
   </div>
 );
+
 
 const mapStateToProps = state => ({
   sections : state.forms.sections

@@ -2,6 +2,7 @@ import {
   CREATE_ARTICLE,
   ADD_CONTRIBUTOR,
   REMOVE_CONTRIBUTOR,
+  SAVE_ARTICLE_DATA
 } from './actionTypes'
 
 
@@ -84,6 +85,9 @@ import {
             contributors.slice(contributorIndex + 1)
           );
           return { ...state, contributors: newContributors };
+
+        case SAVE_ARTICLE_DATA:
+          return { ...state, ...action.payload }
         default:
               break;
       }

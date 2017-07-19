@@ -9,3 +9,12 @@ export const removeContributor = contributorId => ({
   type: t.REMOVE_CONTRIBUTOR,
   payload: { contributorId }
 });
+
+export const saveArticleData = (
+  title,
+  content,
+  section,
+) => ({
+  type: t.SAVE_ARTICLE_DATA,
+  payload: { title, content, section }
+})
