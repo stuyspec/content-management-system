@@ -3,7 +3,7 @@
  */
 import { createSelector } from 'reselect'
 
-const usersSelector = state => state.forms.users;
+export const usersSelector = state => state.core.users;
 const contributorsSelector = state => state.forms.contributors;
 export const contributorsUsersSelector = createSelector(
   usersSelector,
@@ -24,7 +24,6 @@ export const availableUsersSelector = createSelector(
     return users.filter(user => !contributors.includes(user.id));
   }
 );
-
 
 export const availableUsersNamesSelector = createSelector(
   availableUsersSelector,

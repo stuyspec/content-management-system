@@ -38,7 +38,7 @@ const SectionInput = ({ classes,
 
 
 const mapStateToProps = state => ({
-  sections : state.forms.sections
+  sections : state.core.sections
 });
 
 export default connect(
