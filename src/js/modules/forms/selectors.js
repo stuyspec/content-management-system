@@ -2,8 +2,8 @@
  * Created by nicholas on 7/13/17.
  */
 import { createSelector } from 'reselect'
+import { usersSelector } from './../core/users/selectors'
 
-export const usersSelector = state => state.core.users;
 const contributorsSelector = state => state.forms.contributors;
 export const contributorsUsersSelector = createSelector(
   usersSelector,
@@ -21,11 +21,13 @@ export const availableUsersSelector = createSelector(
   usersSelector,
   contributorsSelector,
   (users, contributors) => {
-    return users.filter(user => !contributors.includes(user.id));
+    return users.filter(user => !contributors.includes(user.id))
   }
 );
 
 export const availableUsersNamesSelector = createSelector(
   availableUsersSelector,
-  availableUsers => availableUsers.map(user => user.name)
+  availableUsers => (
+    availableUsers.map(user => user.name)
+  )
 )

@@ -24,21 +24,21 @@ const SectionInput = ({ classes,
       value={section}
       onChange={onSectionChange}
     >
-    { sections.map(section => (
-      <MenuItem
-        value={section.id}
-        key={section.id}
-        primaryText={section.name}
-      />
-      )
-    )}
-  </SelectField>
+      { sections.map(section => (
+          <MenuItem
+            value={section.id}
+            key={section.id}
+            primaryText={section.name}
+          />
+        )
+      )}
+    </SelectField>
   </div>
 );
 
 
 const mapStateToProps = state => ({
-  sections : state.core.sections
+  sections : state.sections.list
 });
 
 export default connect(

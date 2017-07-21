@@ -4,10 +4,10 @@
 import React, { Component } from "react"
 import { connect } from 'react-redux'
 import AutoComplete from 'material-ui/AutoComplete';
-import { addContributor } from '../../../actions'
+import { addContributor } from '../../actions'
 import injectSheet from 'react-jss'
 import { availableUsersNamesSelector,
-         contributorsNamesSelector } from '../../../selectors'
+         contributorsNamesSelector } from '../../selectors'
 
 const styles = {
   addContributorButton: {

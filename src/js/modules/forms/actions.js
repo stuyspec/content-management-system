@@ -1,12 +1,12 @@
 import * as t from "./actionTypes";
-import { usersSelector } from './selectors'
+import { usersSelector } from './../core/users/selectors'
 
 export const addContributor = contributorName => (
   (dispatch, getState) => {
     const users = usersSelector(getState());
     const contributor = users.find(
       user => user.name === contributorName
-    );
+    )
     const contributorId = contributor.id
 
     dispatch({

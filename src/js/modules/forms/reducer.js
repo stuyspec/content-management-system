@@ -3,7 +3,6 @@ import {
   REMOVE_CONTRIBUTOR,
   SAVE_ARTICLE_DATA
 } from './actionTypes'
-import { usersSelector } from './selectors'
 
   const initialState = {
     // Stores just the ids of the users. Will use selectors

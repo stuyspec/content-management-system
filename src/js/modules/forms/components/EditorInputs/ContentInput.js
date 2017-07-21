@@ -11,10 +11,10 @@ const styles = {
       paddingTop: "5%"
     },
 };
-const ArticleContentInput = ({onContentChange, content, classes}) => (
+const ContentInput = ({onContentChange, content, classes}) => (
     <div className={classes.ckeditor}>
         <CKEditor value={content} onChange={onContentChange} />
     </div>
 )
 
-export default injectSheet(styles)(ArticleContentInput)
+export default injectSheet(styles)(ContentInput)

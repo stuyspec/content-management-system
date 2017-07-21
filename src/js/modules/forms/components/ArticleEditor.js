@@ -3,7 +3,7 @@ import TitleInput             from "./EditorInputs/TitleInput";
 import ContentInput           from "./EditorInputs/ContentInput";
 import SectionInput           from "./EditorInputs/SectionInput";
 import ContributorsList       from './ContributorsList'
-import ContributorsInput      from "./EditorInputs/Contributors/ContributorsInput";
+import ContributorsInput      from "./EditorInputs/ContributorsInput";
 import injectSheet            from 'react-jss'
 import { createArticle }      from './../actions'
 import { connect }            from 'react-redux'
