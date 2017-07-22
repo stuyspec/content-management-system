@@ -15,8 +15,10 @@ jobs:
       # - image: circleci/mongo:3.4.4
 
     steps:
-      - checkout
-
+      - checkout:
+          post:
+            - git submodule sync
+            - git submodule update --init
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -25,7 +27,6 @@ jobs:
           - v1-dependencies-
 
       - run: npm install
-      - run: cd src/js/modules | git submodule add https://github.com/stuyspec/core.git
       - save_cache:
           paths:
             - node_modules
