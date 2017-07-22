@@ -26,26 +26,25 @@ const styles = {
   createArticleButton: {
     fontFamily: "Roboto, sans-serif"
   },
+  "createArticleButton:hover": {
+    backgroundColor: "blue"
+  },
   currentUserAvatar: {
     margin: "0 20px 0 25px"
   }
 }
 
-const Navbar = ({ navbarLinks,
-                  classes,
+const Navbar = ({ classes,
                   openNavDrawer,
                   openUserDrawer,
                   currentUser }) => (
-  
   <Toolbar style={styles.toolbar}>
     <ToolbarGroup key={1}>
       <IconButton onClick={openNavDrawer}>
         <NavigationMenu color={blue50} />
       </IconButton>
       <Link to="/" className={classes.toolbarTitle}>
-        <ToolbarTitle
-          text="The Stuyvesant Spectator"
-        />
+        <img src="/img/logo.svg" />
       </Link>
     </ToolbarGroup>
     <ToolbarGroup key={2}>

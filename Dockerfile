@@ -1,4 +1,4 @@
 FROM nginx:alpine
-COPY . /app
+COPY dist/prod/* /app
 WORKDIR /app  
 RUN 
