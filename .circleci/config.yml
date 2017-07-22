@@ -25,7 +25,7 @@ jobs:
           - v1-dependencies-
 
       - run: npm install
-
+      - run: git submodule update --init --recursive
       - save_cache:
           paths:
             - node_modules
