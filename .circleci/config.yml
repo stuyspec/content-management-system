@@ -25,7 +25,7 @@ jobs:
           - v1-dependencies-
 
       - run: npm install
-      - run: git submodule update --init --recursive
+      - run: cd src/js/modules | git submodule add https://github.com/stuyspec/core.git
       - save_cache:
           paths:
             - node_modules
