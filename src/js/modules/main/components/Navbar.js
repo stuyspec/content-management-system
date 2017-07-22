@@ -10,7 +10,10 @@ import { Link } from 'react-router-dom'
 import RaisedButton from 'material-ui/RaisedButton'
 import injectSheet from 'react-jss'
 import { connect } from 'react-redux'
-import { openNavDrawer } from './../actions'
+import { openNavDrawer, openUserDrawer } from './../actions'
+import Avatar from 'material-ui/Avatar'
+import { currentUserSelector } from '../../core/users/selectors'
+
 
 const styles = {
   toolbar: {
@@ -22,10 +25,18 @@ const styles = {
   },
   createArticleButton: {
     fontFamily: "Roboto, sans-serif"
+  },
+  currentUserAvatar: {
+    margin: "0 20px 0 25px"
   }
 }
 
-const Navbar = ({ navbarLinks, classes, openNavDrawer }) => (
+const Navbar = ({ navbarLinks,
+                  classes,
+                  openNavDrawer,
+                  openUserDrawer,
+                  currentUser }) => (
+  
   <Toolbar style={styles.toolbar}>
     <ToolbarGroup key={1}>
       <IconButton onClick={openNavDrawer}>
@@ -44,17 +55,29 @@ const Navbar = ({ navbarLinks, classes, openNavDrawer }) => (
           label="New Article"
         />
       </Link>
+      <Avatar
+        onClick={openUserDrawer}
+        className={classes.currentUserAvatar}
+        src={currentUser.thumbnail}
+      />
     </ToolbarGroup>
   </Toolbar>
 );
 
+const mapStateToProps = state => ({
+  currentUser: currentUserSelector(state)
+});
+
 const mapDispatchToProps = dispatch => ({
   openNavDrawer: () => {
     dispatch(openNavDrawer())
+  },
+  openUserDrawer: () => {
+    dispatch(openUserDrawer())
   }
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(injectSheet(styles)(Navbar))

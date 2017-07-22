@@ -2,13 +2,14 @@
  * Created by nicholas on 7/20/17.
  */
 
-import
-{
+import {
   CREATE_ARTICLE,
   SET_LANGUAGE,
   REFRESH_WINDOW_DIMENSIONS,
   OPEN_NAV_DRAWER,
-  CLOSE_NAV_DRAWER
+  CLOSE_NAV_DRAWER,
+  OPEN_USER_DRAWER,
+  CLOSE_USER_DRAWER,
 } from './actionTypes'
 
 // getWindowWidth & getWindowHeight was
@@ -31,6 +32,7 @@ const initialState =
     viewportHeight  : getViewportHeight(),
     appMenuOpen     : false,  // for mobile views
     isNavDrawerOpen : false,
+    isUserDrawerOpen: false
   };
 
 const reducer = (state={...initialState}, action)=>
@@ -57,6 +59,12 @@ const reducer = (state={...initialState}, action)=>
 
     case CLOSE_NAV_DRAWER :
       return { ...state, isNavDrawerOpen: false }
+
+    case OPEN_USER_DRAWER :
+      return { ...state, isUserDrawerOpen: true }
+
+    case CLOSE_USER_DRAWER :
+      return { ...state, isUserDrawerOpen: false }
     default:
       break;
   }

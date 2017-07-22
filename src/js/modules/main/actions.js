@@ -14,6 +14,16 @@ export const closeNavDrawer = () => ({
   payload : {}
 });
 
+export const openUserDrawer = () => ({
+  type: t.OPEN_USER_DRAWER,
+  payload : {}
+});
+
+export const closeUserDrawer = () => ({
+  type: t.CLOSE_USER_DRAWER,
+  payload : {}
+});
+
 
 export const setLanguage = (language)=>
   ({
