@@ -35,5 +35,5 @@ jobs:
         
       # run tests!
       - run: sudo npm install -g gulp-cli
-      - run: gulp build
+      - run: gulp
 
