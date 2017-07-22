@@ -19,7 +19,6 @@ jobs:
           post:
             - git submodule sync
             - git submodule update --init
-            - cd src/js/core | git checkout cms
       # Download and cache dependencies
       - restore_cache:
           keys:

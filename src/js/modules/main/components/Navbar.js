@@ -31,12 +31,10 @@ const styles = {
   }
 }
 
-const Navbar = ({ navbarLinks,
-                  classes,
+const Navbar = ({ classes,
                   openNavDrawer,
                   openUserDrawer,
                   currentUser }) => (
-  
   <Toolbar style={styles.toolbar}>
     <ToolbarGroup key={1}>
       <IconButton onClick={openNavDrawer}>
