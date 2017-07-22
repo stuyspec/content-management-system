@@ -14,8 +14,6 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/cs_projects/content-management-system
-
     steps:
       - checkout
 
@@ -35,5 +33,5 @@ jobs:
         
       # run tests!
       - run: sudo npm install -g gulp-cli
-      - run: gulp
+      - run: gulp build
 
