@@ -13,7 +13,7 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
-
+      working_directory: ~/content-management-system
     steps:
       - checkout:
           post:
@@ -26,7 +26,7 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: ls ~/project/src/js/modules/core
+      - run: ls ~/content-management-system/src/js/modules/core
       - run: npm install
       - save_cache:
           paths:
