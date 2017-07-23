@@ -44,9 +44,7 @@ const Navbar = ({ classes,
         <NavigationMenu color={blue50} />
       </IconButton>
       <Link to="/" className={classes.toolbarTitle}>
-        <ToolbarTitle
-          text="The Stuyvesant Spectator"
-        />
+        <img src="/img/logo.svg" />
       </Link>
     </ToolbarGroup>
     <ToolbarGroup key={2}>

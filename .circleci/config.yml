@@ -16,6 +16,7 @@ jobs:
     working_directory: ~/content-management-system
     steps:
       - checkout:
+          post:
           - git submodule update --init --recursive
       # Download and cache dependencies
       - restore_cache:
