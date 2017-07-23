@@ -26,6 +26,9 @@ const styles = {
   createArticleButton: {
     fontFamily: "Roboto, sans-serif"
   },
+  "createArticleButton:hover": {
+    backgroundColor: "blue"
+  },
   currentUserAvatar: {
     margin: "0 20px 0 25px"
   }
