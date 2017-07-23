@@ -1,5 +1,5 @@
-export const ADD_CONTRIBUTOR = "core/ADD_CONTRIBUTOR";
+export const ADD_CONTRIBUTOR = "forms/ADD_CONTRIBUTOR";
 
-export const REMOVE_CONTRIBUTOR = "core/REMOVE_CONTRIBUTOR";
+export const REMOVE_CONTRIBUTOR = "forms/REMOVE_CONTRIBUTOR";
 
-export const SAVE_ARTICLE_DATA = "core/SAVE_ARTICLE_DATA";
+export const SAVE_ARTICLE_DATA = "forms/SAVE_ARTICLE_DATA";

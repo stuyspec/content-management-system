@@ -4,7 +4,7 @@ import connect from 'react-redux/lib/connect/connect'
 import { refreshWindowDimensions } from './../actions'
 import Navbar from './Navbar'
 import NavDrawer from './NavDrawer'
-import UserDrawer from '../../core/users/components/UserDrawer'
+import UserDrawer from '../../users/components/UserDrawer'
 
 const styles = {
     appWrapper :

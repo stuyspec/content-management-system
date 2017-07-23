@@ -5,6 +5,7 @@ import {
 } from './actionTypes'
 
   const initialState = {
+  currentUser: 0,
   list: [
     {
       id: 0,

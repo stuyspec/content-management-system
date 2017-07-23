@@ -12,7 +12,7 @@ import injectSheet from 'react-jss'
 import { connect } from 'react-redux'
 import { openNavDrawer, openUserDrawer } from './../actions'
 import Avatar from 'material-ui/Avatar'
-import { currentUserSelector } from '../../core/users/selectors'
+import { currentUserSelector } from '../../users/selectors'
 
 
 const styles = {

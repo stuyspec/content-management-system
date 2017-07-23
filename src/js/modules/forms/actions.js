@@ -1,5 +1,5 @@
 import * as t from "./actionTypes";
-import { usersSelector } from './../core/users/selectors'
+import { usersSelector } from './../users/selectors'
 
 export const addContributor = contributorName => (
   (dispatch, getState) => {

@@ -2,7 +2,7 @@
  * Created by nicholas on 7/13/17.
  */
 import { createSelector } from 'reselect'
-import { usersSelector } from './../core/users/selectors'
+import { usersSelector } from '../users/selectors'
 
 const contributorsSelector = state => state.forms.contributors;
 export const contributorsUsersSelector = createSelector(
