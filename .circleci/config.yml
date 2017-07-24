@@ -31,4 +31,11 @@ jobs:
       # run tests!
       - run: sudo npm install -g gulp-cli
       - run: gulp build
+      - deploy:
+        name: Deploy to s3
+        command: |
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            aws s3 sync ~/content-management-system/dist/prod s3://stuy-spec-content-management-system
+          fi
+
 
