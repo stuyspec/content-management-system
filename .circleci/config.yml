@@ -8,7 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
-      
+      - image: circleci/python:3.6.1
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -27,8 +27,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
+
+      - run: sudo apt-get install python-dev python-pip
+      - run: sudo pip install --upgrade --user awscli
       - run: sudo npm install -g gulp-cli
       - run: gulp build
       - deploy:
