@@ -36,7 +36,7 @@ jobs:
           name: Deploy to AWS S3
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws s3 sync ~/content-management-system/dist/prod s3://stuy-spec-content-management-system
+              aws s3 sync ~/content-management-system/dist/prod s3://cms.stuyspec.xyz
             fi
 
 
