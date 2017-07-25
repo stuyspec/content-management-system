@@ -8,16 +8,14 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
-      
+      - image: circleci/python:3.6.1
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
     working_directory: ~/content-management-system
     steps:
-      - checkout:
-          post:
-          - git submodule update --init --recursive
+      - checkout
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -29,8 +27,16 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
+
+      - run: sudo apt-get install python-dev python-pip
+      - run: sudo pip install awscli
       - run: sudo npm install -g gulp-cli
       - run: gulp build
+      - deploy:
+          name: Deploy to AWS S3
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              aws s3 sync ~/content-management-system/dist/prod s3://cms.stuyspec.xyz
+            fi
+
 

@@ -13,7 +13,10 @@ const styles = {
 };
 const ContentInput = ({onContentChange, content, classes}) => (
     <div className={classes.ckeditor}>
-        <CKEditor value={content} onChange={onContentChange} />
+        <CKEditor
+          value={content}
+          onChange={onContentChange}
+        />
     </div>
 )
 

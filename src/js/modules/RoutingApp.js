@@ -2,8 +2,8 @@ import Provider from 'react-redux/lib/components/Provider';
 import React, { Component } from 'react';
 import appHistory from 'tools/appHistory';
 import ArticleEditor from './forms/components/ArticleEditor';
-import ArticlesList from './core/articles/components/ArticlesList'
-import UsersList from './core/users/components/UsersList'
+import ArticlesList from './articles/components/ArticlesList'
+import UsersList from './users/components/UsersList'
 import ConnectedRouter from 'react-router-redux/ConnectedRouter';
 import store from '../store';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';

@@ -1,10 +1,8 @@
-import
-{
+import {
   CREATE_ARTICLE,
 } from './actionTypes'
 
-const initialState =
-  {
+const initialState = {
     list: [
       {
         id: 0,
@@ -83,3 +81,4 @@ const reducer = (state={...initialState}, action)=>
 };
 
 export default reducer
+

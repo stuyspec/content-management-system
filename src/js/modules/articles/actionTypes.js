@@ -1,0 +1,1 @@
+export const CREATE_ARTICLE = 'core/CREATE_ARTICLE'
