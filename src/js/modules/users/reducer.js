@@ -10,7 +10,8 @@ import {
     {
       id: 0,
       name: "Nicholas",
-      thumbnail: "https://avatars0.githubusercontent.com/u/7357863?v=3&s=40"
+      thumbnail: "https://s3.amazonaws.com/stuy-spec-users-resized/resized-P6260148.JPG",
+      largePhoto: "https://s3.amazonaws.com/stuy-spec-users/P6260148.JPG"
     },
     {
       id: 1,

@@ -36,7 +36,8 @@ const UserDrawer = ({ currentUser,
       { currentUser.name }
     </h2>
     <Avatar
-      src={currentUser.thumbnail}
+      src={currentUser.largePhoto}
+      size={200}
       className={classes.currentUserAvatar}
     />
     <List>

@@ -5,92 +5,91 @@ import { refreshWindowDimensions } from './../actions'
 import Navbar from './Navbar'
 import NavDrawer from './NavDrawer'
 import UserDrawer from '../../users/components/UserDrawer'
-
 import ArticlesTable from '../../articles/components/ArticlesTable'
 
 
 const styles = {
-    appWrapper :
+  appWrapper :
     {
-        minHeight       : '100%',
-        margin          : '0px auto',
-        display         : 'flex',
-        flexDirection   : 'row'
+      minHeight       : '100%',
+      margin          : '0px auto',
+      display         : 'flex',
+      flexDirection   : 'row'
     },
-    mainWrapper :
+  mainWrapper :
     {
-        minHeight       : '100%',
-        margin          : '0px auto',
-        display         : 'flex',
-        flexDirection   : 'column',
-        flex            : '1 0 auto'
+      minHeight       : '100%',
+      margin          : '0px auto',
+      display         : 'flex',
+      flexDirection   : 'column',
+      flex            : '1 0 auto'
     },
-    contentWrapper :
+  contentWrapper :
     {
-        maxWidth : '720px',
-        minWidth : '360px',
-        margin   : '0 auto'
+      maxWidth : '720px',
+      minWidth : '360px',
+      margin   : '0 auto'
     },
-    mainContainer :
+  mainContainer :
     {
-        display        : 'flex',
-        alignItems     : 'center',
-        justifyContent : 'center',
-        flex           : '1 0 auto',
-        flexDirection  : 'column'
+      display        : 'flex',
+      alignItems     : 'center',
+      justifyContent : 'center',
+      flex           : '1 0 auto',
+      flexDirection  : 'column'
     },
-    mainContent :
+  mainContent :
     {
-        flexDirection : 'column',
-        display       : 'flex',
-        flex          : '1 0 auto'
+      flexDirection : 'column',
+      display       : 'flex',
+      flex          : '1 0 auto'
     },
 };
 
 
 class MainApp extends PureComponent
 {
-    onResizeWindow = ()=>
-    {
-        this.props.onResizeWindow();
-    };
-    componentDidMount()
-    {
-        window.addEventListener('resize', this.onResizeWindow);
-    }
-    componentWillUnmount()
-    {
-        window.removeEventListener('resize', this.onResizeWindow);
-    }
-    render ()
-    {
-        const { classes } = this.props;
-        return (
-                <div className={classes.appWrapper}>
-                    <div className={classes.mainWrapper}>
-                      <Navbar />
-                      <NavDrawer />
-                      <UserDrawer />
-                      <ArticlesTable />
-                    </div>
-                </div>
-        );
-    }
+  onResizeWindow = ()=>
+  {
+    this.props.onResizeWindow();
+  };
+  componentDidMount()
+  {
+    window.addEventListener('resize', this.onResizeWindow);
+  }
+  componentWillUnmount()
+  {
+    window.removeEventListener('resize', this.onResizeWindow);
+  }
+  render ()
+  {
+    const { classes } = this.props;
+    return (
+      <div className={classes.appWrapper}>
+        <div className={classes.mainWrapper}>
+          <Navbar />
+          <NavDrawer />
+          <UserDrawer />
+          <ArticlesTable />
+        </div>
+      </div>
+    );
+  }
 }
 
 const VisibleMainApp = connect(
-    (state, ownProps)=>
+  (state, ownProps)=>
     ({
-        language       : state.main.language,
-        viewportWidth  : state.main.viewportWidth,
-        viewportHeight : state.main.viewportHeight
+      language       : state.main.language,
+      viewportWidth  : state.main.viewportWidth,
+      viewportHeight : state.main.viewportHeight
     }),
-    (dispatch)=>
+  (dispatch)=>
     ({
-        onResizeWindow : ()=>
-        {
-            dispatch(refreshWindowDimensions())
-        }
+      onResizeWindow : ()=>
+      {
+        dispatch(refreshWindowDimensions())
+      }
     })
 )(injectSheet(styles)(MainApp));
 

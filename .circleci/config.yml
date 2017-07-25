@@ -37,8 +37,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               aws s3 sync ~/content-management-system/dist/prod s3://cms.stuyspec.xyz
-            fi
-            if ["${CIRCLE_BRANCH}" == "nicholas" ]; then
+            elif [ "${CIRCLE_BRANCH}" == "nicholas" ]; then
               aws s3 sync ~/content-management-system/dist/prod s3://nicholas.stuyspec.xyz
             fi
 

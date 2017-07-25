@@ -14,28 +14,40 @@ import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
 import { articlesPreviewSelector } from '../selectors'
+import { updateSelectedArticles } from '../actions'
 
 const styles = {
   articlesTable: {
-    maxWidth: "1000px",
+    maxWidth: "1200px",
     margin: "5%"
   }
 }
 
-const ArticlesTable = ({ articles, classes, users }) => (
-  <div className={classes.articlesTable}>
-    <h2> Articles Table </h2>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHeaderColumn> Title </TableHeaderColumn>
-          <TableHeaderColumn> Contributors </TableHeaderColumn>
-          <TableHeaderColumn> Content </TableHeaderColumn>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        { articles.map(article =>
-            <TableRow>
+const ArticlesTable = ({ articles,
+                         classes,
+                         users,
+                         selectedArticles,
+                         handleRowSelection }) => {
+  const isSelected = id => selectedArticles.includes(id)
+
+  return (
+    <div className={classes.articlesTable}>
+      <h2> Articles Table </h2>
+      <Table
+        fixedHeader={false}
+        onRowSelection={handleRowSelection}
+        multiSelectable
+      >
+        <TableHeader>
+          <TableRow>
+            <TableHeaderColumn> Title </TableHeaderColumn>
+            <TableHeaderColumn> Contributors </TableHeaderColumn>
+            <TableHeaderColumn> Content </TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          { articles.map(article =>
+            <TableRow selected={isSelected(article.id)}>
               <TableRowColumn> {article.title} </TableRowColumn>
               <TableRowColumn>
                 { article.contributors.map(
@@ -49,7 +61,7 @@ const ArticlesTable = ({ articles, classes, users }) => (
                     />
                 )
                 }
-                </TableRowColumn>
+              </TableRowColumn>
               <TableRowColumn>
                 <div
                   dangerouslySetInnerHTML={
@@ -59,19 +71,26 @@ const ArticlesTable = ({ articles, classes, users }) => (
               </TableRowColumn>
             </TableRow>
           )
-        }
-      </TableBody>
-    </Table>
-  </div>
-);
+          }
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
 
 
 const mapStateToProps = state => ({
   articles: articlesPreviewSelector(state),
-  users: state.users.list
+  selectedArticles: state.articles.selectedArticles,
+  users: state.users.list,
+})
+
+const mapDispatchToProps = dispatch => ({
+  handleRowSelection: selectedRows =>
+    dispatch(updateSelectedArticles(selectedRows))
 })
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(injectSheet(styles)(ArticlesTable));
