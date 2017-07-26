@@ -9,3 +9,8 @@ export const updateSelectedArticles = selectedArticles => ({
   type: t.UPDATE_SELECTED_ARTICLES,
   payload: selectedArticles
 })
+
+export const deleteSelectedArticles = articleIds => ({
+  type: t.DELETE_SELECTED_ARTICLES,
+  payload: articleIds
+})

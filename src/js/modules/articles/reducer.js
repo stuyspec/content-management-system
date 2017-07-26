@@ -1,10 +1,10 @@
 import {
   CREATE_ARTICLE,
+  DELETE_SELECTED_ARTICLES,
   UPDATE_SELECTED_ARTICLES
 } from './actionTypes'
 
 const initialState = {
-  selectedArticles: [],
   list: [
     {
       id: 0,
@@ -74,10 +74,20 @@ const reducer = (state={...initialState}, action)=>
   switch(action.type)
   {
     case CREATE_ARTICLE :
-      return { ...state, articlesList: [...state.articlesList, action.payload]}
-      case UPDATE_SELECTED_ARTICLES :
+      return { ...state, list: [...state.articlesList, action.payload]}
+    case UPDATE_SELECTED_ARTICLES :
         return { ...state, selectedArticles: action.payload }
-      default:
+    case DELETE_SELECTED_ARTICLES:
+      let articles = [...state.list];
+      const selectedArticles = action.payload
+      selectedArticles.map(articleId => {
+        const idIndex = articles.indexOf(
+          articles.find(article => article.id === articleId)
+        )
+        return articles.splice(idIndex, 1)
+      })
+      return { ...state, list: articles, selectedArticles: []}
+    default:
         break;
     }
 
