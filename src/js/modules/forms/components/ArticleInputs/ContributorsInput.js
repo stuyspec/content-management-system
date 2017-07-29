@@ -8,6 +8,7 @@ import { addContributor } from '../../actions'
 import injectSheet from 'react-jss'
 import { availableUsersNamesSelector,
          contributorsNamesSelector } from '../../selectors'
+import { randomUserSelector } from '../../../users/selectors'
 
 const styles = {
   addContributorButton: {
@@ -44,14 +45,16 @@ class ContributorsInput extends Component {
   };
 
   render() {
+    const { availableUsers, randomUser } = this.props
     return (
       <div>
         <AutoComplete
-          hintText="Add a contributor"
+          hintText={randomUser.name}
+          floatingLabelText="Contributors"
           searchText={this.state.searchText}
           onUpdateInput={this.handleUpdateInput}
           onNewRequest={this.handleNewRequest}
-          dataSource={this.props.availableUsers}
+          dataSource={availableUsers}
           filter={AutoComplete.fuzzyFilter}
           openOnFocus={true}
         />
@@ -61,7 +64,8 @@ class ContributorsInput extends Component {
 
 const mapStateToProps = state => ({
   availableUsers: availableUsersNamesSelector(state),
-  contributors: contributorsNamesSelector(state)
+  contributors: contributorsNamesSelector(state),
+  randomUser: randomUserSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({

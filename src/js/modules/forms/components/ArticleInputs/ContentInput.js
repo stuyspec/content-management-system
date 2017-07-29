@@ -11,11 +11,11 @@ const styles = {
       paddingTop: "5%"
     },
 };
-const ContentInput = ({onContentChange, content, classes}) => (
+const ContentInput = ({handleContentChange, content, classes}) => (
     <div className={classes.ckeditor}>
         <CKEditor
           value={content}
-          onChange={onContentChange}
+          onChange={handleContentChange}
         />
     </div>
 )

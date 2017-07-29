@@ -70,7 +70,6 @@ class MainApp extends PureComponent
           <Navbar />
           <NavDrawer />
           <UserDrawer />
-          <ArticlesTable />
         </div>
       </div>
     );

@@ -1,21 +1,22 @@
-import React, { Component }   from "react";
-import TitleInput             from "./EditorInputs/TitleInput";
-import ContentInput           from "./EditorInputs/ContentInput";
-import SectionInput           from "./EditorInputs/SectionInput";
-import ContributorsList       from './ContributorsList'
-import ContributorsInput      from "./EditorInputs/ContributorsInput";
-import injectSheet            from 'react-jss'
-import { createArticle }      from './../actions'
-import { connect }            from 'react-redux'
-import Paper                  from 'material-ui/Paper'
-import { saveArticleData }    from './../actions'
-import RaisedButton           from 'material-ui/RaisedButton'
+import React, { Component }        from "react";
+import TitleInput                  from "./ArticleInputs/TitleInput";
+import ContentInput                from "./ArticleInputs/ContentInput";
+import SectionInput                from "./ArticleInputs/SectionInput";
+import ContributorsList            from './ContributorsList'
+import ContributorsInput           from "./ArticleInputs/ContributorsInput";
+import injectSheet                 from 'react-jss'
+import { createArticle }           from './../actions'
+import { connect }                 from 'react-redux'
+import Paper                       from 'material-ui/Paper'
+import { saveArticleData }         from './../actions'
+import RaisedButton                from 'material-ui/RaisedButton'
+import { randomArticleSelector }   from '../../articles/selectors'
 
 const styles = {
-  editorContainer: {
+  formContainer: {
     padding: "5%"
   },
-  editor: {
+  form: {
     display: "flex",
     flexDirection: "column",
     padding: "5%",
@@ -26,22 +27,32 @@ const styles = {
     paddingTop: "5%"
   }
 }
-class ArticleEditor extends Component {
+class ArticleForm extends Component {
   constructor(props) {
     super(props);
-    const { title, content, section} = this.props;
-    this.state = {
-      title,
-      content,
-      section
-    };
+    const { title, content, section, randomArticle} = this.props;
+
+    if (section === undefined) {
+      this.state = {
+        title,
+        content,
+        section: randomArticle.section
+      };
+    }
+    else {
+      this.state = {
+        title,
+        content,
+        section
+      };
+    }
   }
+
 
   componentWillUnmount() {
     const { title, content, section } = this.state;
     this.props.saveArticleData(title, content, section);
   }
-
 
   handleContentChange = content => {
     this.setState({ content: content });
@@ -63,29 +74,32 @@ class ArticleEditor extends Component {
   };
 
   render() {
-    const { classes, contributors } = this.props;
+    const { classes, contributors, randomArticle } = this.props;
+    const { title, section, content } = this.state
     return (
-    <div className={classes.editorContainer}>
+    <div className={classes.formContainer}>
       <h2> Article Editor </h2>
       <Paper
-        className={classes.editor}
+        className={classes.form}
         zDepth={2}
       >
       <form onSubmit={this.handleSubmit}>
         <TitleInput
-          title={this.state.title}
-          onTitleChange={this.handleTitleChange}
+          title={title}
+          hintText={randomArticle.title.substring(0, 24) + "..."}
+          handleTitleChange={this.handleTitleChange}
         />
         { contributors.length > 0 && <ContributorsList /> }
         <ContributorsInput />
 
         <SectionInput
-          section={this.state.section}
-          onSectionChange={this.handleSectionChange}
+          section={section}
+          handleSectionChange={this.handleSectionChange}
         />
+
         <ContentInput
-          content={this.state.content}
-          onContentChange={this.handleContentChange}
+          content={content}
+          handleContentChange={this.handleContentChange}
         />
 
         <div className={classes.button}>
@@ -103,7 +117,8 @@ export default connect(
     contributors: state.forms.contributors,
     title: state.forms.title,
     content: state.forms.content,
-    section: state.forms.section
+    section: state.forms.section,
+    randomArticle: randomArticleSelector(state)
   }),
   dispatch => ({
     onSubmit: (title,
@@ -117,4 +132,4 @@ export default connect(
       dispatch(saveArticleData(title, content, section))
     }
   }),
-)(injectSheet(styles)(ArticleEditor));
+)(injectSheet(styles)(ArticleForm));

@@ -19,7 +19,7 @@ const styles = {
   },
   currentUserAvatar: {
     display: "flex",
-    textAlign: "center",
+    marginLeft: "10%"
   }
 }
 const UserDrawer = ({ currentUser,

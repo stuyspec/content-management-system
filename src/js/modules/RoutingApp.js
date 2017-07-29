@@ -1,8 +1,9 @@
 import Provider from 'react-redux/lib/components/Provider';
 import React, { Component } from 'react';
 import appHistory from 'tools/appHistory';
-import ArticleEditor from './forms/components/ArticleEditor';
-import ArticlesList from './articles/components/ArticlesList'
+import ArticleForm from './forms/components/ArticleForm';
+import SectionForm from './forms/components/SectionForm';
+import ArticlesTable from './articles/components/ArticlesTable'
 import UsersList from './users/components/UsersList'
 import ConnectedRouter from 'react-router-redux/ConnectedRouter';
 import store from '../store';
@@ -24,14 +25,18 @@ class RoutingApp extends Component
                         component={ MainApp }
                       />
                       <Route exact path="/articles"
-                             component={ ArticlesList }
+                             component={ ArticlesTable }
                       />
                       <Route
                         path="/articles/new"
-                        component={ ArticleEditor }
+                        component={ ArticleForm }
                       />
                       <Route exact path="/users"
                              component={ UsersList }
+                      />
+                      <Route
+                        path="/sections/new"
+                        component={ SectionForm }
                       />
                     </div>
                 </ConnectedRouter>

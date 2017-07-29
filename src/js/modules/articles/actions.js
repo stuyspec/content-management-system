@@ -5,8 +5,8 @@ export const createArticle = article => ({
   payload: article
 })
 
-export const updateSelectedArticles = selectedArticles => ({
-  type: t.UPDATE_SELECTED_ARTICLES,
+export const saveSelectedArticles = selectedArticles => ({
+  type: t.SAVE_SELECTED_ARTICLES,
   payload: selectedArticles
 })
 

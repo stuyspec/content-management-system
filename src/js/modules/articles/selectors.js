@@ -11,6 +11,7 @@ export const articlesPreviewSelector = createSelector(
     articles.map(
       article => {
         const content = article.content
+        // TODO: Make this more scientific on picking preview
         const lastWordIndex = content.indexOf('</p>') + 4
         return {
           ...article,
@@ -18,5 +19,13 @@ export const articlesPreviewSelector = createSelector(
         }
       }
     )
+  )
+)
+
+// For fun
+export const randomArticleSelector = createSelector(
+  articlesSelector,
+  articles => (
+    articles[Math.floor(Math.random() * articles.length)]
   )
 )

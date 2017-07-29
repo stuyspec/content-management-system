@@ -60,6 +60,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.88.0",
+    "axios": "^0.16.2",
     "cli-table": "^0.3.1",
     "colors": "^1.1.2",
     "ejs": "^2.5.6",
@@ -70,6 +71,7 @@
     "react-avatar-editor": "^10.0.3",
     "react-ckeditor-wrapper": "^1.0.22",
     "react-inlinesvg": "^0.6.2",
+    "react-svg": "^2.1.21",
     "reselect": "^3.0.1",
     "yargs": "^8.0.2"
   }

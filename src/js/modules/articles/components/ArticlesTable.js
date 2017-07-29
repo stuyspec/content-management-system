@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
 import { articlesPreviewSelector } from '../selectors'
-import { deleteSelectedArticles } from '../actions'
+import { saveSelectedArticles, deleteSelectedArticles } from '../actions'
 
 const styles = {
   articlesTable: {
@@ -23,24 +23,27 @@ const styles = {
     margin: "5%"
   }
 }
-
+// TODO: Change selected logic to ids instead of indices
 class ArticlesTable extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      selectedArticles: []
+      selectedArticles: props.selectedArticles
     }
   }
 
-  isSelected = index => {
-    const { selectedArticles } = this.state;
-    return selectedArticles.includes(index)
+  componentWillUnmount() {
+    this.props.saveSelectedArticles(this.state.selectedArticles);
   }
 
-  handleRowSelection = (rowsSelected) => {
-    console.log(rowsSelected)
-    this.setState({selectedArticles: rowsSelected});
+  isSelected = id => {
+    const { selectedArticles } = this.state;
+    return selectedArticles.indexOf(id) !== -1
+  }
+
+  handleRowSelection = rowSelected => {
+    this.setState({selectedArticles: rowSelected})
   }
 
   handleRowDeletion = () => {
@@ -120,12 +123,15 @@ class ArticlesTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  articles: state.articles.list,
-  users: state.users.list
+  articles: articlesPreviewSelector(state),
+  users: state.users.list,
+  selectedArticles: state.articles.selectedArticles
 })
 const mapDispatchToProps = dispatch => ({
-  deleteSelectedArticles: (selectedArticleIds) =>
-    dispatch(deleteSelectedArticles(selectedArticleIds))
+  deleteSelectedArticles: selectedArticleIds =>
+    dispatch(deleteSelectedArticles(selectedArticleIds)),
+  saveSelectedArticles: selectedArticles =>
+    dispatch(saveSelectedArticles(selectedArticles))
 })
 
 export default connect(

@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { openNavDrawer, openUserDrawer } from './../actions'
 import Avatar from 'material-ui/Avatar'
 import { currentUserSelector } from '../../users/selectors'
-
+import ReactSVG from 'react-svg'
 
 const styles = {
   toolbar: {
@@ -31,6 +31,11 @@ const styles = {
   },
   currentUserAvatar: {
     margin: "0 20px 0 25px"
+  },
+  masthead: {
+    width: "10em",
+    padding: "5px 10px 5px 10px",
+    backgroundColor: "white"
   }
 }
 
@@ -44,7 +49,7 @@ const Navbar = ({ classes,
         <NavigationMenu color={blue50} />
       </IconButton>
       <Link to="/" className={classes.toolbarTitle}>
-        <img src="/img/logo.svg" />
+        <ReactSVG className={classes.masthead} path="/img/masthead.svg" />
       </Link>
     </ToolbarGroup>
     <ToolbarGroup key={2}>

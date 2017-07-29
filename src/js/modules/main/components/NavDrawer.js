@@ -66,6 +66,23 @@ const NavDrawer = ({ isNavDrawerOpen, closeNavDrawer, classes }) => (
           />
         ]}
       />
+      <ListItem
+        key={3}
+        primaryText="Sections"
+        primaryTogglesNestedList={true}
+        nestedItems={[
+          <ListItem
+            key={1}
+            primaryText="List"
+            containerElement={<Link to="/sections" />}
+          />,
+          <ListItem
+            key={2}
+            primaryText="New"
+            containerElement={<Link to="/sections/new" />}
+          />
+        ]}
+      />
     </List>
   </Drawer>
 )
