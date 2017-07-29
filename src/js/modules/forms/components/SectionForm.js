@@ -1,10 +1,18 @@
 /**
  * Created by nicholas on 7/28/17.
  */
-import React, { Component } from 'react'
-import Paper from 'material-ui/Paper'
-import TextField from 'material-ui/TextField'
-import injectSheet from 'react-jss'
+import React, { Component }         from 'react'
+import Paper                        from 'material-ui/Paper'
+import TextField                    from 'material-ui/TextField'
+import SelectField                  from 'material-ui/SelectField'
+import MenuItem                     from 'material-ui/MenuItem'
+import RaisedButton                 from 'material-ui/RaisedButton'
+import injectSheet                  from 'react-jss'
+import {
+  topLevelSectionsSelector,
+  randomSectionSelector
+}                                   from '../../sections/selectors'
+import { connect }                  from 'react-redux'
 
 
 const styles = {
@@ -17,20 +25,28 @@ const styles = {
     padding: "5%",
 
   },
+  inputs: {
+    paddingLeft: "2%"
+  },
   titleInput: {
-    padding: "2%"
+    paddingBottom: "2%"
   },
   descriptionInput: {
-    padding: "2%"
-  }
-}
+    paddingBottom: "2%"
+  },
+  parentSectionInput: {
+    paddingBottom: "2%"
+  },
+};
+
 class SectionForm extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       name: "",
-      description: ""
+      description: "",
+      parentSection: 0,
     }
   }
 
@@ -42,28 +58,54 @@ class SectionForm extends Component {
     this.setState({ description: event.target.value })
   }
 
+  handleParentChange = (event, index, value) => {
+    this.setState({ parentSection: value})
+  }
+
   render() {
-    const { classes } = this.props;
-    const { name, description } = this.state;
+    const { classes, topLevelSections, randomSection } = this.props;
+    const { name, description, parentSection } = this.state;
     return (
       <div className={classes.formContainer}>
         <Paper zDepth={2} className={classes.form}>
           <h2> Section Form </h2>
           <form>
-            <div className={classes.titleInput}>
-              <TextField
-                floatingLabelText="Name"
-                value={name}
-                onChange={this.handleNameChange}
-              />
+            <div className={classes.inputs}>
+              <div className={classes.titleInput}>
+                <TextField
+                  floatingLabelText="Name"
+                  hintText={randomSection.name}
+                  value={name}
+                  onChange={this.handleNameChange}
+                />
+              </div>
+              <div className={classes.descriptionInput}>
+                <TextField
+                  multiLine
+                  floatingLabelText="Description"
+                  hintText={randomSection.description}
+                  value={description}
+                  onChange={this.handleDescriptionChange}
+                />
+              </div>
+              <div className={classes.parentSectionInput}>
+                <SelectField
+                  value={parentSection}
+                  onChange={this.handleParentChange}
+                  floatingLabelText="Parent Section"
+                >
+                  { topLevelSections.map(section =>
+                    <MenuItem
+                      value={section.id}
+                      primaryText={section.name}
+                      key={section.id}
+                    />
+                  )}
+                </SelectField>
+              </div>
             </div>
-            <div className={classes.descriptionInput}>
-              <TextField
-                multiline
-                hintText="Description"
-                value={description}
-                onChange={this.handleDescriptionChange}
-              />
+            <div>
+              <RaisedButton primary={true} label="Submit" />
             </div>
           </form>
         </Paper>
@@ -72,5 +114,11 @@ class SectionForm extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  topLevelSections: topLevelSectionsSelector(state),
+  randomSection: randomSectionSelector(state)
+})
 
-export default injectSheet(styles)(SectionForm);
+export default connect(
+  mapStateToProps
+)(injectSheet(styles)(SectionForm));
