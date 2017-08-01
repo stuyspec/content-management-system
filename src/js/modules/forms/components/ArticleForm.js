@@ -63,9 +63,9 @@ class ArticleForm extends Component {
   };
 
   handleSubmit = event => {
-    const { title, content, author, section } = this.state;
+    const { title, content, section } = this.state;
     const { contributors, onSubmit } = this.props;
-    onSubmit({title, content, author, section, contributors});
+    onSubmit({title, content, section, contributors});
   };
 
   render() {

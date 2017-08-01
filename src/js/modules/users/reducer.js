@@ -6,7 +6,7 @@ import {
 
   const initialState = {
   currentUser: 0,
-  articles: [
+  list: [
     {
       id: 0,
       name: "Nicholas",

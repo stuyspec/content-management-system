@@ -33,7 +33,7 @@ const ArticlesList = ({ classes, articles }) =>
   </div>;
 
 const mapStateToProps = state => ({
-  articles: state.forms.articles
+  list: state.forms.list
 });
 
 export default connect(mapStateToProps, null)(

@@ -22,7 +22,7 @@ export const removeContributor = contributorId => ({
 });
 
 export const saveArticleData = (title, content, section) => ({
-  type: t.SAVE_ARTICLE_DATA,
+  type: t.SAVE_ARTICLE_FORM_DATA,
   payload: { title, content, section }
 });
 
@@ -37,7 +37,10 @@ export const createArticle = article => dispatch => {
         type: t.CREATE_ARTICLE_SUCCEEDED,
         payload: article
       })
-      dispatch(push("/"));
+      dispatch(push('/'));
+      dispatch({
+        type: t.CLEAR_ARTICLE_FORM_DATA
+      });
     })
     .catch(error => {
       dispatch({

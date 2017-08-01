@@ -9,8 +9,8 @@ import {
 } from '../forms/actionTypes'
 
 const initialState = {
-  selectedArticles: [],
-  articles: [],
+  selected: [],
+  list: [],
   authorship: []
 };
 
@@ -19,9 +19,9 @@ const reducer = (state={...initialState}, action)=>
   switch(action.type)
   {
     case CREATE_ARTICLE_SUCCEEDED:
-      return { ...state, articles: [...state.articlesList, action.payload]}
+      return { ...state, list: [...state.list, action.payload]}
     case DELETE_SELECTED_ARTICLES:
-      let articles = [...state.articles];
+      let articles = [...state.list];
       const selectedArticles = action.payload
       selectedArticles.map(articleId => {
         const idIndex = articles.indexOf(
@@ -29,12 +29,12 @@ const reducer = (state={...initialState}, action)=>
         )
         return articles.splice(idIndex, 1)
       })
-      return { ...state, articles: articles, selectedArticles: []}
+      return { ...state, list: articles, selected: []}
 
     case SAVE_SELECTED_ARTICLES:
-      return { ...state, selectedArticles: action.payload }
+      return { ...state, selected: action.payload }
     case FETCH_ARTICLES_SUCCEEDED:
-      return { ...state, articles: action.payload }
+      return { ...state, list: action.payload }
     default:
         break;
     }

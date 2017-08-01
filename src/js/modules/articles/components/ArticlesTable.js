@@ -29,12 +29,12 @@ class ArticlesTable extends Component {
     super(props)
 
     this.state = {
-      selectedArticles: props.selectedArticles
+      selectedArticles: props.selected
     }
   }
 
   componentWillUnmount() {
-    this.props.saveSelectedArticles(this.state.selectedArticles);
+    this.props.saveSelectedArticles(this.state.selected);
   }
 
   isSelected = id => {
@@ -43,7 +43,7 @@ class ArticlesTable extends Component {
   }
 
   handleRowSelection = rowSelected => {
-    this.setState({selectedArticles: rowSelected})
+    this.setState({selected: rowSelected})
   }
 
   handleRowDeletion = () => {
@@ -53,7 +53,7 @@ class ArticlesTable extends Component {
       articles[articleIndex].id
     )
     this.props.deleteSelectedArticles(selectedArticleIds)
-    this.setState({ selectedArticles: []})
+    this.setState({ selected: []})
   }
 
   render() {
@@ -123,9 +123,9 @@ class ArticlesTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  articles: articlesPreviewSelector(state),
-  users: state.users.articles,
-  selectedArticles: state.articles.selectedArticles
+  list: articlesPreviewSelector(state),
+  users: state.users.list,
+  selected: state.list.selected
 })
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>
