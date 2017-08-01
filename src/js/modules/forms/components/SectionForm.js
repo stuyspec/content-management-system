@@ -4,7 +4,10 @@
 import React, { Component } from 'react'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
 import injectSheet from 'react-jss'
+import { createSection } from '../actions'
+import { connect } from 'react-redux'
 
 
 const styles = {
@@ -22,6 +25,10 @@ const styles = {
   },
   descriptionInput: {
     padding: "2%"
+  },
+  button: {
+    maxWidth: "100px",
+    paddingLeft: "2%"
   }
 }
 class SectionForm extends Component {
@@ -42,6 +49,11 @@ class SectionForm extends Component {
     this.setState({ description: event.target.value })
   }
 
+  handleSubmit = event => {
+    event.preventDefault()
+    this.props.createSection(this.state)
+  }
+
   render() {
     const { classes } = this.props;
     const { name, description } = this.state;
@@ -49,7 +61,7 @@ class SectionForm extends Component {
       <div className={classes.formContainer}>
         <Paper zDepth={2} className={classes.form}>
           <h2> Section Form </h2>
-          <form>
+          <form onSubmit={this.handleSubmit}>
             <div className={classes.titleInput}>
               <TextField
                 floatingLabelText="Name"
@@ -59,10 +71,17 @@ class SectionForm extends Component {
             </div>
             <div className={classes.descriptionInput}>
               <TextField
-                multiline
+                multiLine
                 hintText="Description"
                 value={description}
                 onChange={this.handleDescriptionChange}
+              />
+            </div>
+            <div className={classes.button}>
+              <RaisedButton
+                primary={true}
+                label="Submit"
+                onClick={this.handleSubmit}
               />
             </div>
           </form>
@@ -72,5 +91,13 @@ class SectionForm extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  createSection: section => {
+    dispatch(createSection(section))
+  }
+})
 
-export default injectSheet(styles)(SectionForm);
+export default connect(
+  null,
+  mapDispatchToProps
+)(injectSheet(styles)(SectionForm));

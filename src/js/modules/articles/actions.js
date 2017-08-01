@@ -1,10 +1,12 @@
 import * as t from './actionTypes'
 
-export const createArticle = article => ({
-  type: t.CREATE_ARTICLE,
-  payload: article
-})
-
+export const fetchArticle = () => (
+  dispatch => {
+    axios.get(
+      `${constants.STUY_SPEC_API_URL}/articles`
+    )
+  }
+)
 export const saveSelectedArticles = selectedArticles => ({
   type: t.SAVE_SELECTED_ARTICLES,
   payload: selectedArticles

@@ -76,7 +76,6 @@ const reducer = (state={...initialState}, action)=>
   {
     case CREATE_ARTICLE :
       return { ...state, list: [...state.articlesList, action.payload]}
-
     case DELETE_SELECTED_ARTICLES:
       let articles = [...state.list];
       const selectedArticles = action.payload

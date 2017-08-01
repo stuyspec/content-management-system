@@ -5,7 +5,7 @@ import { refreshWindowDimensions } from './../actions'
 import Navbar from './Navbar'
 import NavDrawer from './NavDrawer'
 import UserDrawer from '../../users/components/UserDrawer'
-import ArticlesTable from '../../articles/components/ArticlesTable'
+import { fetchSections } from '../../sections/actions'
 
 
 const styles = {
@@ -55,6 +55,7 @@ class MainApp extends PureComponent
   };
   componentDidMount()
   {
+    this.props.fetchSections();
     window.addEventListener('resize', this.onResizeWindow);
   }
   componentWillUnmount()
@@ -85,9 +86,11 @@ const VisibleMainApp = connect(
     }),
   (dispatch)=>
     ({
-      onResizeWindow : ()=>
-      {
+      onResizeWindow: () => {
         dispatch(refreshWindowDimensions())
+      },
+      fetchSections: () => {
+        dispatch(fetchSections())
       }
     })
 )(injectSheet(styles)(MainApp));
