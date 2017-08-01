@@ -6,6 +6,7 @@ import Navbar from './Navbar'
 import NavDrawer from './NavDrawer'
 import UserDrawer from '../../users/components/UserDrawer'
 import { fetchSections } from '../../sections/actions'
+import { fetchArticles } from '../../articles/actions'
 
 
 const styles = {
@@ -55,6 +56,7 @@ class MainApp extends PureComponent
   };
   componentDidMount()
   {
+    this.props.fetchArticles();
     this.props.fetchSections();
     window.addEventListener('resize', this.onResizeWindow);
   }
@@ -91,6 +93,9 @@ const VisibleMainApp = connect(
       },
       fetchSections: () => {
         dispatch(fetchSections())
+      },
+      fetchArticles: () => {
+        dispatch(fetchArticles())
       }
     })
 )(injectSheet(styles)(MainApp));

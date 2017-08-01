@@ -124,7 +124,7 @@ class ArticlesTable extends Component {
 
 const mapStateToProps = state => ({
   articles: articlesPreviewSelector(state),
-  users: state.users.list,
+  users: state.users.articles,
   selectedArticles: state.articles.selectedArticles
 })
 const mapDispatchToProps = dispatch => ({

@@ -8,7 +8,7 @@ import {
 // so finding a section is not computationally difficult. Users, on the other
 // hand are really large so finding a user shouldn't be an O(n) task
 const initialState = {
-  list: []
+  articles: []
 };
 
 const reducer = (state={...initialState}, action)=>
@@ -16,11 +16,11 @@ const reducer = (state={...initialState}, action)=>
     switch(action.type)
     {
       case CREATE_SECTION_SUCCEEDED:
-        return { ...state, list: [...state.list, action.payload]}
+        return { ...state, articles: [...state.articles, action.payload]}
       default:
         break;
       case FETCH_SECTIONS_SUCCEEDED:
-        return { ...state, list: action.payload}
+        return { ...state, articles: action.payload}
     }
 
     return state;

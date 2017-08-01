@@ -1,10 +1,27 @@
 import * as t from './actionTypes'
+import { STUY_SPEC_API_URL } from '../../constants'
+import axios from 'axios'
 
-export const fetchArticle = () => (
+export const fetchArticles = () => (
   dispatch => {
+    dispatch({
+      type: t.FETCH_ARTICLES_REQUESTED
+    })
     axios.get(
-      `${constants.STUY_SPEC_API_URL}/articles`
+      `${STUY_SPEC_API_URL}/articles`
     )
+    .then(response => {
+      dispatch({
+        type: t.FETCH_ARTICLES_SUCCEEDED,
+        payload: response.data
+      })
+    })
+    .catch(error => {
+      dispatch({
+        type: t.FETCH_ARTICLES_FAILED,
+        payload: error
+      })
+    })
   }
 )
 export const saveSelectedArticles = selectedArticles => ({

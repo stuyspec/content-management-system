@@ -27,12 +27,24 @@ export const saveArticleData = (title, content, section) => ({
 });
 
 export const createArticle = article => dispatch => {
+  dispatch({
+    type: t.CREATE_ARTICLE_REQUESTED
+  })
   axios
     .post(`${STUY_SPEC_API_URL}/articles`, article)
     .then(response => {
+      dispatch({
+        type: t.CREATE_ARTICLE_SUCCEEDED,
+        payload: article
+      })
       dispatch(push("/"));
     })
-    .catch(error => console.error("Post failed"));
+    .catch(error => {
+      dispatch({
+        type: t.CREATE_ARTICLE_FAILED,
+        payload: error
+      });
+    })
 };
 
 export const createSection = section => dispatch => {

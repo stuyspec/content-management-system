@@ -4,7 +4,10 @@ import axios from 'axios'
 
 export const fetchSections = () => (
   dispatch => {
-    console.log(`${STUY_SPEC_API_URL}/sections`);
+    // Start loading icon
+    dispatch({
+      type: t.FETCH_SECTIONS_REQUESTED,
+    })
     axios.get(
       `${STUY_SPEC_API_URL}/sections`
     )

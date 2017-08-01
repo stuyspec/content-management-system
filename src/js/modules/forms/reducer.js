@@ -1,12 +1,12 @@
 import {
   ADD_CONTRIBUTOR,
   REMOVE_CONTRIBUTOR,
-  SAVE_ARTICLE_DATA
+  SAVE_ARTICLE_DATA,
 } from './actionTypes'
 
   const initialState = {
     // Stores just the ids of the users. Will use selectors
-    // to get the actual list of names
+    // to get the actual articles of names
     contributors: [],
     title: "",
     content: "",
@@ -31,7 +31,6 @@ import {
             contributors.slice(contributorIndex + 1)
           );
           return { ...state, contributors: newContributors };
-
         case SAVE_ARTICLE_DATA:
           return { ...state, ...action.payload }
         default:
