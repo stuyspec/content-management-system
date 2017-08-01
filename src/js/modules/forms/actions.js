@@ -27,6 +27,7 @@ export const saveArticleData = (title, content, section) => ({
 });
 
 export const createArticle = article => dispatch => {
+  // TODO: Create loading anims
   dispatch({
     type: t.CREATE_ARTICLE_REQUESTED
   })
@@ -42,6 +43,7 @@ export const createArticle = article => dispatch => {
         type: t.CLEAR_ARTICLE_FORM_DATA
       });
     })
+    // TODO: Create error messages for requests
     .catch(error => {
       dispatch({
         type: t.CREATE_ARTICLE_FAILED,
@@ -51,6 +53,7 @@ export const createArticle = article => dispatch => {
 };
 
 export const createSection = section => dispatch => {
+  // TODO: Create loading anims
   dispatch({
     type: t.CREATE_SECTION_REQUESTED
   });
@@ -63,6 +66,7 @@ export const createSection = section => dispatch => {
       });
       dispatch(push("/"));
     })
+    // TODO: Create error messages for requests
     .catch(error => {
       dispatch({
         type: t.CREATE_SECTION_FAILED,
