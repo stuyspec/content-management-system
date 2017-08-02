@@ -44,10 +44,10 @@ class ArticlesTable extends Component {
 
   handleRowSelection = rowsSelected => {
     const { articles } = this.props;
-    if (rowsSelected == 'none') {
+    if (rowsSelected === 'none') {
       this.setState({selectedArticles: []})
     }
-    else if (rowsSelected == 'all') {
+    else if (rowsSelected === 'all') {
       const articleIds = articles.map(article => article.id)
       this.setState({
         selectedArticles: articleIds

@@ -8,7 +8,6 @@ import injectSheet                 from 'react-jss'
 import { createArticle }           from './../actions'
 import { connect }                 from 'react-redux'
 import Paper                       from 'material-ui/Paper'
-import CircularProgress            from 'material-ui/CircularProgress'
 import { saveArticleData }         from './../actions'
 import RaisedButton                from 'material-ui/RaisedButton'
 import { randomArticleSelector }   from '../../articles/selectors'
@@ -106,7 +105,6 @@ class ArticleForm extends Component {
         <div className={classes.button}>
           <RaisedButton primary={true} label="Submit" />
         </div>
-          <CircularProgress />
         </form>
       </Paper>
     </div>
