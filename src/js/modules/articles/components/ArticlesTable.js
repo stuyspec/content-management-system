@@ -42,18 +42,29 @@ class ArticlesTable extends Component {
     return selectedArticles.indexOf(id) !== -1
   }
 
-  handleRowSelection = rowSelected => {
-    this.setState({selectedArticles: rowSelected})
+  handleRowSelection = rowsSelected => {
+    const { articles } = this.props;
+    if (rowsSelected == 'none') {
+      this.setState({selectedArticles: []})
+    }
+    else if (rowsSelected == 'all') {
+      const articleIds = articles.map(article => article.id)
+      this.setState({
+        selectedArticles: articleIds
+      })
+    }
+    else {
+      const selectedArticles = rowsSelected.map(row => articles[row].id)
+      this.setState({ selectedArticles })
+    }
   }
 
   handleRowDeletion = () => {
     const { selectedArticles } = this.state;
-    const { articles } = this.props;
-    const selectedArticleIds = selectedArticles.map(articleIndex =>
-      articles[articleIndex].id
-    )
-    this.props.deleteSelectedArticles(selectedArticleIds)
-    this.setState({ selectedArticles: []})
+    if (selectedArticles) {
+      this.props.deleteSelectedArticles(selectedArticles)
+      this.setState({selectedArticles: []})
+    }
   }
 
   render() {
@@ -89,7 +100,7 @@ class ArticlesTable extends Component {
             { articles.map((article, index) =>
               <TableRow
                 key={article.id}
-                selected={this.isSelected(index)}
+                selected={this.isSelected(article.id)}
               >
                 <TableRowColumn> {article.title} </TableRowColumn>
                 <TableRowColumn>
