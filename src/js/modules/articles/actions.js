@@ -24,12 +24,34 @@ export const fetchArticles = () => (
     })
   }
 )
+
 export const saveSelectedArticles = selectedArticles => ({
   type: t.SAVE_SELECTED_ARTICLES,
   payload: selectedArticles
 })
 
-export const deleteSelectedArticles = articleIds => ({
-  type: t.DELETE_SELECTED_ARTICLES,
-  payload: articleIds
-})
+export const deleteArticles = articleIds => (
+  dispatch => {
+    dispatch({
+      type: t.DELETE_ARTICLES_REQUESTED
+    })
+    axios
+    .all(
+      articleIds.map(articleId =>
+        axios.delete(
+          `${STUY_SPEC_API_URL}/articles/${articleId}`
+        )
+      )
+    )
+    .then(response => dispatch({
+      type: t.DELETE_ARTICLES_SUCCEEDED,
+      payload: articleIds
+      })
+    )
+    .catch(error => dispatch({
+      type: t.DELETE_ARTICLES_FAILED,
+      payload: error
+      })
+    )
+  }
+)

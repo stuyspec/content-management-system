@@ -1,5 +1,5 @@
 import {
-  DELETE_SELECTED_ARTICLES,
+  DELETE_ARTICLES_SUCCEEDED,
   SAVE_SELECTED_ARTICLES,
   FETCH_ARTICLES_SUCCEEDED
 } from './actionTypes'
@@ -20,7 +20,7 @@ const reducer = (state={...initialState}, action)=>
   {
     case CREATE_ARTICLE_SUCCEEDED:
       return { ...state, list: [...state.list, action.payload]}
-    case DELETE_SELECTED_ARTICLES:
+    case DELETE_ARTICLES_SUCCEEDED:
       let articles = [...state.list];
       const selectedArticles = action.payload
       selectedArticles.map(articleId => {
