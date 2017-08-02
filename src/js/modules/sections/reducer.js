@@ -7,22 +7,30 @@ const initialState = {
     {
       id: 1,
       name: "Arts and Entertainment",
-      shortName: "A&E"
+      shortName: "A&E",
+      description: "Film, music, theater and more",
+      parentId: null
     },
     {
       id: 2,
       name: "Photography",
-      shortName: "photo"
+      shortName: "photo",
+      description: "Idk, photo shit",
+      parentId: null
     },
     {
       id: 3,
       name: "News",
-      shortName: "news"
+      shortName: "news",
+      description: "New news is news",
+      parentId: null
     },
     {
       id: 4,
       name: "Blog",
-      shortName: "blog"
+      shortName: "blog",
+      description: "Blogs because everybody wants to hear my opinion",
+      parentId: null
     }
   ]
 };
