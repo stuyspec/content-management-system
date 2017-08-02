@@ -29,20 +29,12 @@ class ArticleForm extends Component {
   constructor(props) {
     super(props);
     const { title, content, section, randomArticle } = this.props;
-
-    if (section === undefined) {
-      this.state = {
-        title,
-        content,
-        section: randomArticle.section
-      };
-    } else {
-      this.state = {
-        title,
-        content,
-        section
-      };
-    }
+    const theSection = section || randomArticle.section
+    this.state = {
+      title,
+      content,
+      section: theSection
+    };
   }
 
   componentWillUnmount() {
