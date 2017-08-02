@@ -9,7 +9,6 @@ import injectSheet from 'react-jss'
 import { createSection } from '../actions'
 import { connect } from 'react-redux'
 
-
 const styles = {
   formContainer: {
     padding: "5%"
@@ -20,8 +19,11 @@ const styles = {
     padding: "5%",
 
   },
+  inputs: {
+    marginLeft: "2%"
+  },
   titleInput: {
-    padding: "2%"
+    marginBottom: "2%"
   },
   descriptionInput: {
     padding: "2%"
@@ -31,13 +33,15 @@ const styles = {
     paddingLeft: "2%"
   }
 }
+
 class SectionForm extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       name: "",
-      description: ""
+      description: "",
+      parentSection: 0,
     }
   }
 
@@ -55,8 +59,8 @@ class SectionForm extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { name, description } = this.state;
+    const { classes, topLevelSections, randomSection } = this.props;
+    const { name, description, parentSection } = this.state;
     return (
       <div className={classes.formContainer}>
         <Paper zDepth={2} className={classes.form}>
@@ -99,5 +103,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps=
 )(injectSheet(styles)(SectionForm));

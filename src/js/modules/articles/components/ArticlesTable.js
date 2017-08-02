@@ -96,6 +96,7 @@ class ArticlesTable extends Component {
                   { article.contributors.map(
                     contributor =>
                       <UserChip
+                        key={contributor}
                         user={
                           users.find(
                             user => user.id === contributor
