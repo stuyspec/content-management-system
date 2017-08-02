@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
 import { articlesPreviewSelector } from '../selectors'
-import { saveSelectedArticles, deleteSelectedArticles } from '../actions'
+import { saveSelectedArticles, deleteArticles } from '../actions'
 
 const styles = {
   articlesTable: {
@@ -129,7 +129,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>
-    dispatch(deleteSelectedArticles(selectedArticleIds)),
+    dispatch(deleteArticles(selectedArticleIds)),
   saveSelectedArticles: selectedArticles =>
     dispatch(saveSelectedArticles(selectedArticles))
 })
