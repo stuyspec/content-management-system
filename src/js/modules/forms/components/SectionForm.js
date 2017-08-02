@@ -26,16 +26,16 @@ const styles = {
 
   },
   inputs: {
-    paddingLeft: "2%"
+    marginLeft: "2%"
   },
   titleInput: {
-    paddingBottom: "2%"
+    marginBottom: "2%"
   },
   descriptionInput: {
-    paddingBottom: "2%"
+    marginBottom: "2%"
   },
   parentSectionInput: {
-    paddingBottom: "2%"
+    marginBottom: "2%"
   },
 };
 
