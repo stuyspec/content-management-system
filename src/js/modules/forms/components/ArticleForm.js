@@ -8,6 +8,7 @@ import injectSheet                 from 'react-jss'
 import { createArticle }           from './../actions'
 import { connect }                 from 'react-redux'
 import Paper                       from 'material-ui/Paper'
+import CircularProgress            from 'material-ui/CircularProgress'
 import { saveArticleData }         from './../actions'
 import RaisedButton                from 'material-ui/RaisedButton'
 import { randomArticleSelector }   from '../../articles/selectors'
@@ -78,12 +79,12 @@ class ArticleForm extends Component {
     const { title, section, content } = this.state
     return (
     <div className={classes.formContainer}>
-      <h2> Article Editor </h2>
       <Paper
         className={classes.form}
         zDepth={2}
       >
-      <form onSubmit={this.handleSubmit}>
+        <h2> Article Form </h2>
+        <form onSubmit={this.handleSubmit}>
         <TitleInput
           title={title}
           hintText={randomArticle.title.substring(0, 24) + "..."}
@@ -105,7 +106,8 @@ class ArticleForm extends Component {
         <div className={classes.button}>
           <RaisedButton primary={true} label="Submit" />
         </div>
-      </form>
+          <CircularProgress />
+        </form>
       </Paper>
     </div>
     );
