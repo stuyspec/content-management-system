@@ -1,16 +1,15 @@
-import React, { Component }        from "react";
-import TitleInput                  from "./ArticleInputs/TitleInput";
-import ContentInput                from "./ArticleInputs/ContentInput";
-import SectionInput                from "./ArticleInputs/SectionInput";
-import ContributorsList            from './ContributorsList'
-import ContributorsInput           from "./ArticleInputs/ContributorsInput";
-import injectSheet                 from 'react-jss'
-import { createArticle }           from './../actions'
-import { connect }                 from 'react-redux'
-import Paper                       from 'material-ui/Paper'
-import { saveArticleData }         from './../actions'
-import RaisedButton                from 'material-ui/RaisedButton'
-import { randomArticleSelector }   from '../../articles/selectors'
+import React, { Component } from "react";
+import TitleInput from "./ArticleInputs/TitleInput";
+import ContentInput from "./ArticleInputs/ContentInput";
+import SectionInput from "./ArticleInputs/SectionInput";
+import ContributorsList from "./ContributorsList";
+import ContributorsInput from "./ArticleInputs/ContributorsInput";
+import injectSheet from "react-jss";
+import { connect } from "react-redux";
+import Paper from "material-ui/Paper";
+import { saveArticleData, createArticle } from "./../actions";
+import RaisedButton from "material-ui/RaisedButton";
+import { randomArticleSelector } from "../../articles/selectors";
 
 const styles = {
   formContainer: {
@@ -19,35 +18,24 @@ const styles = {
   form: {
     display: "flex",
     flexDirection: "column",
-    padding: "5%",
-
+    padding: "5%"
   },
   button: {
     maxWidth: "100px",
     paddingTop: "5%"
   }
-}
+};
 class ArticleForm extends Component {
   constructor(props) {
     super(props);
-    const { title, content, section, randomArticle} = this.props;
-
-    if (section === undefined) {
-      this.state = {
-        title,
-        content,
-        section: randomArticle.section
-      };
-    }
-    else {
-      this.state = {
-        title,
-        content,
-        section
-      };
-    }
+    const { title, content, section, randomArticle } = this.props;
+    const theSection = section || randomArticle.section
+    this.state = {
+      title,
+      content,
+      section: theSection
+    };
   }
-
 
   componentWillUnmount() {
     const { title, content, section } = this.state;
@@ -63,51 +51,51 @@ class ArticleForm extends Component {
   };
 
   handleSectionChange = (event, index, value) => {
-    this.setState({ section: value })
+    this.setState({ section: value });
   };
 
   handleSubmit = event => {
-    event.preventDefault();
-    const { title, content, author, section } = this.state;
+    const { title, content, section } = this.state;
     const { contributors, onSubmit } = this.props;
-    onSubmit(title, content, author, section, contributors);
+    onSubmit({title, content, section, contributors});
   };
 
   render() {
     const { classes, contributors, randomArticle } = this.props;
-    const { title, section, content } = this.state
+    const { title, section, content } = this.state;
     return (
-    <div className={classes.formContainer}>
-      <h2> Article Editor </h2>
-      <Paper
-        className={classes.form}
-        zDepth={2}
-      >
-      <form onSubmit={this.handleSubmit}>
-        <TitleInput
-          title={title}
-          hintText={randomArticle.title.substring(0, 24) + "..."}
-          handleTitleChange={this.handleTitleChange}
-        />
-        { contributors.length > 0 && <ContributorsList /> }
-        <ContributorsInput />
+      <div className={classes.formContainer}>
+        <h2> Article Editor </h2>
+        <Paper className={classes.form} zDepth={2}>
+          <form onSubmit={this.handleSubmit}>
+            <TitleInput
+              title={title}
+              hintText={randomArticle.title.substring(0, 24) + "..."}
+              handleTitleChange={this.handleTitleChange}
+            />
+            {contributors.length > 0 && <ContributorsList />}
+            <ContributorsInput />
 
-        <SectionInput
-          section={section}
-          handleSectionChange={this.handleSectionChange}
-        />
+            <SectionInput
+              section={section}
+              handleSectionChange={this.handleSectionChange}
+            />
 
-        <ContentInput
-          content={content}
-          handleContentChange={this.handleContentChange}
-        />
+            <ContentInput
+              content={content}
+              handleContentChange={this.handleContentChange}
+            />
 
-        <div className={classes.button}>
-          <RaisedButton primary={true} label="Submit" />
-        </div>
-      </form>
-      </Paper>
-    </div>
+            <div className={classes.button}>
+              <RaisedButton
+                primary={true}
+                label="Submit"
+                onClick={this.handleSubmit}
+              />
+            </div>
+          </form>
+        </Paper>
+      </div>
     );
   }
 }
@@ -121,15 +109,11 @@ export default connect(
     randomArticle: randomArticleSelector(state)
   }),
   dispatch => ({
-    onSubmit: (title,
-               content,
-               section) => {
-      dispatch(
-        createArticle(title, content, section)
-      )
+    onSubmit: (title, content, section) => {
+      dispatch(createArticle(title, content, section));
     },
-    saveArticleData: (title, content, section ) => {
-      dispatch(saveArticleData(title, content, section))
+    saveArticleData: (title, content, section) => {
+      dispatch(saveArticleData(title, content, section));
     }
-  }),
+  })
 )(injectSheet(styles)(ArticleForm));

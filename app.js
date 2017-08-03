@@ -80,7 +80,7 @@ app.get('/', (req,res)=>
 
 app.get('*', (req, res)=>
 {
-  res.render(__dirname + '/' + codeDir + '/index.html');Â
+  res.render(__dirname + '/' + codeDir + '/index.html');
 });
 
 let startServer = ((server)=>
