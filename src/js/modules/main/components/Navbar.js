@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
-import { blue900, blue50 } from 'material-ui/styles/colors'
+import { blue900 } from 'material-ui/styles/colors'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
 import { Link } from 'react-router-dom'
@@ -13,15 +13,10 @@ import { connect } from 'react-redux'
 import { openNavDrawer, openUserDrawer } from './../actions'
 import Avatar from 'material-ui/Avatar'
 import { currentUserSelector } from '../../users/selectors'
-import ReactSVG from 'react-svg'
 
 const styles = {
   toolbar: {
     backgroundColor: blue900,
-  },
-  toolbarTitle: {
-    color: blue50,
-    textDecoration: 'none',
   },
   createArticleButton: {
     fontFamily: "Roboto, sans-serif"
@@ -32,10 +27,13 @@ const styles = {
   currentUserAvatar: {
     margin: "0 20px 0 25px"
   },
-  masthead: {
-    width: "10em",
-    padding: "5px 10px 5px 10px",
-    backgroundColor: "white"
+  brandedHeader: {
+    color: "White",
+    fontFamily: "Old English Text MT",
+    fontSize: "2em"
+  },
+  brandedHeaderLink: {
+    textDecoration: 'none',
   }
 }
 
@@ -46,10 +44,15 @@ const Navbar = ({ classes,
   <Toolbar style={styles.toolbar}>
     <ToolbarGroup key={1}>
       <IconButton onClick={openNavDrawer}>
-        <NavigationMenu color={blue50} />
+        <NavigationMenu color={"White"} />
       </IconButton>
-      <Link to="/" className={classes.toolbarTitle}>
-        <ReactSVG className={classes.masthead} path="/img/masthead.svg" />
+      <Link
+        to="/"
+        className={classes.brandedHeaderLink}
+      >
+        <div className={classes.brandedHeader}>
+          The Spectator
+        </div>
       </Link>
     </ToolbarGroup>
     <ToolbarGroup key={2}>
