@@ -49,10 +49,12 @@ export const fetchAuthorships = () => (
     })
   }
 )
+
 export const saveSelectedArticles = selectedArticles => ({
   type: t.SAVE_SELECTED_ARTICLES,
   payload: selectedArticles
 })
+
 
 export const deleteArticles = articleSlugs => (
   dispatch => {
@@ -61,6 +63,7 @@ export const deleteArticles = articleSlugs => (
     })
     axios
     .all(
+
       articleSlugs.map(articleSlug =>
         axios.delete(
           `${STUY_SPEC_API_URL}/articles/${articleSlug}`
