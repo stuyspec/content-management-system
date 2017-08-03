@@ -103,5 +103,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(
   null,
-  mapDispatchToProps=
+  mapDispatchToProps
 )(injectSheet(styles)(SectionForm));
