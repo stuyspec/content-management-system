@@ -22,15 +22,12 @@ const reducer = (state={...initialState}, action)=>
     case CREATE_ARTICLE_SUCCEEDED:
       return { ...state, articles: [...state.articles, action.payload]}
     case DELETE_ARTICLES_SUCCEEDED:
-      let articles = [...state.articles];
+      const articles = [...state.articles];
       const selectedArticles = action.payload
-      selectedArticles.map(articleId => {
-        const idIndex = articles.indexOf(
-          articles.find(article => article.id === articleId)
-        )
-        return articles.splice(idIndex, 1)
-      })
-      return { ...state, articles: articles, selected: []}
+      const newArticles = articles.filter(
+        article => !selectedArticles.includes(article.slug)
+      )
+      return { ...state, articles: newArticles, selected: []}
 
     case SAVE_SELECTED_ARTICLES:
       return { ...state, selected: action.payload }
