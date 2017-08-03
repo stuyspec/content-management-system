@@ -37,23 +37,35 @@ class ArticlesTable extends Component {
     this.props.saveSelectedArticles(this.state.selected);
   }
 
-  isSelected = id => {
+  isSelected = slug => {
     const { selectedArticles } = this.state;
-    return selectedArticles.indexOf(id) !== -1
+    return selectedArticles.indexOf(slug) !== -1
   }
 
-  handleRowSelection = rowSelected => {
-    this.setState({selected: rowSelected})
+
+  handleRowSelection = rowsSelected => {
+    const { articles } = this.props;
+    if (rowsSelected === 'none') {
+      this.setState({selectedArticles: []})
+    }
+    else if (rowsSelected === 'all') {
+      const articleSlugs = articles.map(article => article.slug)
+      this.setState({
+        selectedArticles: articleSlugs
+      })
+    }
+    else {
+      const selectedArticles = rowsSelected.map(row => articles[row].slug)
+      this.setState({ selectedArticles })
+    }
   }
 
   handleRowDeletion = () => {
     const { selectedArticles } = this.state;
-    const { articles } = this.props;
-    const selectedArticleIds = selectedArticles.map(articleIndex =>
-      articles[articleIndex].id
-    )
-    this.props.deleteSelectedArticles(selectedArticleIds)
-    this.setState({ selected: []})
+    if (selectedArticles) {
+      this.props.deleteSelectedArticles(selectedArticles)
+      this.setState({selectedArticles: []})
+    }
   }
 
   render() {
@@ -64,7 +76,6 @@ class ArticlesTable extends Component {
       "Delete Articles" : "Delete Article"
     const editButtonLabel = selectedArticles.length > 1 ?
       "Edit Articles" : "Edit Article"
-
     return (
       <div className={classes.articlesTable}>
         <h2> Articles Table </h2>
@@ -86,10 +97,10 @@ class ArticlesTable extends Component {
             </TableRow>
           </TableHeader>
           <TableBody deselectOnClickaway={false}>
-            { articles.map((article, index) =>
+            { articles.map(article =>
               <TableRow
                 key={article.id}
-                selected={this.isSelected(index)}
+                selected={this.isSelected(article.slug)}
               >
                 <TableRowColumn> {article.title} </TableRowColumn>
                 <TableRowColumn>
@@ -124,9 +135,9 @@ class ArticlesTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  list: articlesPreviewSelector(state),
-  users: state.users.list,
-  selected: state.list.selected
+  articles: articlesPreviewSelector(state),
+  users: state.users.articles,
+  selected: state.articles.selected
 })
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>

@@ -7,7 +7,7 @@ import {
 
   const initialState = {
     // Stores just the ids of the users. Will use selectors
-    // to get the actual list of names
+    // to get the actual articles of names
     contributors: [],
     articleForm: {}
   };
