@@ -27,12 +27,12 @@ const styles = {
   currentUserAvatar: {
     margin: "0 20px 0 25px"
   },
-  masthead: {
+  brandedHeader: {
     color: "White",
     fontFamily: "Old English Text MT",
     fontSize: "2em"
   },
-  mastheadLink: {
+  brandedHeaderLink: {
     textDecoration: 'none',
   }
 }
@@ -48,9 +48,9 @@ const Navbar = ({ classes,
       </IconButton>
       <Link
         to="/"
-        className={classes.mastheadLink}
+        className={classes.brandedHeaderLink}
       >
-        <div className={classes.masthead}>
+        <div className={classes.brandedHeader}>
           The Spectator
         </div>
       </Link>
