@@ -3,19 +3,31 @@
  */
 import { createSelector } from 'reselect'
 
-export const articlesSelector = state => state.list.list
-
+export const articlesSelector = state => state.articles.articles
+export const authorshipsSelector = state => state.articles.authorships;
 export const articlesPreviewSelector = createSelector(
   articlesSelector,
-  articles => (
+  authorshipsSelector,
+  (articles, authorships) => (
     articles.map(
       article => {
+        const contributors = authorships.filter(
+          authorship => authorship.articleId === article.id
+        )
         const content = article.content
         // TODO: Make this more scientific on picking preview
-        const lastWordIndex = content.indexOf('</p>') + 4
+        let contentPreview;
+        if (content) {
+          const lastWordIndex = content.indexOf('</p>') + 4
+          contentPreview = content.substring(0, lastWordIndex)
+        }
+        else {
+          contentPreview = "Blank"
+        }
         return {
           ...article,
-          content: content.substring(0, lastWordIndex)
+          contributors,
+          content: contentPreview,
         }
       }
     )
