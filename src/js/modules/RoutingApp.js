@@ -5,6 +5,7 @@ import ArticleForm from "./forms/components/ArticleForm";
 import SectionForm from "./forms/components/SectionForm";
 import ArticlesTable from "./articles/components/ArticlesTable";
 import UsersList from "./users/components/UsersList";
+import UserForm from './forms/components/UserForm'
 import ConnectedRouter from "react-router-redux/ConnectedRouter";
 import store from "../store";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -22,6 +23,7 @@ class RoutingApp extends Component {
               <Route exact path="/articles" component={ArticlesTable} />
               <Route path="/articles/new" component={ArticleForm} />
               <Route exact path="/users" component={UsersList} />
+              <Route path="/users/new" component={UserForm} />
               <Route path="/sections/new" component={SectionForm} />
             </div>
           </ConnectedRouter>
