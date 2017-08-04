@@ -26,30 +26,6 @@ export const fetchArticles = () => (
   }
 )
 
-export const fetchAuthorships = () => (
-  dispatch => {
-    dispatch({
-      type: t.FETCH_AUTHORSHIPS_REQUESTED
-    })
-    axios.get(
-      `${STUY_SPEC_API_URL}/authorships`,
-      AXIOS_CONFIG
-    )
-    .then(response => {
-      dispatch({
-        type: t.FETCH_AUTHORSHIPS_SUCCEEDED,
-        payload: response.data
-      })
-    })
-    .catch(error => {
-      dispatch({
-        type: t.FETCH_AUTHORSHIPS_FAILED,
-        payload: error
-      })
-    })
-  }
-)
-
 export const setSelectedArticles = selectedArticles => ({
   type: t.SET_SELECTED_ARTICLES,
   payload: selectedArticles

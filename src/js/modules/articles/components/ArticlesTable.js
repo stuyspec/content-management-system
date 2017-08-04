@@ -14,7 +14,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
-import { articlesPreviewSelector, contributorsByArticle } from '../selectors'
+import { articlesPreviewSelector } from '../selectors'
+import { contributorsByArticle } from '../../authorships/selectors'
 import { setSelectedArticles, deleteArticles } from '../actions'
 
 const styles = {

@@ -46,7 +46,8 @@ export const createAuthorships = (contributors, articleId) => dispatch => {
   )
   .then(response => {
     dispatch({
-        type: t.CREATE_AUTHORSHIPS_SUCCEEDED,
+      type: t.CREATE_AUTHORSHIPS_SUCCEEDED,
+      payload: response
     })
     dispatch(fetchAuthorships())
     }

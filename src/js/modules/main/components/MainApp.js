@@ -6,8 +6,9 @@ import Navbar from './Navbar'
 import NavDrawer from './NavDrawer'
 import UserDrawer from '../../users/components/UserDrawer'
 import { fetchSections } from '../../sections/actions'
-import { fetchArticles, fetchAuthorships } from '../../articles/actions'
+import { fetchArticles } from '../../articles/actions'
 import { fetchUsers } from '../../users/actions'
+import { fetchAuthorships } from '../../authorships/actions'
 
 const styles = {
   appWrapper :

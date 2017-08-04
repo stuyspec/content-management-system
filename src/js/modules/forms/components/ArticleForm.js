@@ -109,8 +109,8 @@ export default connect(
     section: state.forms.section,
   }),
   dispatch => ({
-    onSubmit: (title, content, section) => {
-      dispatch(createArticle(title, content, section));
+    onSubmit: article => {
+      dispatch(createArticle(article));
     },
     saveArticleData: (title, content, section) => {
       dispatch(saveArticleData(title, content, section));

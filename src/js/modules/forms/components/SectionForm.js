@@ -59,7 +59,7 @@ class SectionForm extends Component {
   }
 
   render() {
-    const { classes, topLevelSections, randomSection } = this.props;
+    const { classes, topLevelSections } = this.props;
     const { name, description, parentSection } = this.state;
     return (
       <div className={classes.formContainer}>

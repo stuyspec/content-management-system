@@ -12,16 +12,6 @@ import {
 const initialState = {
   selected: [],
   list: [],
-  authorships: [
-    {
-      articleId: 1,
-      userId: 2
-    },
-    {
-      articleId: 12,
-      userId: 0
-    }
-  ]
 };
 
 const reducer = (state={...initialState}, action)=>
@@ -42,8 +32,6 @@ const reducer = (state={...initialState}, action)=>
       return { ...state, selected: action.payload }
     case FETCH_ARTICLES_SUCCEEDED:
       return { ...state, list: action.payload }
-    case FETCH_AUTHORSHIPS_SUCCEEDED:
-      return { ...state, authorships: action.payload }
     default:
         break;
     }
