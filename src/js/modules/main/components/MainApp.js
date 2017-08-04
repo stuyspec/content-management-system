@@ -7,7 +7,7 @@ import NavDrawer from './NavDrawer'
 import UserDrawer from '../../users/components/UserDrawer'
 import { fetchSections } from '../../sections/actions'
 import { fetchArticles, fetchAuthorships } from '../../articles/actions'
-
+import { fetchUsers } from '../../users/actions'
 
 const styles = {
   appWrapper :
@@ -56,10 +56,16 @@ class MainApp extends PureComponent
   };
   componentDidMount()
   {
-    const { fetchArticles, fetchSections, fetchAuthorships } = this.props
+    const {
+      fetchArticles,
+      fetchSections,
+      fetchAuthorships,
+      fetchUsers,
+    } = this.props
     fetchArticles();
     fetchSections();
     fetchAuthorships();
+    fetchUsers();
     window.addEventListener('resize', this.onResizeWindow);
   }
   componentWillUnmount()
@@ -101,6 +107,9 @@ const VisibleMainApp = connect(
       },
       fetchAuthorships: () => {
         dispatch(fetchAuthorships())
+      },
+      fetchUsers: () => {
+        dispatch(fetchUsers())
       }
     })
 )(injectSheet(styles)(MainApp));

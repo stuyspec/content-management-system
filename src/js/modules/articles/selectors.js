@@ -13,9 +13,6 @@ export const articlesPreviewSelector = createSelector(
   (articles, authorships) => (
     articles.map(
       article => {
-        const contributors = authorships.filter(
-          authorship => authorship.articleId === article.id
-        )
         const content = article.content
         // TODO: Make this more scientific on picking preview
         let contentPreview;
@@ -28,7 +25,6 @@ export const articlesPreviewSelector = createSelector(
         }
         return {
           ...article,
-          contributors,
           content: contentPreview,
         }
       }

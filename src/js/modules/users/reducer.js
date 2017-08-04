@@ -1,12 +1,10 @@
 import {
-  ADD_CONTRIBUTOR,
-  REMOVE_CONTRIBUTOR,
-  SAVE_ARTICLE_DATA
+  FETCH_USERS_SUCCEEDED
 } from './actionTypes'
 
   const initialState = {
   currentUser: 0,
-  articles: [
+  list: [
     {
       id: 0,
       name: "Nicholas",
@@ -40,6 +38,8 @@ import {
   {
       switch(action.type)
       {
+        case FETCH_USERS_SUCCEEDED:
+          return { ...state, list: action.payload }
         default:
               break;
       }

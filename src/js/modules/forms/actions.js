@@ -1,5 +1,6 @@
 import * as t from "./actionTypes";
 import { usersSelector } from "./../users/selectors";
+import { fetchAuthorships } from '../articles/actions'
 // TODO: Change endpoint storage to outside code
 import { STUY_SPEC_API_URL } from "../../constants";
 import axios from "axios";
@@ -26,22 +27,29 @@ export const saveArticleData = (title, content, section) => ({
   payload: { title, content, section }
 });
 
-export const createAuthorships = (contributors, article_id) => dispatch => {
+export const createAuthorships = (contributors, articleId) => dispatch => {
   dispatch({
-    type: t.CREATE_AUTHORSHIPS_REQUESTED
+    type: t.CREATE_AUTHORSHIPS_REQUESTED,
+    payload: {
+      contributors,
+      articleId
+    }
   })
   axios.all(
     contributors.map(
       contributor =>
         axios.post(`${STUY_SPEC_API_URL}/authorships`, {
-          article_id,
+          article_id: articleId,
           user_id: contributor
         })
     )
   )
-  .then(response => dispatch({
-      type: t.CREATE_AUTHORSHIPS_SUCCEEDED
+  .then(response => {
+    dispatch({
+        type: t.CREATE_AUTHORSHIPS_SUCCEEDED,
     })
+    dispatch(fetchAuthorships())
+    }
   )
   .catch(error => dispatch({
     type: t.CREATE_AUTHORSHIPS_FAILED,

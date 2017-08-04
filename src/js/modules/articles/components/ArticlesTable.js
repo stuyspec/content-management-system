@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
 import { articlesPreviewSelector, contributorsByArticle } from '../selectors'
-import { saveSelectedArticles, deleteArticles } from '../actions'
+import { setSelectedArticles, deleteArticles } from '../actions'
 
 const styles = {
   articlesTable: {
@@ -27,51 +27,44 @@ const styles = {
 class ArticlesTable extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      selectedArticles: props.selected
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.saveSelectedArticles(this.state.selected);
   }
 
   isSelected = slug => {
-    const { selectedArticles } = this.state;
+    const { selectedArticles } = this.props;
     return selectedArticles.indexOf(slug) !== -1
   }
 
 
   handleRowSelection = rowsSelected => {
-    const { articles } = this.props;
+    const { articles, setSelectedArticles } = this.props;
     if (rowsSelected === 'none') {
-      this.setState({selectedArticles: []})
+      setSelectedArticles([])
     }
     else if (rowsSelected === 'all') {
-      const articleSlugs = articles.map(article => article.slug)
-      this.setState({
-        selectedArticles: articleSlugs
-      })
+      const allArticleSlugs = articles.map(article => article.slug)
+      setSelectedArticles(allArticleSlugs)
     }
     else {
-      const selectedArticles = rowsSelected.map(row => articles[row].slug)
-      this.setState({ selectedArticles })
+      const selectedArticleSlugs = rowsSelected.map(row => articles[row].slug)
+      setSelectedArticles(selectedArticleSlugs)
     }
   }
 
   handleRowDeletion = () => {
-    const { selectedArticles } = this.state;
+    const {
+      selectedArticles,
+      setSelectedArticles,
+      deleteSelectedArticles
+    } = this.props;
+
     if (selectedArticles) {
-      this.props.deleteSelectedArticles(selectedArticles)
-      this.setState({selectedArticles: []})
+      deleteSelectedArticles(selectedArticles)
+      setSelectedArticles([])
     }
   }
 
   render() {
-    const { articles, classes, contributors } = this.props;
-    const { selectedArticles } = this.state;
-
+    const { articles, classes, contributors, selectedArticles } = this.props;
     const deleteButtonLabel = selectedArticles.length > 1 ?
       "Delete Articles" : "Delete Article"
     const editButtonLabel = selectedArticles.length > 1 ?
@@ -134,15 +127,15 @@ class ArticlesTable extends Component {
 const mapStateToProps = state => ({
   articles: articlesPreviewSelector(state),
   users: state.users.list,
-  selected: state.articles.selected,
+  selectedArticles: state.articles.selected,
   contributors: contributorsByArticle(state)
 })
 
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>
     dispatch(deleteArticles(selectedArticleIds)),
-  saveSelectedArticles: selectedArticles =>
-    dispatch(saveSelectedArticles(selectedArticles))
+  setSelectedArticles: selectedArticles =>
+    dispatch(setSelectedArticles(selectedArticles))
 })
 
 export default connect(

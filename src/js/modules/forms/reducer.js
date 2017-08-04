@@ -22,7 +22,10 @@ import {
             ...state,
             article: {
               ...state.article,
-              contributors: [...state.contributors, action.payload.contributorId]
+              contributors: [
+                ...state.article.contributors,
+                action.payload.contributorId
+              ]
             }
           };
         case REMOVE_CONTRIBUTOR:

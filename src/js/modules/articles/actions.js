@@ -50,8 +50,8 @@ export const fetchAuthorships = () => (
   }
 )
 
-export const saveSelectedArticles = selectedArticles => ({
-  type: t.SAVE_SELECTED_ARTICLES,
+export const setSelectedArticles = selectedArticles => ({
+  type: t.SET_SELECTED_ARTICLES,
   payload: selectedArticles
 })
 
