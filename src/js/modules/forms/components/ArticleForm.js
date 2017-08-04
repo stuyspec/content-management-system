@@ -7,7 +7,7 @@ import ContributorsInput from "./ArticleInputs/ContributorsInput";
 import injectSheet from "react-jss";
 import { connect } from "react-redux";
 import Paper from "material-ui/Paper";
-import { saveArticleData, createArticle } from "./../actions";
+import { saveArticleData, submitArticleForm } from "./../actions";
 import RaisedButton from "material-ui/RaisedButton";
 
 const styles = {
@@ -109,8 +109,8 @@ export default connect(
     section: state.forms.section,
   }),
   dispatch => ({
-    onSubmit: article => {
-      dispatch(createArticle(article));
+    onSubmit: formData => {
+      dispatch(submitArticleForm(formData));
     },
     saveArticleData: (title, content, section) => {
       dispatch(saveArticleData(title, content, section));

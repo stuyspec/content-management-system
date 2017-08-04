@@ -27,6 +27,28 @@ export const saveArticleData = (title, content, section) => ({
   payload: { title, content, section }
 });
 
+export const submitArticleForm = ({
+  title,
+  content,
+  section,
+  contributors }) => dispatch => {
+  dispatch(createArticle({title, content, section}))
+  .then(response => {
+      return dispatch(createAuthorships(contributors, response.data.id))
+    }
+  )
+  .then(response => {
+    // Not very proud of this. Checking action type is a little messy
+    // TODO: Change to something that fits better with promises
+    if (response.type !== t.CREATE_AUTHORSHIPS_FAILED) {
+      dispatch(push('/'));
+      dispatch({
+        type: t.CLEAR_ARTICLE_FORM_DATA
+      });
+    }
+  })
+
+}
 export const createAuthorships = (contributors, articleId) => dispatch => {
   dispatch({
     type: t.CREATE_AUTHORSHIPS_REQUESTED,
@@ -35,7 +57,7 @@ export const createAuthorships = (contributors, articleId) => dispatch => {
       articleId
     }
   })
-  axios.all(
+  return axios.all(
     contributors.map(
       contributor =>
         axios.post(`${STUY_SPEC_API_URL}/authorships`, {
@@ -60,25 +82,20 @@ export const createAuthorships = (contributors, articleId) => dispatch => {
 
 export const createArticle = ({ title,
                                 content,
-                                section,
-                                contributors }) => dispatch => {
+                                section }) => dispatch => {
   // TODO: Create loading anims
   dispatch({
     type: t.CREATE_ARTICLE_REQUESTED
   });
   const article = { title, content, section }
-  axios
+  return axios
     .post(`${STUY_SPEC_API_URL}/articles`, article)
     .then(response => {
-      dispatch(createAuthorships(contributors, response.data.id));
       dispatch({
         type: t.CREATE_ARTICLE_SUCCEEDED,
         payload: article
       })
-      dispatch(push('/'));
-      dispatch({
-        type: t.CLEAR_ARTICLE_FORM_DATA
-      });
+      return response
     })
     // TODO: Create error messages for requests
     .catch(error => {
