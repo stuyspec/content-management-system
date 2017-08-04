@@ -3,7 +3,7 @@
  */
 import { createSelector } from 'reselect'
 
-export const usersSelector = state => state.users.list;
+export const usersSelector = state => state.users.articles;
 export const currentUserIdSelector = state => state.users.currentUser;
 export const currentUserSelector = createSelector(
   usersSelector,

@@ -29,7 +29,7 @@ const UsersList = ({ users, classes }) => (
 )
 
 const mapStateToProps = state => ({
-  users: state.users.list
+  users: state.users.articles
 })
 export default connect(
   mapStateToProps,

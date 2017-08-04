@@ -3,7 +3,7 @@
  */
 import { createSelector } from 'reselect'
 
-export const sectionsSelector = state => state.sections.list
+export const sectionsSelector = state => state.sections.articles
 
 export const topLevelSectionsSelector = createSelector(
   sectionsSelector,

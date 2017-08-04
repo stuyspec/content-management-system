@@ -1,5 +1,5 @@
 import * as t from './actionTypes'
-import { STUY_SPEC_API_URL } from '../../constants'
+import { STUY_SPEC_API_URL, AXIOS_CONFIG } from '../../constants'
 import axios from 'axios'
 
 export const fetchArticles = () => (
@@ -8,7 +8,8 @@ export const fetchArticles = () => (
       type: t.FETCH_ARTICLES_REQUESTED
     })
     axios.get(
-      `${STUY_SPEC_API_URL}/articles`
+      `${STUY_SPEC_API_URL}/articles`,
+      AXIOS_CONFIG
     )
     .then(response => {
       dispatch({
@@ -24,12 +25,60 @@ export const fetchArticles = () => (
     })
   }
 )
+
+export const fetchAuthorships = () => (
+  dispatch => {
+    dispatch({
+      type: t.FETCH_AUTHORSHIPS_REQUESTED
+    })
+    axios.get(
+      `${STUY_SPEC_API_URL}/authorships`,
+      AXIOS_CONFIG
+    )
+    .then(response => {
+      dispatch({
+        type: t.FETCH_AUTHORSHIPS_SUCCEEDED,
+        payload: response.data
+      })
+    })
+    .catch(error => {
+      dispatch({
+        type: t.FETCH_AUTHORSHIPS_FAILED,
+        payload: error
+      })
+    })
+  }
+)
+
 export const saveSelectedArticles = selectedArticles => ({
   type: t.SAVE_SELECTED_ARTICLES,
   payload: selectedArticles
 })
 
-export const deleteSelectedArticles = articleIds => ({
-  type: t.DELETE_SELECTED_ARTICLES,
-  payload: articleIds
-})
+
+export const deleteArticles = articleSlugs => (
+  dispatch => {
+    dispatch({
+      type: t.DELETE_ARTICLES_REQUESTED
+    })
+    axios
+    .all(
+
+      articleSlugs.map(articleSlug =>
+        axios.delete(
+          `${STUY_SPEC_API_URL}/articles/${articleSlug}`
+        )
+      )
+    )
+    .then(response => dispatch({
+      type: t.DELETE_ARTICLES_SUCCEEDED,
+      payload: articleSlugs
+      })
+    )
+    .catch(error => dispatch({
+      type: t.DELETE_ARTICLES_FAILED,
+      payload: error
+      })
+    )
+  }
+)

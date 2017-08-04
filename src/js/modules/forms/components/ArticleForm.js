@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import Paper from "material-ui/Paper";
 import { saveArticleData, createArticle } from "./../actions";
 import RaisedButton from "material-ui/RaisedButton";
-import { randomArticleSelector } from "../../articles/selectors";
 
 const styles = {
   formContainer: {
@@ -28,12 +27,11 @@ const styles = {
 class ArticleForm extends Component {
   constructor(props) {
     super(props);
-    const { title, content, section, randomArticle } = this.props;
-    const theSection = section || randomArticle.section
+    const { title, content, section } = this.props;
     this.state = {
       title,
       content,
-      section: theSection
+      section
     };
   }
 
@@ -61,20 +59,23 @@ class ArticleForm extends Component {
   };
 
   render() {
-    const { classes, contributors, randomArticle } = this.props;
+    const { classes, contributors } = this.props;
     const { title, section, content } = this.state;
     return (
-      <div className={classes.formContainer}>
-        <h2> Article Editor </h2>
-        <Paper className={classes.form} zDepth={2}>
-          <form onSubmit={this.handleSubmit}>
-            <TitleInput
-              title={title}
-              hintText={randomArticle.title.substring(0, 24) + "..."}
-              handleTitleChange={this.handleTitleChange}
-            />
-            {contributors.length > 0 && <ContributorsList />}
-            <ContributorsInput />
+    <div className={classes.formContainer}>
+      <Paper
+        className={classes.form}
+        zDepth={2}
+      >
+        <h2> Article Form </h2>
+        <form onSubmit={this.handleSubmit}>
+        <TitleInput
+          title={title}
+          hintText={"Enter a title"}
+          handleTitleChange={this.handleTitleChange}
+        />
+        { contributors.length > 0 && <ContributorsList /> }
+        <ContributorsInput />
 
             <SectionInput
               section={section}
@@ -106,7 +107,6 @@ export default connect(
     title: state.forms.title,
     content: state.forms.content,
     section: state.forms.section,
-    randomArticle: randomArticleSelector(state)
   }),
   dispatch => ({
     onSubmit: (title, content, section) => {

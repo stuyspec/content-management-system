@@ -1,7 +1,8 @@
 import {
-  DELETE_SELECTED_ARTICLES,
+  DELETE_ARTICLES_SUCCEEDED,
   SAVE_SELECTED_ARTICLES,
-  FETCH_ARTICLES_SUCCEEDED
+  FETCH_ARTICLES_SUCCEEDED,
+  FETCH_AUTHORSHIPS_SUCCEEDED
 } from './actionTypes'
 
 import {
@@ -28,22 +29,21 @@ const reducer = (state={...initialState}, action)=>
   switch(action.type)
   {
     case CREATE_ARTICLE_SUCCEEDED:
-      return { ...state, list: [...state.list, action.payload]}
-    case DELETE_SELECTED_ARTICLES:
-      let articles = [...state.list];
+      return { ...state, articles: [...state.articles, action.payload]}
+    case DELETE_ARTICLES_SUCCEEDED:
+      const articles = [...state.articles];
       const selectedArticles = action.payload
-      selectedArticles.map(articleId => {
-        const idIndex = articles.indexOf(
-          articles.find(article => article.id === articleId)
-        )
-        return articles.splice(idIndex, 1)
-      })
-      return { ...state, list: articles, selected: []}
+      const newArticles = articles.filter(
+        article => !selectedArticles.includes(article.slug)
+      )
+      return { ...state, articles: newArticles, selected: []}
 
     case SAVE_SELECTED_ARTICLES:
       return { ...state, selected: action.payload }
     case FETCH_ARTICLES_SUCCEEDED:
-      return { ...state, list: action.payload }
+      return { ...state, articles: action.payload }
+    case FETCH_AUTHORSHIPS_SUCCEEDED:
+      return { ...state, authorships: action.payload }
     default:
         break;
     }

@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
 import { articlesPreviewSelector, contributorsByArticle } from '../selectors'
-import { saveSelectedArticles, deleteSelectedArticles } from '../actions'
+import { saveSelectedArticles, deleteArticles } from '../actions'
 
 const styles = {
   articlesTable: {
@@ -37,23 +37,35 @@ class ArticlesTable extends Component {
     this.props.saveSelectedArticles(this.state.selected);
   }
 
-  isSelected = id => {
+  isSelected = slug => {
     const { selectedArticles } = this.state;
-    return selectedArticles.indexOf(id) !== -1
+    return selectedArticles.indexOf(slug) !== -1
   }
 
-  handleRowSelection = rowSelected => {
-    this.setState({selected: rowSelected})
+
+  handleRowSelection = rowsSelected => {
+    const { articles } = this.props;
+    if (rowsSelected === 'none') {
+      this.setState({selectedArticles: []})
+    }
+    else if (rowsSelected === 'all') {
+      const articleSlugs = articles.map(article => article.slug)
+      this.setState({
+        selectedArticles: articleSlugs
+      })
+    }
+    else {
+      const selectedArticles = rowsSelected.map(row => articles[row].slug)
+      this.setState({ selectedArticles })
+    }
   }
 
   handleRowDeletion = () => {
     const { selectedArticles } = this.state;
-    const { articles } = this.props;
-    const selectedArticleIds = selectedArticles.map(articleIndex =>
-      articles[articleIndex].id
-    )
-    this.props.deleteSelectedArticles(selectedArticleIds)
-    this.setState({ selected: []})
+    if (selectedArticles) {
+      this.props.deleteSelectedArticles(selectedArticles)
+      this.setState({selectedArticles: []})
+    }
   }
 
   render() {
@@ -64,7 +76,6 @@ class ArticlesTable extends Component {
       "Delete Articles" : "Delete Article"
     const editButtonLabel = selectedArticles.length > 1 ?
       "Edit Articles" : "Edit Article"
-
     return (
       <div className={classes.articlesTable}>
         <h2> Articles Table </h2>
@@ -89,13 +100,12 @@ class ArticlesTable extends Component {
             { articles.map(article =>
               <TableRow
                 key={article.id}
-                selected={this.isSelected(article.id)}
+                selected={this.isSelected(article.slug)}
               >
                 <TableRowColumn> {article.title} </TableRowColumn>
                 <TableRowColumn>
                   {
-                    contributors[article.id]
-                    .map(
+                    contributors[article.id].map(
                       contributor =>
                         <UserChip
                           key={contributor.id}
@@ -127,9 +137,10 @@ const mapStateToProps = state => ({
   selected: state.articles.selected,
   contributors: contributorsByArticle(state)
 })
+
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>
-    dispatch(deleteSelectedArticles(selectedArticleIds)),
+    dispatch(deleteArticles(selectedArticleIds)),
   saveSelectedArticles: selectedArticles =>
     dispatch(saveSelectedArticles(selectedArticles))
 })
