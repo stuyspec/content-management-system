@@ -14,7 +14,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
-import { articlesPreviewSelector } from '../selectors'
+import { articlesPreviewSelector, contributorsByArticle } from '../selectors'
 import { saveSelectedArticles, deleteSelectedArticles } from '../actions'
 
 const styles = {
@@ -57,7 +57,7 @@ class ArticlesTable extends Component {
   }
 
   render() {
-    const { articles, classes, users } = this.props;
+    const { articles, classes, contributors } = this.props;
     const { selectedArticles } = this.state;
 
     const deleteButtonLabel = selectedArticles.length > 1 ?
@@ -86,23 +86,21 @@ class ArticlesTable extends Component {
             </TableRow>
           </TableHeader>
           <TableBody deselectOnClickaway={false}>
-            { articles.map((article, index) =>
+            { articles.map(article =>
               <TableRow
                 key={article.id}
-                selected={this.isSelected(index)}
+                selected={this.isSelected(article.id)}
               >
                 <TableRowColumn> {article.title} </TableRowColumn>
                 <TableRowColumn>
-                  { article.contributors.map(
-                    contributor =>
-                      <UserChip
-                        key={contributor}
-                        user={
-                          users.find(
-                            user => user.id === contributor
-                          )
-                        }
-                      />
+                  {
+                    contributors[article.id]
+                    .map(
+                      contributor =>
+                        <UserChip
+                          key={contributor.id}
+                          user={contributor}
+                        />
                   )
                   }
                 </TableRowColumn>
@@ -124,9 +122,10 @@ class ArticlesTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  list: articlesPreviewSelector(state),
+  articles: articlesPreviewSelector(state),
   users: state.users.list,
-  selected: state.list.selected
+  selected: state.articles.selected,
+  contributors: contributorsByArticle(state)
 })
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>

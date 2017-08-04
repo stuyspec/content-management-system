@@ -102,7 +102,7 @@ class ArticleForm extends Component {
 
 export default connect(
   state => ({
-    contributors: state.forms.contributors,
+    contributors: state.forms.article.contributors,
     title: state.forms.title,
     content: state.forms.content,
     section: state.forms.section,

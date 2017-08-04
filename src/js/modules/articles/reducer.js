@@ -11,7 +11,16 @@ import {
 const initialState = {
   selected: [],
   list: [],
-  authorship: []
+  authorships: [
+    {
+      articleId: 1,
+      userId: 2
+    },
+    {
+      articleId: 12,
+      userId: 0
+    }
+  ]
 };
 
 const reducer = (state={...initialState}, action)=>

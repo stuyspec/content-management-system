@@ -26,14 +26,42 @@ export const saveArticleData = (title, content, section) => ({
   payload: { title, content, section }
 });
 
-export const createArticle = article => dispatch => {
+export const createAuthorships = (contributors, article_id) => dispatch => {
+  dispatch({
+    type: t.CREATE_AUTHORSHIPS_REQUESTED
+  })
+  axios.all(
+    contributors.map(
+      contributor =>
+        axios.post(`${STUY_SPEC_API_URL}/authorships`, {
+          article_id,
+          user_id: contributor
+        })
+    )
+  )
+  .then(response => dispatch({
+      type: t.CREATE_AUTHORSHIPS_SUCCEEDED
+    })
+  )
+  .catch(error => dispatch({
+    type: t.CREATE_AUTHORSHIPS_FAILED,
+    payload: error
+  }))
+}
+
+export const createArticle = ({ title,
+                                content,
+                                section,
+                                contributors }) => dispatch => {
   // TODO: Create loading anims
   dispatch({
     type: t.CREATE_ARTICLE_REQUESTED
-  })
+  });
+  const article = { title, content, section }
   axios
     .post(`${STUY_SPEC_API_URL}/articles`, article)
     .then(response => {
+      dispatch(createAuthorships(contributors, response.data.id));
       dispatch({
         type: t.CREATE_ARTICLE_SUCCEEDED,
         payload: article
