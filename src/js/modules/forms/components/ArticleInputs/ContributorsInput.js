@@ -45,10 +45,11 @@ class ContributorsInput extends Component {
   };
 
   render() {
-    const { availableUsers, randomUser } = this.props
+    const { availableUsers, randomUser, errorText } = this.props
     return (
       <div>
         <AutoComplete
+          errorText={errorText}
           hintText={randomUser.name}
           floatingLabelText="Contributors"
           searchText={this.state.searchText}

@@ -7,8 +7,13 @@ import ContributorsInput from "./ArticleInputs/ContributorsInput";
 import injectSheet from "react-jss";
 import { connect } from "react-redux";
 import Paper from "material-ui/Paper";
-import { saveArticleData, submitArticleForm } from "./../actions";
+import {
+  saveArticleData,
+  throwArticleError,
+  submitArticleForm,
+  clearArticleError } from "./../actions";
 import RaisedButton from "material-ui/RaisedButton";
+import FormErrorDialog from './FormErrorDialog'
 
 const styles = {
   formContainer: {
@@ -24,6 +29,7 @@ const styles = {
     paddingTop: "5%"
   }
 };
+
 class ArticleForm extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +37,9 @@ class ArticleForm extends Component {
     this.state = {
       title,
       content,
-      section
+      section,
+      titleError: "",
+      contributorsError: ""
     };
   }
 
@@ -52,15 +60,45 @@ class ArticleForm extends Component {
     this.setState({ section: value });
   };
 
+  handleDialogCancel = () => {
+    this.props.clearArticleError();
+  }
+
   handleSubmit = event => {
     const { title, content, section } = this.state;
     const { contributors, onSubmit } = this.props;
-    onSubmit({title, content, section, contributors});
+    const formData = { title, content, section, contributors };
+    if (this.validateForm(formData)) {
+      onSubmit(formData);
+    }
   };
 
+  validateForm = ({ title, content, section, contributors }) => {
+    let validForm = true;
+    if (!title.length > 0) {
+      this.setState({titleError: "Title cannot be blank"})
+      validForm = false
+    }
+    if (!content.length > 0) {
+      this.props.throwArticleError("Content cannot be blank");
+      validForm = false
+    }
+    if (!contributors.length > 0) {
+      this.setState({contributorsError: "Contributors cannot be blank"})
+      validForm = false
+    }
+    return validForm
+  }
+
   render() {
-    const { classes, contributors } = this.props;
-    const { title, section, content } = this.state;
+    const { classes, contributors, submitError } = this.props;
+    const {
+      title,
+      section,
+      content,
+      titleError,
+      contributorsError } = this.state;
+    const isErrorDialogOpen = submitError.length > 0;
     return (
     <div className={classes.formContainer}>
       <Paper
@@ -68,14 +106,23 @@ class ArticleForm extends Component {
         zDepth={2}
       >
         <h2> Article Form </h2>
+        <FormErrorDialog
+          isErrorDialogOpen={isErrorDialogOpen}
+          error={submitError}
+          onRetry={this.handleSubmit}
+          onCancel={this.handleDialogCancel}
+        />
         <form onSubmit={this.handleSubmit}>
         <TitleInput
+          errorText={titleError}
           title={title}
           hintText={"Enter a title"}
           handleTitleChange={this.handleTitleChange}
         />
         { contributors.length > 0 && <ContributorsList /> }
-        <ContributorsInput />
+        <ContributorsInput
+          errorText={contributorsError}
+        />
 
             <SectionInput
               section={section}
@@ -104,9 +151,10 @@ class ArticleForm extends Component {
 export default connect(
   state => ({
     contributors: state.forms.article.contributors,
-    title: state.forms.title,
-    content: state.forms.content,
-    section: state.forms.section,
+    title: state.forms.article.title,
+    content: state.forms.article.content,
+    section: state.forms.article.section,
+    submitError: state.forms.article.error,
   }),
   dispatch => ({
     onSubmit: formData => {
@@ -114,6 +162,12 @@ export default connect(
     },
     saveArticleData: (title, content, section) => {
       dispatch(saveArticleData(title, content, section));
+    },
+    clearArticleError: () => {
+      dispatch(clearArticleError());
+    },
+    throwArticleError: error => {
+      dispatch(throwArticleError(error))
     }
   })
 )(injectSheet(styles)(ArticleForm));

@@ -27,12 +27,12 @@ var getViewportHeight = function()
 
 const initialState =
   {
-    language        : 'en',
-    viewportWidth   : getViewportWidth(),
-    viewportHeight  : getViewportHeight(),
-    appMenuOpen     : false,  // for mobile views
-    isNavDrawerOpen : false,
-    isUserDrawerOpen: false
+    language          : 'en',
+    viewportWidth     : getViewportWidth(),
+    viewportHeight    : getViewportHeight(),
+    appMenuOpen       : false,  // for mobile views
+    isNavDrawerOpen   : false,
+    isUserDrawerOpen  : false,
   };
 
 const reducer = (state={...initialState}, action)=>

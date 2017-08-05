@@ -2,14 +2,21 @@ import {
   ADD_CONTRIBUTOR,
   REMOVE_CONTRIBUTOR,
   SAVE_ARTICLE_FORM_DATA,
-  CLEAR_ARTICLE_FORM_DATA
+  CLEAR_ARTICLE_FORM_DATA,
+  CLEAR_ARTICLE_FORM_ERROR,
+  THROW_ARTICLE_FORM_ERROR,
+  CREATE_AUTHORSHIPS_FAILED
 } from './actionTypes'
 
   const initialState = {
     // Stores just the ids of the users. Will use selectors
     // to get the actual list of names
     article: {
+      title: "",
+      section: "",
+      content: "",
       contributors: [],
+      error: ""
     }
   };
 
@@ -58,6 +65,25 @@ import {
               contributors: []
             }
           }
+        case CLEAR_ARTICLE_FORM_ERROR:
+          return {
+            ...state,
+            article: {
+              ...state.article,
+              error: ""
+            }
+          }
+        case THROW_ARTICLE_FORM_ERROR:
+          return {
+            ...state,
+            article: {
+              ...state.article,
+              error: action.payload
+            }
+          }
+        case CREATE_AUTHORSHIPS_FAILED:
+          const error = "Creating contributors failed. Please try again"
+          return { ...state, article: { ...state.article, error }}
         default:
               break;
       }
