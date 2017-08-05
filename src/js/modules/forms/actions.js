@@ -1,6 +1,7 @@
 import * as t from "./actionTypes";
 import { usersSelector } from "./../users/selectors";
-import { fetchAuthorships } from "../articles/actions";
+import { fetchAuthorships } from "../authorships/actions";
+import { deleteArticles } from "../articles/actions"
 // TODO: Change endpoint storage to outside code
 import { STUY_SPEC_API_URL } from "../../constants";
 import axios from "axios";
@@ -55,6 +56,10 @@ export const submitArticleForm = ({
           type: t.CLEAR_ARTICLE_FORM_DATA
         });
       }
+      else {
+        const articleId = response.payload.articleId
+        dispatch(deleteArticles([articleId]))
+      }
     });
 };
 
@@ -85,7 +90,10 @@ export const createAuthorships = (contributors, articleId) => dispatch => {
     .catch(error =>
       dispatch({
         type: t.CREATE_AUTHORSHIPS_FAILED,
-        payload: error
+        payload: {
+          error,
+          articleId
+        }
       })
     );
 };
