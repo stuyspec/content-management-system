@@ -1,0 +1,3 @@
+[submodule "src/js/modules/core"]
+	path = src/js/modules/core
+	url = git@github.com:stuyspec/core.git
