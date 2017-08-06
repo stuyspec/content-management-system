@@ -43,7 +43,7 @@ const styles = {
   fontWeight: "bold",
 }
 }
-
+     
 const Navbar = ({ classes,
                   openNavDrawer,
                   openUserDrawer,
