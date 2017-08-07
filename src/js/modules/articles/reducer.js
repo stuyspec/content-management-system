@@ -12,6 +12,7 @@ import {
 const initialState = {
   selected: [],
   list: [],
+
 };
 
 const reducer = (state={...initialState}, action)=>

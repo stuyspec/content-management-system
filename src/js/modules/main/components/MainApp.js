@@ -9,6 +9,7 @@ import { fetchSections } from '../../sections/actions'
 import { fetchArticles } from '../../articles/actions'
 import { fetchUsers } from '../../users/actions'
 import { fetchAuthorships } from '../../authorships/actions'
+import { withRouter } from 'react-router-dom'
 
 const styles = {
   appWrapper :
@@ -24,27 +25,12 @@ const styles = {
       margin          : '0px auto',
       display         : 'flex',
       flexDirection   : 'column',
-      flex            : '1 0 auto'
-    },
-  contentWrapper :
-    {
-      maxWidth : '720px',
-      minWidth : '360px',
-      margin   : '0 auto'
-    },
-  mainContainer :
-    {
-      display        : 'flex',
-      alignItems     : 'center',
-      justifyContent : 'center',
-      flex           : '1 0 auto',
-      flexDirection  : 'column'
+      flex            : '2 0 auto'
     },
   mainContent :
     {
-      flexDirection : 'column',
-      display       : 'flex',
-      flex          : '1 0 auto'
+      display: "block",
+      padding: "3%"
     },
 };
 
@@ -82,6 +68,9 @@ class MainApp extends PureComponent
           <Navbar />
           <NavDrawer />
           <UserDrawer />
+          <div className={classes.mainContent}>
+            {this.props.children}
+          </div>
         </div>
       </div>
     );
@@ -89,12 +78,7 @@ class MainApp extends PureComponent
 }
 
 const VisibleMainApp = connect(
-  (state, ownProps)=>
-    ({
-      language       : state.main.language,
-      viewportWidth  : state.main.viewportWidth,
-      viewportHeight : state.main.viewportHeight
-    }),
+  null,
   (dispatch)=>
     ({
       onResizeWindow: () => {
@@ -115,4 +99,4 @@ const VisibleMainApp = connect(
     })
 )(injectSheet(styles)(MainApp));
 
-export default VisibleMainApp
+export default withRouter(VisibleMainApp)

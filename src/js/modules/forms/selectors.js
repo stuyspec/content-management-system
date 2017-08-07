@@ -4,7 +4,8 @@
 import { createSelector } from 'reselect'
 import { usersSelector } from '../users/selectors'
 
-const contributorsSelector = state => state.forms.article.contributors;
+const contributorsSelector = state =>
+  state.forms.articles.create.contributors;
 export const contributorsUsersSelector = createSelector(
   usersSelector,
   contributorsSelector,

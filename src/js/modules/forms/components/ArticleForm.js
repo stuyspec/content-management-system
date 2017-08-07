@@ -5,25 +5,10 @@ import SectionInput from "./ArticleInputs/SectionInput";
 import ContributorsList from "./ContributorsList";
 import ContributorsInput from "./ArticleInputs/ContributorsInput";
 import injectSheet from "react-jss";
-import { connect } from "react-redux";
-import Paper from "material-ui/Paper";
-import {
-  saveArticleData,
-  throwArticleError,
-  submitArticleForm,
-  clearArticleError } from "./../actions";
 import RaisedButton from "material-ui/RaisedButton";
 import FormErrorDialog from './FormErrorDialog'
 
 const styles = {
-  formContainer: {
-    padding: "5%"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    padding: "5%"
-  },
   button: {
     maxWidth: "100px",
     paddingTop: "5%"
@@ -33,19 +18,14 @@ const styles = {
 class ArticleForm extends Component {
   constructor(props) {
     super(props);
-    const { title, content, section } = this.props;
+    const { title, content } = this.props;
     this.state = {
       title,
       content,
-      section,
+      section: 1,
       titleError: "",
       contributorsError: ""
     };
-  }
-
-  componentWillUnmount() {
-    const { title, content, section } = this.state;
-    this.props.saveArticleData(title, content, section);
   }
 
   handleContentChange = content => {
@@ -91,24 +71,26 @@ class ArticleForm extends Component {
   }
 
   render() {
-    const { classes, contributors, submitError } = this.props;
+    const {
+      classes,
+      contributors,
+      errors,
+      availableUsers,
+      randomUser,
+      addContributor,
+      removeContributor } = this.props;
     const {
       title,
       section,
       content,
       titleError,
       contributorsError } = this.state;
-    const isErrorDialogOpen = submitError.length > 0;
+    const isErrorDialogOpen = errors.length > 0;
     return (
-    <div className={classes.formContainer}>
-      <Paper
-        className={classes.form}
-        zDepth={2}
-      >
-        <h2> Article Form </h2>
+    <div>
         <FormErrorDialog
           isErrorDialogOpen={isErrorDialogOpen}
-          error={submitError}
+          error={errors}
           onRetry={this.handleSubmit}
           onCancel={this.handleDialogCancel}
         />
@@ -119,15 +101,26 @@ class ArticleForm extends Component {
           hintText={"Enter a title"}
           handleTitleChange={this.handleTitleChange}
         />
-        { contributors.length > 0 && <ContributorsList /> }
+        {
+          contributors.length > 0 &&
+          <ContributorsList
+            contributors={contributors}
+            removeContributor={removeContributor}
+          />
+        }
         <ContributorsInput
           errorText={contributorsError}
+          availableUsers={availableUsers}
+          contributors={contributors}
+          randomUser={randomUser}
+          addContributor={addContributor}
         />
 
             <SectionInput
               section={section}
               handleSectionChange={this.handleSectionChange}
             />
+
 
             <ContentInput
               content={content}
@@ -142,32 +135,9 @@ class ArticleForm extends Component {
               />
             </div>
           </form>
-        </Paper>
       </div>
     );
   }
 }
 
-export default connect(
-  state => ({
-    contributors: state.forms.article.contributors,
-    title: state.forms.article.title,
-    content: state.forms.article.content,
-    section: state.forms.article.section,
-    submitError: state.forms.article.error,
-  }),
-  dispatch => ({
-    onSubmit: formData => {
-      dispatch(submitArticleForm(formData));
-    },
-    saveArticleData: (title, content, section) => {
-      dispatch(saveArticleData(title, content, section));
-    },
-    clearArticleError: () => {
-      dispatch(clearArticleError());
-    },
-    throwArticleError: error => {
-      dispatch(throwArticleError(error))
-    }
-  })
-)(injectSheet(styles)(ArticleForm));
+export default injectSheet(styles)(ArticleForm);

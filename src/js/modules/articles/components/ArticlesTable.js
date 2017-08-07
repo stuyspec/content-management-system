@@ -20,7 +20,7 @@ import { setSelectedArticles, deleteArticles } from '../actions'
 
 const styles = {
   articlesTable: {
-    maxWidth: "1200px",
+    maxWidth: "800px",
     margin: "5%"
   }
 }

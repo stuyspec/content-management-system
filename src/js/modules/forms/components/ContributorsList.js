@@ -25,11 +25,11 @@ const ContributorsList = ({ contributors,
     className={classes.contributorsList}
     zDepth={1}>
     <List>
-      { contributors.map(contributor =>
+      {contributors.map(contributor =>
         <ListItem
           key={contributor.id}
           primaryText={contributor.name}
-          leftAvatar={<Avatar src={contributor.thumbnail} />}
+          leftAvatar={<Avatar src={contributor.thumbnail}/>}
           rightIconButton={
             <IconButton
               onClick={(event) => {
@@ -37,27 +37,14 @@ const ContributorsList = ({ contributors,
                 removeContributor(contributor.id)
               }}
             >
-              <ContentClear />
+              <ContentClear/>
             </IconButton>
           }
-          />
+        />
       )}
     </List>
   </Paper>
 );
 
-const mapStateToProps = state => ({
-  contributors: contributorsUsersSelector(state)
-});
 
-const mapDispatchToProps = dispatch => ({
-  removeContributor: id => {
-    dispatch(removeContributor(id));
-  }
-});
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectSheet(styles)(ContributorsList));
+export default injectSheet(styles)(ContributorsList);

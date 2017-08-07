@@ -7,26 +7,37 @@ import { STUY_SPEC_API_URL } from "../../constants";
 import axios from "axios";
 import { push } from "connected-react-router";
 
-export const addContributor = contributorName => (dispatch, getState) => {
-  const users = usersSelector(getState());
-  const contributor = users.find(user => user.name === contributorName);
-  const contributorId = contributor.id;
+export const addContributorToCreateArticleForm = contributorName =>
+  (dispatch, getState) => {
+    const users = usersSelector(getState());
+    const contributor = users.find(user => user.name === contributorName);
+    const contributorId = contributor.id;
 
-  dispatch({
-    type: t.ADD_CONTRIBUTOR,
-    payload: { contributorId }
-  });
-};
+    dispatch({
+      type: t.ADD_CONTRIBUTOR_TO_CREATE_ARTICLE_FORM,
+      payload: { contributorId }
+    });
+  };
 
-export const removeContributor = contributorId => ({
-  type: t.REMOVE_CONTRIBUTOR,
+export const removeContributorFromCreateArticleForm = contributorId => ({
+  type: t.REMOVE_CONTRIBUTOR_FROM_CREATE_ARTICLE_FORM,
   payload: { contributorId }
 });
 
+export const pushArticleOnEditStack =
+  (title, content, section, articleId) => ({
+    type: t.PUSH_ARTICLE_ON_EDIT_STACK,
+    payload: { title, content, section, articleId }
+});
+
+export const popArticleOffEditStack = () => ({
+  type: t.POP_ARTICLE_OFF_EDIT_STACK
+})
+
 export const saveArticleData = (title, content, section) => ({
   type: t.SAVE_ARTICLE_FORM_DATA,
-  payload: { title, content, section }
-});
+  payload: { title, content, section}
+})
 
 export const throwArticleError = error => ({
   type: t.THROW_ARTICLE_FORM_ERROR,
@@ -52,15 +63,43 @@ export const submitArticleForm = ({
       // TODO: Change to something that fits better with promises
       if (response.type !== t.CREATE_AUTHORSHIPS_FAILED) {
         dispatch(push("/"));
+        // Gotta get rid of the draft that autosaves
         dispatch({
           type: t.CLEAR_ARTICLE_FORM_DATA
         });
       }
       else {
+        dispatch(fetchAuthorships());
         const articleId = response.payload.articleId
         dispatch(deleteArticles([articleId]))
       }
     });
+};
+
+export const createArticle = ({ title, content, section }) => dispatch => {
+  // TODO: Create loading anims
+  dispatch({
+    type: t.CREATE_ARTICLE_REQUESTED
+  });
+  const article = { title, content, section };
+  return (
+    axios
+    .post(`${STUY_SPEC_API_URL}/articles`, article)
+    .then(response => {
+      dispatch({
+        type: t.CREATE_ARTICLE_SUCCEEDED,
+        payload: article
+      });
+      return response;
+    })
+    // TODO: Create error messages for requests
+    .catch(error => {
+      dispatch({
+        type: t.CREATE_ARTICLE_FAILED,
+        payload: error
+      });
+    })
+  );
 };
 
 export const createAuthorships = (contributors, articleId) => dispatch => {
@@ -76,16 +115,15 @@ export const createAuthorships = (contributors, articleId) => dispatch => {
       contributors.map(contributor =>
         axios.post(`${STUY_SPEC_API_URL}/authorships`, {
           article_id: articleId,
-          user_id: contributor
+          user_id: contributor.id
         })
       )
     )
     .then(response => {
-      dispatch({
+      return dispatch({
         type: t.CREATE_AUTHORSHIPS_SUCCEEDED,
         payload: response
       });
-      dispatch(fetchAuthorships());
     })
     .catch(error =>
       dispatch({
@@ -96,32 +134,6 @@ export const createAuthorships = (contributors, articleId) => dispatch => {
         }
       })
     );
-};
-
-export const createArticle = ({ title, content, section }) => dispatch => {
-  // TODO: Create loading anims
-  dispatch({
-    type: t.CREATE_ARTICLE_REQUESTED
-  });
-  const article = { title, content, section };
-  return (
-    axios
-      .post(`${STUY_SPEC_API_URL}/articles`, article)
-      .then(response => {
-        dispatch({
-          type: t.CREATE_ARTICLE_SUCCEEDED,
-          payload: article
-        });
-        return response;
-      })
-      // TODO: Create error messages for requests
-      .catch(error => {
-        dispatch({
-          type: t.CREATE_ARTICLE_FAILED,
-          payload: error
-        });
-      })
-  );
 };
 
 export const createSection = section => dispatch => {

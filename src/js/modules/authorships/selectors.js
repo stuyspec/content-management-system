@@ -5,7 +5,7 @@ import { createSelector } from 'reselect'
 import { articlesSelector } from '../articles/selectors'
 import { usersSelector } from '../users/selectors'
 
-export const authorshipsSelector = state => state.articles.authorships
+export const authorshipsSelector = state => state.authorships.list
 
 // Returns object with the format articleId:[users]
 export const contributorsByArticle = createSelector(
@@ -14,9 +14,9 @@ export const contributorsByArticle = createSelector(
   usersSelector,
   (authorships, articles, users) => {
     let contributors = {}
-    // For every article...
+    // For every articles...
     articles.map(article => {
-      // Find the authorships corresponding to that article
+      // Find the authorships corresponding to that articles
       const articleAuthorships = authorships.filter(
         authorship => authorship.articleId === article.id
       )
