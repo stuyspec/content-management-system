@@ -1,6 +1,7 @@
 import * as t from './actionTypes'
 import { STUY_SPEC_API_URL, AXIOS_CONFIG } from '../../constants'
 import axios from 'axios'
+import { push } from 'connected-react-router'
 
 export const fetchSections = () => (
   dispatch => {

@@ -55,7 +55,12 @@ class SectionForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { name, description, parentSection } = this.state;
-    this.props.createSection({ name, description, parentId: parentSection});
+    if (parentSection === -1) {
+      this.props.createSection({ name, description });
+    } else {
+      this.props.createSection({ name, description, parentId: parentSection});
+    }
+
   }
 
   render() {
@@ -87,6 +92,7 @@ class SectionForm extends Component {
                 value={parentSection}
                 onChange={this.handleSectionChange}
               >
+                <MenuItem value={-1} primaryText="None" />
                 { topLevelSections.map(section =>
                   <MenuItem value={section.id}  primaryText={section.name} />
                 )}
