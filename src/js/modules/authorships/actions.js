@@ -30,3 +30,37 @@ export const fetchAuthorships = () => (
   }
 )
 
+export const createAuthorships = (contributors, articleId) => dispatch => {
+  dispatch({
+    type: t.CREATE_AUTHORSHIPS_REQUESTED,
+    payload: {
+      contributors,
+      articleId
+    }
+  });
+  return axios
+  .all(
+    contributors.map(contributor =>
+      axios.post(`${STUY_SPEC_API_URL}/authorships`, {
+        article_id: articleId,
+        user_id: contributor.id
+      })
+    )
+  )
+  .then(response => {
+    return dispatch({
+      type: t.CREATE_AUTHORSHIPS_SUCCEEDED,
+      payload: response
+    });
+  })
+  .catch(error =>
+    dispatch({
+      type: t.CREATE_AUTHORSHIPS_FAILED,
+      payload: {
+        error,
+        articleId
+      }
+    })
+  );
+};
+

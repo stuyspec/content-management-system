@@ -5,9 +5,12 @@ import React, { Component } from 'react'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 import injectSheet from 'react-jss'
 import { createSection } from '../actions'
 import { connect } from 'react-redux'
+import { topLevelSectionsSelector } from '../selectors'
 
 const styles = {
   formContainer: {
@@ -16,17 +19,9 @@ const styles = {
   form: {
     display: "flex",
     flexDirection: "column",
-    padding: "5%",
-
   },
-  inputs: {
-    marginLeft: "2%"
-  },
-  titleInput: {
-    marginBottom: "2%"
-  },
-  descriptionInput: {
-    padding: "2%"
+  input: {
+    margin: "10px"
   },
   button: {
     maxWidth: "100px",
@@ -53,33 +48,49 @@ class SectionForm extends Component {
     this.setState({ description: event.target.value })
   }
 
+  handleSectionChange = (event, index, value) => {
+    this.setState({ parentSection: value })
+  }
+
   handleSubmit = event => {
-    event.preventDefault()
-    this.props.createSection(this.state)
+    event.preventDefault();
+    const { name, description, parentSection } = this.state;
+    this.props.createSection({ name, description, parentId: parentSection});
   }
 
   render() {
     const { classes, topLevelSections } = this.props;
     const { name, description, parentSection } = this.state;
     return (
-      <div className={classes.formContainer}>
-        <Paper zDepth={2} className={classes.form}>
-          <h2> Section Form </h2>
-          <form onSubmit={this.handleSubmit}>
-            <div className={classes.titleInput}>
+      <Paper zDepth={2} className={classes.formContainer}>
+        <h2> New Section </h2>
+        <form onSubmit={this.handleSubmit} className={classes.form}>
+          <div>
+            <div className={classes.input}>
               <TextField
                 floatingLabelText="Name"
                 value={name}
                 onChange={this.handleNameChange}
               />
             </div>
-            <div className={classes.descriptionInput}>
+            <div className={classes.input}>
               <TextField
                 multiLine
                 hintText="Description"
                 value={description}
                 onChange={this.handleDescriptionChange}
               />
+            </div>
+            <div className={classes.input}>
+              <SelectField
+                floatingLabelText="Parent Section"
+                value={parentSection}
+                onChange={this.handleSectionChange}
+              >
+                { topLevelSections.map(section =>
+                  <MenuItem value={section.id}  primaryText={section.name} />
+                )}
+              </SelectField>
             </div>
             <div className={classes.button}>
               <RaisedButton
@@ -88,13 +99,16 @@ class SectionForm extends Component {
                 onClick={this.handleSubmit}
               />
             </div>
-          </form>
-        </Paper>
-      </div>
+          </div>
+        </form>
+      </Paper>
     )
   }
 }
 
+const mapStateToProps = state => ({
+  topLevelSections: topLevelSectionsSelector(state)
+})
 const mapDispatchToProps = dispatch => ({
   createSection: section => {
     dispatch(createSection(section))
@@ -102,6 +116,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(injectSheet(styles)(SectionForm));

@@ -1,8 +1,8 @@
 import Provider from "react-redux/lib/components/Provider";
 import React, { Component } from "react";
 import appHistory from "tools/appHistory";
-import CreateArticlePage from "./forms/components/CreateArticlePage"
-import SectionForm from "./forms/components/SectionForm";
+import CreateArticlePage from "./articles/components/CreateArticlePage"
+import SectionForm from "./sections/components/SectionForm";
 import ArticlesTable from "./articles/components/ArticlesTable";
 import UsersList from "./users/components/UsersList";
 import ConnectedRouter from "react-router-redux/ConnectedRouter";

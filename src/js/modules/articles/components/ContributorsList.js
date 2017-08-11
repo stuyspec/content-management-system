@@ -7,10 +7,7 @@ import Paper from 'material-ui/Paper'
 import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import ContentClear from 'material-ui/svg-icons/content/clear'
-import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
-import { contributorsUsersSelector } from '../selectors'
-import { removeContributor } from '../actions'
 
 const styles = {
   contributorsList: {

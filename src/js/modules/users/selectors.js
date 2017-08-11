@@ -17,3 +17,4 @@ export const randomUserSelector = createSelector(
   usersSelector,
   users => users[Math.floor(Math.random() * users.length)]
 )
+

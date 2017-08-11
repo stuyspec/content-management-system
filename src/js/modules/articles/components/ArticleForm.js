@@ -6,7 +6,7 @@ import ContributorsList from "./ContributorsList";
 import ContributorsInput from "./ArticleInputs/ContributorsInput";
 import injectSheet from "react-jss";
 import RaisedButton from "material-ui/RaisedButton";
-import FormErrorDialog from './FormErrorDialog'
+import FormErrorDialog from '../../forms/components/FormErrorDialog'
 
 const styles = {
   button: {
@@ -16,18 +16,16 @@ const styles = {
 };
 
 class ArticleForm extends Component {
+
   constructor(props) {
     super(props);
     const { title, content } = this.props;
     this.state = {
       title,
       content,
-      section: 1,
-      titleError: "",
-      contributorsError: ""
+      section: 2
     };
   }
-
   handleContentChange = content => {
     this.setState({ content: content });
   };
@@ -78,6 +76,7 @@ class ArticleForm extends Component {
       availableUsers,
       randomUser,
       addContributor,
+      sections,
       removeContributor } = this.props;
     const {
       title,
@@ -118,9 +117,9 @@ class ArticleForm extends Component {
 
             <SectionInput
               section={section}
+              sections={sections}
               handleSectionChange={this.handleSectionChange}
             />
-
 
             <ContentInput
               content={content}

@@ -12,7 +12,9 @@ import { closeNavDrawer } from './../actions'
 
 const styles = {
   specLogo: {
+    fontFamily: "Old English Text MT",
     display: "block",
+    fontSize: "5em",
     textAlign: "center",
     marginTop: "10%"
   },
@@ -27,11 +29,9 @@ const NavDrawer = ({ isNavDrawerOpen, closeNavDrawer, classes }) => (
           onRequestChange={closeNavDrawer}
   >
     <List>
-      <div className={classes.specLogo}>
-        <img
-          src="img/spec-logo.png"
-        />
-      </div>
+      <h1 className={classes.specLogo}>
+        S
+      </h1>
       <ListItem
         key={1}
         primaryText="Articles"
