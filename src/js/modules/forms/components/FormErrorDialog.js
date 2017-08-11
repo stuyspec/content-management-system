@@ -7,19 +7,13 @@ import Dialog from 'material-ui/Dialog'
 
 const FormErrorDialog = ({ onRetry,
                            onCancel,
-                           error,
-                           isErrorDialogOpen }) => {
+                           error }) => {
+  const isErrorDialogOpen = error !== ""
   const actions = [
     <FlatButton
-      label="Cancel"
+      label="Okay"
       primary={true}
       onTouchTap={onCancel}
-    />,
-    <FlatButton
-      label="Try Again"
-      primary={true}
-      keyboardFocused={true}
-      onTouchTap={onRetry}
     />,
   ]
 

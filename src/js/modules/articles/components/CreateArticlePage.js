@@ -30,7 +30,7 @@ class CreateArticlePage extends Component {
   render() {
     const {
       contributors,
-      errors,
+      formError,
       addContributor,
       removeContributor,
       availableUsers,
@@ -40,6 +40,8 @@ class CreateArticlePage extends Component {
       classes,
       title,
       content,
+      throwError,
+      clearError
     } = this.props;
     return (
       <Paper
@@ -51,13 +53,15 @@ class CreateArticlePage extends Component {
           contributors={contributors}
           title={title}
           content={content}
-          errors={errors}
+          formError={formError}
           addContributor={addContributor}
           removeContributor={removeContributor}
           availableUsers={availableUsers}
           randomUser={randomUser}
           onSubmit={onSubmit}
           sections={sections}
+          throwError={throwError}
+          clearError={clearError}
         />
       </Paper>
     );
@@ -68,7 +72,7 @@ class CreateArticlePage extends Component {
 const mapStateToProps = state => ({
   title: state.articles.forms.create.currentDraft.title,
   content: state.articles.forms.create.currentDraft.content,
-  errors: state.articles.forms.create.errors,
+  formError: state.articles.forms.create.error,
   availableUsers: createArticle.availableUsersNamesSelector(state),
   contributors: createArticle.contributorsUsersSelector(state),
   randomUser: randomUserSelector(state),
@@ -82,10 +86,10 @@ const mapDispatchToProps = dispatch => ({
   saveArticleData: (title, content, section) => {
     dispatch(createArticleActions.saveArticleData(title, content, section));
   },
-  clearArticleError: () => {
-    dispatch(createArticleActions.clearFormData());
+  clearError: () => {
+    dispatch(createArticleActions.clearError());
   },
-  throwArticleError: error => {
+  throwError: error => {
     dispatch(createArticleActions.throwError(error))
   },
   addContributor: (contributorName) => {

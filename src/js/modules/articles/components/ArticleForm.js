@@ -39,26 +39,31 @@ class ArticleForm extends Component {
   };
 
   handleDialogCancel = () => {
-    this.props.clearArticleError();
+    this.props.clearError();
   }
 
   handleSubmit = event => {
     const { title, content, section } = this.state;
-    const { contributors, onSubmit } = this.props;
-    const formData = { title, content, section, contributors };
+    const { contributors, onSubmit, sections } = this.props;
+    const formData = { title, content, sections, section, contributors };
     if (this.validateForm(formData)) {
       onSubmit(formData);
     }
   };
 
-  validateForm = ({ title, content, section, contributors }) => {
+  validateForm = ({ title, content, sections, section, contributors }) => {
+    // TODO: Make errors a stack, not just a string
     let validForm = true;
-    if (!title.length > 0) {
+    if (title === undefined || !title.length > 0) {
       this.setState({titleError: "Title cannot be blank"})
       validForm = false
     }
-    if (!content.length > 0) {
-      this.props.throwArticleError("Content cannot be blank");
+    if (content === undefined || !content.length > 0) {
+      this.props.throwError("Content cannot be blank");
+      validForm = false
+    }
+    if (!sections.includes(section)) {
+      this.props.throwError("Please choose a valid section")
       validForm = false
     }
     if (!contributors.length > 0) {
@@ -72,7 +77,7 @@ class ArticleForm extends Component {
     const {
       classes,
       contributors,
-      errors,
+      formError,
       availableUsers,
       randomUser,
       addContributor,
@@ -84,12 +89,10 @@ class ArticleForm extends Component {
       content,
       titleError,
       contributorsError } = this.state;
-    const isErrorDialogOpen = errors.length > 0;
     return (
     <div>
         <FormErrorDialog
-          isErrorDialogOpen={isErrorDialogOpen}
-          error={errors}
+          error={formError}
           onRetry={this.handleSubmit}
           onCancel={this.handleDialogCancel}
         />

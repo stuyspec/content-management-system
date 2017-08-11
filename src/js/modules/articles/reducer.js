@@ -16,12 +16,12 @@ const initialState = {
       // This needs to be in the Redux state because otherwise selectors
       // won't be able to find it
       contributors: [],
-
+      error: "",
       currentDraft: {
         title: "",
         content: ""
       },
-      errors: []
+
     },
 
     edit: {
@@ -143,9 +143,12 @@ const reducer = (state={...initialState}, action)=>
     case CREATE_ARTICLE_FORM.THROW_ERROR:
       return {
         ...state,
-        articles: {
-          ...state.articles,
-          error: action.payload
+        forms: {
+          ...state.forms,
+          create: {
+            ...state.forms.create,
+            error: action.payload
+          }
         }
       }
     default:
