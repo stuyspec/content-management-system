@@ -5,23 +5,13 @@ import React, { Component } from 'react'
 import ArticleForm from './ArticleForm'
 import Paper from 'material-ui/Paper'
 import { connect } from 'react-redux'
-import {
-  addContributorToEditArticleForm,
-  removeContributorFromEditArticleForm } from '../../forms/actions'
-import {
-  availableUsersNamesSelector,
-  contributorsUsersSelector } from '../../forms/selectors'
+import { editArticleSelectors } from '../selectors'
+import { editArticleActions } from '../actions'
 import { randomUserSelector } from '../../users/selectors'
-
-import {
-  saveCreateArticleFormData,
-  clearCreateArticleError,
-  throwCreateArticleError,
-  submitCreateArticleForm } from "../../forms/actions";
 import injectSheet from 'react-jss'
 
 const styles = {
-  createArticlePage:{
+  editArticlePage:{
     padding: "5%"
   }
 }
@@ -39,7 +29,7 @@ Props:
   randomUser,
   onSubmit
 */
-class CreateArticlePage extends Component {
+class EditArticlePage extends Component {
 
   constructor(props) {
     super(props);
@@ -56,13 +46,15 @@ class CreateArticlePage extends Component {
   render() {
     const {
       contributors,
-      errors,
+      error,
       addContributor,
       removeContributor,
       availableUsers,
       randomUser,
       onSubmit,
-      sections
+      sections,
+      throwError,
+      clearError
     } = this.props;
     const {
       title,
@@ -79,9 +71,11 @@ class CreateArticlePage extends Component {
           contributors={contributors}
           title={title}
           content={content}
-          errors={errors}
+          error={error}
           addContributor={addContributor}
           removeContributor={removeContributor}
+          throwError={throwError}
+          clearError={clearError}
           availableUsers={availableUsers}
           randomUser={randomUser}
           onSubmit={onSubmit}
@@ -95,27 +89,27 @@ class CreateArticlePage extends Component {
 
 
 const mapStateToProps = state => ({
-  title: state.forms.articles.create.currentDraft.title,
-  content: state.forms.articles.create.currentDraft.content,
-  errors: state.forms.articles.create.errors,
-  availableUsers: availableUsersNamesSelector(state),
-  contributors: contributorsUsersSelector(state),
+  title: state.forms.articles.edit.currentDraft.title,
+  content: state.forms.articles.edit.currentDraft.content,
+  error: state.forms.articles.edit.error,
+  availableUsers: editArticleSelectors.availableUsersNamesSelector(state),
+  contributors: editArticleSelectors.contributorsUsersSelector(state),
   randomUser: randomUserSelector(state),
   sections: state.sections.list
 })
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: formData => {
-    dispatch(submitCreateArticleForm(formData));
+    dispatch(editArticleActions.submitForm(formData));
   },
   saveArticleData: (title, content, section) => {
-    dispatch(saveCreateArticleFormData(title, content, section));
+    dispatch(editArticleActions.pushArticleDraft(title, content, section));
   },
-  clearArticleError: () => {
-    dispatch(clearCreateArticleError());
+  clearError: () => {
+    dispatch(editArticleActions.clearError());
   },
-  throwArticleError: error => {
-    dispatch(throwCreateArticleError(error))
+  throwError: error => {
+    dispatch(editArticleActions.throwError(error))
   },
   addContributor: (contributorName) => {
     dispatch(addContributorToCreateArticleForm(contributorName))
@@ -128,4 +122,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectSheet(styles)(CreateArticlePage))
+)(injectSheet(styles)(EditArticlePage))

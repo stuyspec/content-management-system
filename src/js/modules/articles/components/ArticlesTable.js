@@ -51,6 +51,10 @@ class ArticlesTable extends Component {
     }
   }
 
+  handleRowEdit = () => {
+    this.props.editSelectedArticles();
+  }
+
   handleRowDeletion = () => {
     const {
       selectedArticles,
@@ -77,7 +81,10 @@ class ArticlesTable extends Component {
           label={deleteButtonLabel}
           onClick={this.handleRowDeletion}
         />
-        <RaisedButton label={editButtonLabel}/>
+        <RaisedButton
+          label={editButtonLabel}
+          onClick={this.handleRowEdit}
+        />
         <Table
           fixedHeader={false}
           onRowSelection={this.handleRowSelection}

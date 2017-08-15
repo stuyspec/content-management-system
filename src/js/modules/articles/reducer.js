@@ -88,7 +88,7 @@ const reducer = (state={...initialState}, action)=>
           }
         }
       };
-    case EDIT_ARTICLE_FORM.POP_ARTICLE_OFF_STACK:
+    case EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFT:
       return {
         ...state,
         editArticle: {
@@ -96,9 +96,8 @@ const reducer = (state={...initialState}, action)=>
           drafts: [...state.editArticle.drafts, action.payload]
         }
       }
-    // NOTE: Read the entry you're popping BEFORE you pop it. Because
-    // it ain't coming back
-    case EDIT_ARTICLE_FORM.POP_ARTICLE_OFF_STACK:
+
+    case EDIT_ARTICLE_FORM.POP_ARTICLE_DRAFT:
       return {
         ...state,
         editArticle: {

@@ -41,7 +41,7 @@ import {
         // Does nothing for rn, need to set up more infrastructure before this
         // can actually work
         case FETCH_USERS_SUCCEEDED:
-
+          return { ...state, list: action.payload }
         default:
               break;
       }

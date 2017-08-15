@@ -68,31 +68,31 @@ createArticle.availableUsersNamesSelector = createSelector(
 export { createArticle };
 
 
-let editArticle = {};
-editArticle.contributorsSelector = state =>
+let editArticleSelectors = {};
+editArticleSelectors.contributorsSelector = state =>
   state.articles.forms.edit.contributors;
 
-editArticle.contributorsUsersSelector = createSelector(
+editArticleSelectors.contributorsUsersSelector = createSelector(
   usersSelector,
-  editArticle.contributorsSelector,
+  editArticleSelectors.contributorsSelector,
   (users, contributors) =>
     users.filter(user => contributors.includes(user.id))
 );
 
 
-editArticle.availableUsersSelector = createSelector(
+editArticleSelectors.availableUsersSelector = createSelector(
   usersSelector,
-  editArticle.contributorsSelector,
+  editArticleSelectors.contributorsSelector,
   (users, contributors) => {
     return users.filter(user => !contributors.includes(user.id))
   }
 );
 
-editArticle.availableUsersNamesSelector = createSelector(
-  editArticle.availableUsersSelector,
+editArticleSelectors.availableUsersNamesSelector = createSelector(
+  editArticleSelectors.availableUsersSelector,
   availableUsers => (
     availableUsers.map(user => user.name)
   )
 );
 
-export { editArticle };
+export { editArticleSelectors };

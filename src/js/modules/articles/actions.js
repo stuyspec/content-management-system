@@ -3,10 +3,15 @@ import { CREATE_AUTHORSHIPS_FAILED } from '../authorships/actionTypes'
 import { STUY_SPEC_API_URL, AXIOS_CONFIG } from '../../constants'
 import axios from 'axios'
 import { usersSelector } from '../users/selectors'
-import { createAuthorships, fetchAuthorships } from '../authorships/actions'
+import {
+  createAuthorships,
+  fetchAuthorships,
+  updateAuthorships } from '../authorships/actions'
 import { push } from 'connected-react-router'
 
-
+// The reason these are two different objects is because the actions
+// have subtly different error handling. If I can find a way to collapse
+// the actions into one object, I will. But for now they're separate
 let createArticleActions = {};
 
 createArticleActions.throwError = error => ({
@@ -37,13 +42,13 @@ createArticleActions.removeContributor = contributorId => ({
 
 createArticleActions.saveFormData =
   (title, content, section) => ({
-    type: t.SAVE_CREATE_ARTICLE_FORM_DATA,
+    type: t.CREATE_ARTICLE_FORM.SAVE_FORM_DATA,
     payload: { title, content, section}
   })
 
 createArticleActions.clearFormData =
   (title, content, section) => ({
-    type: t.CLEAR_CREATE_ARTICLE_FORM_DATA
+    type: t.CREATE_ARTICLE_FORM.CLEAR_FORM_DATA,
   })
 
 createArticleActions.submitForm = ({
@@ -103,15 +108,101 @@ export const createArticle = ({ title, content, section }) => dispatch => {
   );
 };
 
-export const pushArticleOnEditStack =
-  (title, content, section, articleId) => ({
-    type: t.PUSH_ARTICLE_ON_EDIT_STACK,
+let editArticleActions = {};
+
+editArticleActions.throwError = error => ({
+  type: t.EDIT_ARTICLE_FORM.THROW_ERROR,
+  payload: error
+});
+
+editArticleActions.clearError = () => ({
+  type: t.EDIT_ARTICLE_FORM.CLEAR_ERROR
+});
+
+editArticleActions.addContributor = contributorName =>
+  (dispatch, getState) => {
+    const users = usersSelector(getState());
+    const contributor = users.find(user => user.name === contributorName);
+    const contributorId = contributor.id;
+
+    dispatch({
+      type: t.EDIT_ARTICLE_FORM.ADD_CONTRIBUTOR,
+      payload: { contributorId }
+    });
+  };
+
+editArticleActions.removeContributor = contributorId => ({
+  type: t.EDIT_ARTICLE_FORM.REMOVE_CONTRIBUTOR,
+  payload: { contributorId }
+});
+
+editArticleActions.pushArticleDraft =
+  ({title, content, section, articleId}) => ({
+    type: t.EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFT,
     payload: { title, content, section, articleId }
   });
 
-export const popArticleOffEditStack = () => ({
-  type: t.POP_ARTICLE_OFF_EDIT_STACK
+editArticleActions.popArticleDraft = () => ({
+  type: t.EDIT_ARTICLE_FORM.POP_ARTICLE_DRAFT
 })
+
+editArticleActions.submitForm = ({ title,
+                                   content,
+                                   section,
+                                   contributors }) => dispatch => {
+  dispatch(updateArticle({ title, content, section }))
+  .then(response => {
+    return dispatch(updateAuthorships(contributors, response.data.id));
+  })
+  .then(response => {
+    // Not very proud of this. Checking action type is a little messy
+    // TODO: Change to something that fits better with promises
+    if (response.type !== CREATE_AUTHORSHIPS_FAILED) {
+      dispatch(fetchAuthorships());
+      dispatch(push("/"));
+      // Gotta get rid of the draft that autosaves
+      dispatch({
+        type: t.CREATE_ARTICLE_FORM.CLEAR_FORM_DATA
+      });
+    }
+    else {
+      const articleId = response.payload.articleId
+      dispatch(deleteArticles([articleId]))
+    }
+  });
+};
+
+export { editArticleActions };
+
+export const updateArticle = ({ title,
+                                content,
+                                section,
+                                articleId }) => dispatch => {
+  // TODO: Create loading anims
+  dispatch({
+    type: t.UPDATE_ARTICLE_REQUESTED
+  });
+  const article = { title, content, section };
+  return (
+    axios
+    .put(`${STUY_SPEC_API_URL}/articles/${articleId}`, article)
+    .then(response => {
+      dispatch({
+        type: t.UPDATE_ARTICLE_SUCCEEDED,
+        payload: response.data
+      });
+      return response;
+    })
+    // TODO: Create error messages for requests
+    .catch(error => {
+      dispatch({
+        type: t.UPDATE_ARTICLE_FAILED,
+        payload: error
+      });
+    })
+  );
+};
+
 
 export const fetchArticles = () => (
   dispatch => {
@@ -141,7 +232,6 @@ export const setSelectedArticles = selectedArticles => ({
   type: t.SET_SELECTED_ARTICLES,
   payload: selectedArticles
 })
-
 
 export const deleteArticles = articleSlugs => (
   dispatch => {
