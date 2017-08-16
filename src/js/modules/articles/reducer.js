@@ -4,7 +4,7 @@ import {
   FETCH_ARTICLES_SUCCEEDED,
   CREATE_ARTICLE_SUCCEEDED,
   EDIT_ARTICLE_FORM,
-  CREATE_ARTICLE_FORM
+  CREATE_ARTICLE_FORM,
 } from './actionTypes'
 
 const initialState = {
@@ -16,7 +16,7 @@ const initialState = {
       // This needs to be in the Redux state because otherwise selectors
       // won't be able to find it
       contributors: [],
-      error: "",
+      errors: [],
       currentDraft: {
         title: "",
         content: ""
@@ -33,7 +33,8 @@ const initialState = {
        Not a great name but, whatever
        */
       articlesToEdit: [],
-      errors: []
+      errors: [],
+      contributors: []
     }
   }
 };
@@ -128,26 +129,41 @@ const reducer = (state={...initialState}, action)=>
           }
         }
       }
-    case CREATE_ARTICLE_FORM.CLEAR_ERROR:
+    case CREATE_ARTICLE_FORM.ENQUEUE_ERROR:
       return {
         ...state,
         forms: {
           ...state.forms,
           create: {
             ...state.forms.create,
-            error: ""
+            errors: [...state.forms.create.errors, action.payload]
           }
         }
       }
-    case CREATE_ARTICLE_FORM.THROW_ERROR:
+    case CREATE_ARTICLE_FORM.DEQUEUE_ERROR:
       return {
         ...state,
         forms: {
           ...state.forms,
           create: {
             ...state.forms.create,
-            error: action.payload
+            errors: state.forms.create.errors.slice(1)
           }
+        }
+      }
+    case EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFTS:
+      return {
+        ...state,
+        selected: [],
+        forms: {
+          ...state.forms,
+          edit: {
+            ...state.forms.edit,
+            articlesToEdit: [
+              ...action.payload, ...state.forms.edit.articlesToEdit
+            ]
+          }
+
         }
       }
     default:

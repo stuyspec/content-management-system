@@ -18,10 +18,10 @@ export const CREATE_ARTICLE_FORM = {
     "articles/create/ADD_CONTRIBUTOR",
   REMOVE_CONTRIBUTOR:
     "articles/create/REMOVE_CONTRIBUTOR",
-  THROW_ERROR:
-    "articles/create/THROW_ERROR",
-  CLEAR_ERROR:
-    "articles/create/CLEAR_ERROR",
+  ENQUEUE_ERROR:
+    "articles/create/ENQUEUE_ERROR",
+  DEQUEUE_ERROR:
+    "articles/create/DEQUEUE_ERROR",
   SAVE_FORM_DATA:
     "articles/create/THROW_FORM_DATA",
   CLEAR_FORM_DATA:
@@ -41,6 +41,8 @@ export const EDIT_ARTICLE_FORM = {
     "articles/edit/POP_ARTICLE_DRAFT",
   PUSH_ARTICLE_DRAFT:
     "articles/edit/PUSH_ARTICLE_DRAFT",
+  PUSH_ARTICLE_DRAFTS:
+    "articles.edit/PUSH_ARTICLE_DRAFTS"
 }
 
 

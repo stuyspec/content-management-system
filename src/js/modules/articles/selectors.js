@@ -58,10 +58,10 @@ createArticle.availableUsersSelector = createSelector(
   }
 );
 
-createArticle.availableUsersNamesSelector = createSelector(
+createArticle.availableUsernamesSelector = createSelector(
   createArticle.availableUsersSelector,
   availableUsers => (
-    availableUsers.map(user => user.name)
+    availableUsers.map(user => user.username)
   )
 );
 
@@ -88,10 +88,10 @@ editArticleSelectors.availableUsersSelector = createSelector(
   }
 );
 
-editArticleSelectors.availableUsersNamesSelector = createSelector(
+editArticleSelectors.availableUsernamesSelector = createSelector(
   editArticleSelectors.availableUsersSelector,
   availableUsers => (
-    availableUsers.map(user => user.name)
+    availableUsers.map(user => user.username)
   )
 );
 

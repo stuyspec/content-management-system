@@ -3,7 +3,7 @@ import {
 } from './actionTypes'
 
   const initialState = {
-  currentUser: 0,
+  currentUser: 1,
   list: [
     {
       id: 0,

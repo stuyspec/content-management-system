@@ -30,18 +30,18 @@ class CreateArticlePage extends Component {
   render() {
     const {
       contributors,
-      formError,
+      formErrors,
       addContributor,
       removeContributor,
-      availableUsers,
+      availableUsernames,
       randomUser,
       onSubmit,
       sections,
       classes,
       title,
       content,
-      throwError,
-      clearError
+      enqueueError,
+      dequeueError
     } = this.props;
     return (
       <Paper
@@ -53,15 +53,15 @@ class CreateArticlePage extends Component {
           contributors={contributors}
           title={title}
           content={content}
-          formError={formError}
+          formErrors={formErrors}
           addContributor={addContributor}
           removeContributor={removeContributor}
-          availableUsers={availableUsers}
+          availableUsernames={availableUsernames}
           randomUser={randomUser}
           onSubmit={onSubmit}
           sections={sections}
-          throwError={throwError}
-          clearError={clearError}
+          enqueueError={enqueueError}
+          dequeueError={dequeueError}
         />
       </Paper>
     );
@@ -72,8 +72,8 @@ class CreateArticlePage extends Component {
 const mapStateToProps = state => ({
   title: state.articles.forms.create.currentDraft.title,
   content: state.articles.forms.create.currentDraft.content,
-  formError: state.articles.forms.create.error,
-  availableUsers: createArticle.availableUsersNamesSelector(state),
+  formErrors: state.articles.forms.create.errors,
+  availableUsernames: createArticle.availableUsernamesSelector(state),
   contributors: createArticle.contributorsUsersSelector(state),
   randomUser: randomUserSelector(state),
   sections: state.sections.list
@@ -86,11 +86,11 @@ const mapDispatchToProps = dispatch => ({
   saveArticleData: (title, content, section) => {
     dispatch(createArticleActions.saveArticleData(title, content, section));
   },
-  clearError: () => {
-    dispatch(createArticleActions.clearError());
+  enqueueError: error => {
+    dispatch(createArticleActions.enqueueError(error));
   },
-  throwError: error => {
-    dispatch(createArticleActions.throwError(error))
+  dequeueError: () => {
+    dispatch(createArticleActions.dequeueError())
   },
   addContributor: (contributorName) => {
     dispatch(createArticleActions.addContributor(contributorName))

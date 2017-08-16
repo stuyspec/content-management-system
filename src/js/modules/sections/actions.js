@@ -42,6 +42,7 @@ export const createSection = section => dispatch => {
       type: t.CREATE_SECTION_SUCCEEDED,
       payload: response.data
     });
+    dispatch(fetchSections());
     dispatch(push("/"));
   })
   // TODO: Create error messages for requests

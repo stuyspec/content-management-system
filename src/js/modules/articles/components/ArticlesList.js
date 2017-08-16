@@ -1,7 +1,7 @@
 /**
  * Created by nicholas on 6/24/17.
  */
-import React, { Component } from "react";
+import React from "react";
 import Article from "./Article";
 import injectSheet from "react-jss";
 import { connect } from "react-redux";
@@ -33,7 +33,7 @@ const ArticlesList = ({ classes, articles }) =>
   </div>;
 
 const mapStateToProps = state => ({
-  articles: state.forms.list
+  articles: state.articles.list
 });
 
 export default connect(mapStateToProps, null)(

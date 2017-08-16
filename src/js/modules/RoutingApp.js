@@ -2,6 +2,7 @@ import Provider from "react-redux/lib/components/Provider";
 import React, { Component } from "react";
 import appHistory from "tools/appHistory";
 import CreateArticlePage from "./articles/components/CreateArticlePage"
+import EditArticlePage from "./articles/components/EditArticlePage"
 import SectionForm from "./sections/components/SectionForm";
 import ArticlesTable from "./articles/components/ArticlesTable";
 import UsersList from "./users/components/UsersList";
@@ -23,6 +24,7 @@ class RoutingApp extends Component {
               <Switch>
                 <Route exact path="/articles" component={ArticlesTable} />
                 <Route path="/articles/new" component={CreateArticlePage} />
+                <Route path="/articles/edit" component={EditArticlePage} />
                 <Route exact path="/users" component={UsersList} />
                 <Route path="/sections/new" component={SectionForm} />
                 <Route exact path="/" component={HomePage} />

@@ -25,7 +25,11 @@ const ContributorsList = ({ contributors,
       {contributors.map(contributor =>
         <ListItem
           key={contributor.id}
-          primaryText={contributor.name}
+          primaryText={
+            `${contributor.firstName}
+            ${contributor.lastName}
+            (${contributor.username})`
+          }
           leftAvatar={<Avatar src={contributor.thumbnail}/>}
           rightIconButton={
             <IconButton

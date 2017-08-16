@@ -5,10 +5,9 @@ import React from 'react'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 
-const FormErrorDialog = ({ onRetry,
-                           onCancel,
-                           error }) => {
-  const isErrorDialogOpen = error !== ""
+const FormErrorDialog = ({ onCancel,
+                           formErrors }) => {
+  const isErrorDialogOpen = formErrors.length > 0;
   const actions = [
     <FlatButton
       label="Okay"
@@ -16,14 +15,13 @@ const FormErrorDialog = ({ onRetry,
       onTouchTap={onCancel}
     />,
   ]
-
   return (
     <Dialog
       title="Form Submission Error"
       actions={actions}
       open={isErrorDialogOpen}
     >
-      {error}
+      {formErrors[0]}
     </Dialog>
   )
 }

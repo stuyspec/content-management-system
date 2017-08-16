@@ -14,19 +14,21 @@ import { push } from 'connected-react-router'
 // the actions into one object, I will. But for now they're separate
 let createArticleActions = {};
 
-createArticleActions.throwError = error => ({
-  type: t.CREATE_ARTICLE_FORM.THROW_ERROR,
+createArticleActions.dequeueError = () => ({
+  type: t.CREATE_ARTICLE_FORM.DEQUEUE_ERROR,
+});
+
+createArticleActions.enqueueError = error => ({
+  type: t.CREATE_ARTICLE_FORM.ENQUEUE_ERROR,
   payload: error
 });
 
-createArticleActions.clearError = () => ({
-  type: t.CREATE_ARTICLE_FORM.CLEAR_ERROR
-});
-
-createArticleActions.addContributor = contributorName =>
+createArticleActions.addContributor = contributorUsername =>
   (dispatch, getState) => {
     const users = usersSelector(getState());
-    const contributor = users.find(user => user.name === contributorName);
+    const contributor = users.find(
+      user => user.username === contributorUsername
+    );
     const contributorId = contributor.id;
 
     dispatch({
@@ -54,10 +56,10 @@ createArticleActions.clearFormData =
 createArticleActions.submitForm = ({
                                           title,
                                           content,
-                                          section,
+                                          sectionId,
                                           contributors
                                         }) => dispatch => {
-  dispatch(createArticle({ title, content, section }))
+  dispatch(createArticle({ title, content, sectionId }))
   .then(response => {
     return dispatch(createAuthorships(contributors, response.data.id));
   })
@@ -82,12 +84,12 @@ createArticleActions.submitForm = ({
 export { createArticleActions }
 
 // Not part of the createArticleActions because it's not ambiguous
-export const createArticle = ({ title, content, section }) => dispatch => {
+export const createArticle = ({ title, content, sectionId }) => dispatch => {
   // TODO: Create loading anims
   dispatch({
     type: t.CREATE_ARTICLE_REQUESTED
   });
-  const article = { title, content, section };
+  const article = { title, content, section: sectionId };
   return (
     axios
     .post(`${STUY_SPEC_API_URL}/articles`, article)
@@ -122,7 +124,9 @@ editArticleActions.clearError = () => ({
 editArticleActions.addContributor = contributorName =>
   (dispatch, getState) => {
     const users = usersSelector(getState());
-    const contributor = users.find(user => user.name === contributorName);
+    const contributor = users.find(
+      user => `${user.firstName} ${user.lastName}` === contributorName
+    );
     const contributorId = contributor.id;
 
     dispatch({
@@ -172,7 +176,16 @@ editArticleActions.submitForm = ({ title,
   });
 };
 
+editArticleActions.editSelectedArticles = () => (dispatch, getState) => {
+  dispatch({
+    type: t.EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFTS,
+    payload: getState().articles.selected
+  })
+  dispatch(push("/articles/edit"))
+}
+
 export { editArticleActions };
+
 
 export const updateArticle = ({ title,
                                 content,

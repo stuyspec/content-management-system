@@ -46,7 +46,7 @@ class EditArticlePage extends Component {
   render() {
     const {
       contributors,
-      error,
+      formErrors,
       addContributor,
       removeContributor,
       availableUsers,
@@ -54,7 +54,8 @@ class EditArticlePage extends Component {
       onSubmit,
       sections,
       throwError,
-      clearError
+      clearError,
+      classes
     } = this.props;
     const {
       title,
@@ -71,7 +72,7 @@ class EditArticlePage extends Component {
           contributors={contributors}
           title={title}
           content={content}
-          error={error}
+          formErrors={formErrors}
           addContributor={addContributor}
           removeContributor={removeContributor}
           throwError={throwError}
@@ -89,10 +90,9 @@ class EditArticlePage extends Component {
 
 
 const mapStateToProps = state => ({
-  title: state.forms.articles.edit.currentDraft.title,
-  content: state.forms.articles.edit.currentDraft.content,
-  error: state.forms.articles.edit.error,
-  availableUsers: editArticleSelectors.availableUsersNamesSelector(state),
+  articlesToEdit: state.articles.forms.edit.articlesToEdit,
+  formErrors: state.articles.forms.edit.errors,
+  availableUsers: editArticleSelectors.availableUsernamesSelector(state),
   contributors: editArticleSelectors.contributorsUsersSelector(state),
   randomUser: randomUserSelector(state),
   sections: state.sections.list
@@ -111,11 +111,11 @@ const mapDispatchToProps = dispatch => ({
   throwError: error => {
     dispatch(editArticleActions.throwError(error))
   },
-  addContributor: (contributorName) => {
-    dispatch(addContributorToCreateArticleForm(contributorName))
+  addContributor: (contributorUsername) => {
+    dispatch(editArticleActions.addContributor(contributorUsername))
   },
   removeContributor: id => {
-    dispatch(removeContributorFromCreateArticleForm(id));
+    dispatch(editArticleActions.removeContributor(id));
   }
 })
 

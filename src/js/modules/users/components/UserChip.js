@@ -16,7 +16,7 @@ const UserChip = ({ user, classes }) => (
   <div className={classes.userChip}>
     <Chip>
       <Avatar src={user.thumbnail} />
-      { user.name }
+      { `${user.firstName} ${user.lastName}` }
     </Chip>
   </div>
 )

@@ -13,9 +13,10 @@ import {
 import RaisedButton from 'material-ui/RaisedButton'
 import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
+import { editArticleActions } from '../actions'
 import UserChip from '../../users/components/UserChip'
 import { articlesPreviewSelector } from '../selectors'
-import { contributorsByArticle } from '../../authorships/selectors'
+import { contributorsByArticleSelector } from '../../authorships/selectors'
 import { setSelectedArticles, deleteArticles } from '../actions'
 
 const styles = {
@@ -136,14 +137,16 @@ const mapStateToProps = state => ({
   articles: articlesPreviewSelector(state),
   users: state.users.list,
   selectedArticles: state.articles.selected,
-  contributors: contributorsByArticle(state)
+  contributors: contributorsByArticleSelector(state)
 })
 
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>
     dispatch(deleteArticles(selectedArticleIds)),
   setSelectedArticles: selectedArticles =>
-    dispatch(setSelectedArticles(selectedArticles))
+    dispatch(setSelectedArticles(selectedArticles)),
+  editSelectedArticles: () =>
+    dispatch(editArticleActions.editSelectedArticles())
 })
 
 export default connect(
