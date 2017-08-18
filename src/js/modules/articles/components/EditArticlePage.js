@@ -43,6 +43,12 @@ class EditArticlePage extends Component {
     };
   }
 
+  componentWillMount(){
+    if () {
+
+    }
+  }
+
   render() {
     const {
       contributors,
