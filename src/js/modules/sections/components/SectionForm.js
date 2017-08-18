@@ -1,16 +1,16 @@
 /**
  * Created by nicholas on 7/28/17.
  */
-import React, { Component } from 'react'
-import Paper from 'material-ui/Paper'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
-import injectSheet from 'react-jss'
-import { createSection } from '../actions'
-import { connect } from 'react-redux'
-import { topLevelSectionsSelector } from '../selectors'
+import React, { Component } from "react";
+import Paper from "material-ui/Paper";
+import TextField from "material-ui/TextField";
+import RaisedButton from "material-ui/RaisedButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import injectSheet from "react-jss";
+import { createSection } from "../actions";
+import { connect } from "react-redux";
+import { topLevelSectionsSelector } from "../selectors";
 
 const styles = {
   formContainer: {
@@ -18,7 +18,7 @@ const styles = {
   },
   form: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   input: {
     margin: "10px"
@@ -27,30 +27,29 @@ const styles = {
     maxWidth: "100px",
     paddingLeft: "2%"
   }
-}
+};
 
 class SectionForm extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       name: "",
       description: "",
-      parentSection: 0,
-    }
+      parentSection: 0
+    };
   }
 
   handleNameChange = event => {
-    this.setState({ name: event.target.value })
-  }
+    this.setState({ name: event.target.value });
+  };
 
   handleDescriptionChange = event => {
-    this.setState({ description: event.target.value })
-  }
+    this.setState({ description: event.target.value });
+  };
 
   handleSectionChange = (event, index, value) => {
-    this.setState({ parentSection: value })
-  }
+    this.setState({ parentSection: value });
+  };
 
   handleSubmit = event => {
     event.preventDefault();
@@ -58,10 +57,9 @@ class SectionForm extends Component {
     if (parentSection === -1) {
       this.props.createSection({ name, description });
     } else {
-      this.props.createSection({ name, description, parentId: parentSection});
+      this.props.createSection({ name, description, parentId: parentSection });
     }
-
-  }
+  };
 
   render() {
     const { classes, topLevelSections } = this.props;
@@ -93,8 +91,8 @@ class SectionForm extends Component {
                 onChange={this.handleSectionChange}
               >
                 <MenuItem value={-1} primaryText="None" />
-                { topLevelSections.map(section =>
-                  <MenuItem value={section.id}  primaryText={section.name} />
+                {topLevelSections.map(section =>
+                  <MenuItem value={section.id} primaryText={section.name} />
                 )}
               </SelectField>
             </div>
@@ -108,20 +106,19 @@ class SectionForm extends Component {
           </div>
         </form>
       </Paper>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => ({
   topLevelSections: topLevelSectionsSelector(state)
-})
+});
 const mapDispatchToProps = dispatch => ({
   createSection: section => {
-    dispatch(createSection(section))
+    dispatch(createSection(section));
   }
-})
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectSheet(styles)(SectionForm));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  injectSheet(styles)(SectionForm)
+);

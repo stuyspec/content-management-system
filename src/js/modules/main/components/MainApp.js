@@ -1,66 +1,57 @@
-import React, { PureComponent } from 'react'
-import injectSheet from 'react-jss'
-import connect from 'react-redux/lib/connect/connect'
-import { refreshWindowDimensions } from './../actions'
-import Navbar from './Navbar'
-import NavDrawer from './NavDrawer'
-import UserDrawer from '../../users/components/UserDrawer'
-import { fetchSections } from '../../sections/actions'
-import { fetchArticles } from '../../articles/actions'
-import { fetchUsers } from '../../users/actions'
-import { fetchAuthorships } from '../../authorships/actions'
-import { withRouter } from 'react-router-dom'
+import React, { PureComponent } from "react";
+import injectSheet from "react-jss";
+import connect from "react-redux/lib/connect/connect";
+import { refreshWindowDimensions } from "./../actions";
+import Navbar from "./Navbar";
+import NavDrawer from "./NavDrawer";
+import UserDrawer from "../../users/components/UserDrawer";
+import { fetchSections } from "../../sections/actions";
+import { fetchArticles } from "../../articles/actions";
+import { fetchUsers } from "../../users/actions";
+import { fetchAuthorships } from "../../authorships/actions";
+import { withRouter } from "react-router-dom";
 
 const styles = {
-  appWrapper :
-    {
-      minHeight       : '100%',
-      margin          : '0px auto',
-      display         : 'flex',
-      flexDirection   : 'row'
-    },
-  mainWrapper :
-    {
-      minHeight       : '100%',
-      margin          : '0px auto',
-      display         : 'flex',
-      flexDirection   : 'column',
-      flex            : '2 0 auto'
-    },
-  mainContent :
-    {
-      display: "block",
-      padding: "3%"
-    },
+  appWrapper: {
+    minHeight: "100%",
+    margin: "0px auto",
+    display: "flex",
+    flexDirection: "row"
+  },
+  mainWrapper: {
+    minHeight: "100%",
+    margin: "0px auto",
+    display: "flex",
+    flexDirection: "column",
+    flex: "2 0 auto"
+  },
+  mainContent: {
+    display: "block",
+    padding: "3%"
+  }
 };
 
-
-class MainApp extends PureComponent
-{
-  onResizeWindow = ()=>
-  {
+class MainApp extends PureComponent {
+  onResizeWindow = () => {
     this.props.onResizeWindow();
   };
-  componentDidMount()
-  {
+  componentDidMount() {
     const {
       fetchArticles,
       fetchSections,
       fetchAuthorships,
-      fetchUsers,
-    } = this.props
+      fetchUsers
+    } = this.props;
     fetchArticles();
     fetchSections();
     fetchAuthorships();
     fetchUsers();
-    window.addEventListener('resize', this.onResizeWindow);
+    window.addEventListener("resize", this.onResizeWindow);
   }
-  componentWillUnmount()
-  {
-    window.removeEventListener('resize', this.onResizeWindow);
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResizeWindow);
   }
-  render ()
-  {
+  render() {
     const { classes } = this.props;
     return (
       <div className={classes.appWrapper}>
@@ -76,27 +67,26 @@ class MainApp extends PureComponent
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  onResizeWindow: () => {
+    dispatch(refreshWindowDimensions());
+  },
+  fetchSections: () => {
+    dispatch(fetchSections());
+  },
+  fetchArticles: () => {
+    dispatch(fetchArticles());
+  },
+  fetchAuthorships: () => {
+    dispatch(fetchAuthorships());
+  },
+  fetchUsers: () => {
+    dispatch(fetchUsers());
+  }
+});
 
-const VisibleMainApp = connect(
-  null,
-  (dispatch)=>
-    ({
-      onResizeWindow: () => {
-        dispatch(refreshWindowDimensions())
-      },
-      fetchSections: () => {
-        dispatch(fetchSections())
-      },
-      fetchArticles: () => {
-        dispatch(fetchArticles())
-      },
-      fetchAuthorships: () => {
-        dispatch(fetchAuthorships())
-      },
-      fetchUsers: () => {
-        dispatch(fetchUsers())
-      }
-    })
-)(injectSheet(styles)(MainApp));
+const VisibleMainApp = connect(null, mapDispatchToProps)(
+  injectSheet(styles)(MainApp)
+);
 
-export default withRouter(VisibleMainApp)
+export default withRouter(VisibleMainApp);

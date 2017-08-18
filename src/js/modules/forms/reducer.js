@@ -6,7 +6,6 @@ const initialState = {
   {
       switch(action.type)
       {
-
         default:
               break;
       }

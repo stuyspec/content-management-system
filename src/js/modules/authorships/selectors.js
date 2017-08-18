@@ -8,7 +8,7 @@ import { usersSelector } from '../users/selectors'
 export const authorshipsSelector = state => state.authorships.list
 
 // Returns object with the format articleId:[users]
-export const contributorsByArticle = createSelector(
+export const getContributorsByArticle = createSelector(
   authorshipsSelector,
   articlesSelector,
   usersSelector,

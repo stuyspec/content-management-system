@@ -15,14 +15,14 @@ import { connect } from 'react-redux'
 import injectSheet from 'react-jss'
 import UserChip from '../../users/components/UserChip'
 import { articlesPreviewSelector } from '../selectors'
-import { contributorsByArticle } from '../../authorships/selectors'
+import { getContributorsByArticle } from '../../authorships/selectors'
 import { setSelectedArticles, deleteArticles } from '../actions'
 
 const styles = {
   articlesTable: {
-    maxWidth: "800px",
-    margin: "5%"
-  }
+    margin: "5%",
+    maxWidth: "800px"
+   }
 }
 // TODO: Change selected logic to ids instead of indices
 class ArticlesTable extends Component {
@@ -136,7 +136,7 @@ const mapStateToProps = state => ({
   articles: articlesPreviewSelector(state),
   users: state.users.list,
   selectedArticles: state.articles.selected,
-  contributors: contributorsByArticle(state)
+  contributors: getContributorsByArticle(state)
 })
 
 const mapDispatchToProps = dispatch => ({
