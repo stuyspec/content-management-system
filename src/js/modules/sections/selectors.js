@@ -10,7 +10,3 @@ export const topLevelSectionsSelector = createSelector(
   sections => sections.filter(section => section.parentId === null)
 )
 
-export const randomSectionSelector = createSelector(
-  sectionsSelector,
-  sections => sections[Math.floor(Math.random() * sections.length)]
-)

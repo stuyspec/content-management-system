@@ -36,12 +36,4 @@ const SectionInput = ({ classes,
   </div>
 );
 
-
-const mapStateToProps = state => ({
-  sections : state.sections.list
-});
-
-export default connect(
-  mapStateToProps,
-  null
-)(injectSheet(styles)(SectionInput))
+export default injectSheet(styles)(SectionInput);

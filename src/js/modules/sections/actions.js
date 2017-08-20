@@ -1,6 +1,7 @@
 import * as t from './actionTypes'
-import { STUY_SPEC_API_URL } from '../../constants'
+import { STUY_SPEC_API_URL, AXIOS_CONFIG } from '../../constants'
 import axios from 'axios'
+import { push } from 'connected-react-router'
 
 export const fetchSections = () => (
   dispatch => {
@@ -9,7 +10,7 @@ export const fetchSections = () => (
       type: t.FETCH_SECTIONS_REQUESTED,
     })
     axios.get(
-      `${STUY_SPEC_API_URL}/sections`
+      `${STUY_SPEC_API_URL}/sections`, AXIOS_CONFIG
     )
     .then(response => {
       dispatch({
@@ -27,3 +28,27 @@ export const fetchSections = () => (
     )
   }
 )
+
+export const createSection = section => dispatch => {
+  // TODO: Create loading anims
+  dispatch({
+    type: t.CREATE_SECTION_REQUESTED,
+    payload: section
+  });
+  axios
+  .post(`${STUY_SPEC_API_URL}/sections`, section, AXIOS_CONFIG)
+  .then(response => {
+    dispatch({
+      type: t.CREATE_SECTION_SUCCEEDED,
+      payload: response.data
+    });
+    dispatch(push("/"));
+  })
+  // TODO: Create error messages for requests
+  .catch(error => {
+    dispatch({
+      type: t.CREATE_SECTION_FAILED,
+      payload: error
+    });
+  });
+};

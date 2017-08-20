@@ -10,7 +10,7 @@ const styles = {
 };
 
 const Article = ({ classes, title, contributors, content, department }) =>
-  <div className={classes.article}>
+  <div className={classes.articles}>
     <h3 className={classes.articleTitle}>
       {" "}{title}{" "}
     </h3>

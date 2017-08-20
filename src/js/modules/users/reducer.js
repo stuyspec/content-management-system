@@ -1,7 +1,5 @@
 import {
-  ADD_CONTRIBUTOR,
-  REMOVE_CONTRIBUTOR,
-  SAVE_ARTICLE_DATA
+  FETCH_USERS_SUCCEEDED
 } from './actionTypes'
 
   const initialState = {
@@ -40,6 +38,10 @@ import {
   {
       switch(action.type)
       {
+        // Does nothing for rn, need to set up more infrastructure before this
+        // can actually work
+        case FETCH_USERS_SUCCEEDED:
+          return { ...state, list: action.payload }
         default:
               break;
       }

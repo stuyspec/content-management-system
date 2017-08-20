@@ -2,13 +2,9 @@
  * Created by nicholas on 7/9/17.
  */
 import React, { Component } from "react"
-import { connect } from 'react-redux'
 import AutoComplete from 'material-ui/AutoComplete';
-import { addContributor } from '../../actions'
+
 import injectSheet from 'react-jss'
-import { availableUsersNamesSelector,
-         contributorsNamesSelector } from '../../selectors'
-import { randomUserSelector } from '../../../users/selectors'
 
 const styles = {
   addContributorButton: {
@@ -35,8 +31,9 @@ class ContributorsInput extends Component {
   handleNewRequest = () => {
     const { availableUsers, contributors } = this.props;
     const { searchText } = this.state;
+    const contributorNames = contributors.map(contributor => contributor.name)
     if (availableUsers.includes(searchText) &&
-      !contributors.includes(searchText)) {
+      !contributorNames.includes(searchText)) {
       this.props.addContributor(searchText);
       this.setState({
         searchText: '',
@@ -45,10 +42,11 @@ class ContributorsInput extends Component {
   };
 
   render() {
-    const { availableUsers, randomUser } = this.props
+    const { availableUsers, randomUser, errorText } = this.props
     return (
       <div>
         <AutoComplete
+          errorText={errorText}
           hintText={randomUser.name}
           floatingLabelText="Contributors"
           searchText={this.state.searchText}
@@ -62,19 +60,4 @@ class ContributorsInput extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  availableUsers: availableUsersNamesSelector(state),
-  contributors: contributorsNamesSelector(state),
-  randomUser: randomUserSelector(state)
-});
-
-const mapDispatchToProps = dispatch => ({
-  addContributor: (contributorName) => {
-    dispatch(addContributor(contributorName))
-  }
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectSheet(styles)(ContributorsInput))
+export default injectSheet(styles)(ContributorsInput);

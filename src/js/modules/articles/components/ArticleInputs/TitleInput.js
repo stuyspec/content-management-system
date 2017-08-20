@@ -6,10 +6,12 @@ import TextField from 'material-ui/TextField';
 
 
 const TitleInput = ({ handleTitleChange,
-                             hintText,
-                             title }) => (
+                      hintText,
+                      title,
+                      errorText }) => (
   <div>
     <TextField
+      errorText={errorText}
       hintText={hintText}
       floatingLabelText="Title"
       value={title}

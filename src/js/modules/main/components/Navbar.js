@@ -65,7 +65,7 @@ const Navbar = ({ classes,
       <Avatar
         onClick={openUserDrawer}
         className={classes.currentUserAvatar}
-        src={currentUser.thumbnail}
+        src={currentUser.thumbnail || "https://s3.amazonaws.com/stuy-spec-users-resized/resized-P6260148.JPG"}
       />
     </ToolbarGroup>
   </Toolbar>
