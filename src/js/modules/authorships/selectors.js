@@ -5,11 +5,11 @@ import { createSelector } from "reselect";
 import { articlesSelector } from "../articles/selectors";
 import { usersSelector } from "../users/selectors";
 
-export const authorshipsSelector = state => state.authorships.list;
+export const getAuthorships = state => state.authorships.list;
 
 // Returns object with the format articleId:[users]
 export const contributorsByArticleSelector = createSelector(
-  authorshipsSelector,
+  getAuthorships,
   articlesSelector,
   usersSelector,
   (authorships, articles, users) => {

@@ -31,6 +31,8 @@ export const CREATE_ARTICLE_FORM = {
 export const EDIT_ARTICLE_FORM = {
   ADD_CONTRIBUTOR:
     "articles/edit/ADD_CONTRIBUTOR",
+  ADD_CONTRIBUTORS:
+    "articles/edit/ADD_CONTRIBUTORS",
   REMOVE_CONTRIBUTOR:
     "articles/edit/REMOVE_CONTRIBUTOR",
   THROW_ERROR:

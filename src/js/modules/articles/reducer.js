@@ -4,8 +4,8 @@ import {
   FETCH_ARTICLES_SUCCEEDED,
   CREATE_ARTICLE_SUCCEEDED,
   EDIT_ARTICLE_FORM,
-  CREATE_ARTICLE_FORM,
-} from './actionTypes'
+  CREATE_ARTICLE_FORM
+} from "./actionTypes";
 
 const initialState = {
   selected: [],
@@ -20,8 +20,7 @@ const initialState = {
       currentDraft: {
         title: "",
         content: ""
-      },
-
+      }
     },
 
     edit: {
@@ -39,23 +38,21 @@ const initialState = {
   }
 };
 
-const reducer = (state={...initialState}, action)=>
-{
-  switch(action.type)
-  {
+const reducer = (state = { ...initialState }, action) => {
+  switch (action.type) {
     case CREATE_ARTICLE_SUCCEEDED:
-      return { ...state, list: [...state.list, action.payload]}
+      return { ...state, list: [...state.list, action.payload] };
     case DELETE_ARTICLES_SUCCEEDED:
       const articles = [...state.list];
-      const selectedArticles = action.payload
+      const selectedArticles = action.payload;
       const newArticles = articles.filter(
         article => !selectedArticles.includes(article.slug)
-      )
-      return { ...state, list: newArticles, selected: []}
+      );
+      return { ...state, list: newArticles, selected: [] };
     case SET_SELECTED_ARTICLES:
-      return { ...state, selected: action.payload }
+      return { ...state, selected: action.payload };
     case FETCH_ARTICLES_SUCCEEDED:
-      return { ...state, list: action.payload }
+      return { ...state, list: action.payload };
 
     case CREATE_ARTICLE_FORM.ADD_CONTRIBUTOR:
       return {
@@ -72,41 +69,26 @@ const reducer = (state={...initialState}, action)=>
         }
       };
     case CREATE_ARTICLE_FORM.REMOVE_CONTRIBUTOR:
-      const contributors = state.forms.create.contributors;
-      const contributorIndex = contributors.indexOf(
-        action.payload.contributorId
-      );
-      const newContributors = contributors.slice(0, contributorIndex).concat(
-        contributors.slice(contributorIndex + 1)
-      );
-      return {
-        ...state,
-        forms: {
-          ...state.forms,
-          create: {
-            ...state.forms.create,
-            contributors: newContributors
+      // Cause scoping
+      return (() => {
+        const contributors = state.forms.create.contributors;
+        const contributorIndex = contributors.indexOf(
+          action.payload.contributorId
+        );
+        const newContributors = contributors
+        .slice(0, contributorIndex)
+        .concat(contributors.slice(contributorIndex + 1));
+        return {
+          ...state,
+          forms: {
+            ...state.forms,
+            create: {
+              ...state.forms.create,
+              contributors: newContributors
+            }
           }
-        }
-      };
-    case EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFT:
-      return {
-        ...state,
-        editArticle: {
-          ...state.editArticle,
-          drafts: [action.payload, ...state.editArticle.drafts]
-        }
-      }
-
-    case EDIT_ARTICLE_FORM.POP_ARTICLE_DRAFT:
-      return {
-        ...state,
-        editArticle: {
-          ...state.editArticle,
-          contributors: [],
-          drafts: state.articles.drafts.slice(1)
-        }
-      }
+        };
+      })();
     case CREATE_ARTICLE_FORM.SAVE_FORM_DATA:
       return {
         ...state,
@@ -117,7 +99,7 @@ const reducer = (state={...initialState}, action)=>
             currentDraft: action.payload
           }
         }
-      }
+      };
     case CREATE_ARTICLE_FORM.CLEAR_FORM_DATA:
       return {
         ...state,
@@ -128,7 +110,7 @@ const reducer = (state={...initialState}, action)=>
             currentDraft: {}
           }
         }
-      }
+      };
     case CREATE_ARTICLE_FORM.ENQUEUE_ERROR:
       return {
         ...state,
@@ -139,7 +121,7 @@ const reducer = (state={...initialState}, action)=>
             errors: [...state.forms.create.errors, action.payload]
           }
         }
-      }
+      };
     case CREATE_ARTICLE_FORM.DEQUEUE_ERROR:
       return {
         ...state,
@@ -150,7 +132,31 @@ const reducer = (state={...initialState}, action)=>
             errors: state.forms.create.errors.slice(1)
           }
         }
-      }
+      };
+    case EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFT:
+      return {
+        ...state,
+        forms: {
+          ...state.forms,
+          edit: {
+            ...state.forms.edit,
+            articlesToEdit: [action.payload, ...state.forms.edit.articlesToEdit]
+          }
+        }
+      };
+
+    case EDIT_ARTICLE_FORM.POP_ARTICLE_DRAFT:
+      return {
+        ...state,
+        forms: {
+          ...state.forms,
+          edit: {
+            ...state.forms.edit,
+            contributors: [],
+            articlesToEdit: state.forms.edit.articlesToEdit.slice(1)
+          }
+        }
+      };
     case EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFTS:
       return {
         ...state,
@@ -160,18 +166,65 @@ const reducer = (state={...initialState}, action)=>
           edit: {
             ...state.forms.edit,
             articlesToEdit: [
-              ...action.payload, ...state.forms.edit.articlesToEdit
+              ...action.payload,
+              ...state.forms.edit.articlesToEdit
             ]
           }
-
         }
-      }
+      };
+    case EDIT_ARTICLE_FORM.ADD_CONTRIBUTOR:
+      return {
+        ...state,
+        forms: {
+          ...state.forms,
+          edit: {
+            ...state.forms.edit,
+            contributors: [
+              ...state.forms.edit.contributors,
+              action.payload.contributorId
+            ]
+          }
+        }
+      };
+    case EDIT_ARTICLE_FORM.ADD_CONTRIBUTORS:
+      return {
+        ...state,
+        forms: {
+          ...state.forms,
+          edit: {
+            ...state.forms.edit,
+            contributors: [
+              ...state.forms.edit.contributors,
+              ...action.payload.contributorIds
+            ]
+          }
+        }
+      };
+    case EDIT_ARTICLE_FORM.REMOVE_CONTRIBUTOR:
+      return (() => {
+        const contributors = state.forms.edit.contributors;
+        const contributorIndex = contributors.indexOf(
+          action.payload.contributorId
+        );
+        const newContributors = contributors
+        .slice(0, contributorIndex)
+        .concat(contributors.slice(contributorIndex + 1));
+        return {
+          ...state,
+          forms: {
+            ...state.forms,
+            edit: {
+              ...state.forms.edit,
+              contributors: newContributors
+            }
+          }
+        };
+      })()
     default:
-        break;
-    }
+      break;
+  }
 
-    return state;
+  return state;
 };
 
-export default reducer
-
+export default reducer;

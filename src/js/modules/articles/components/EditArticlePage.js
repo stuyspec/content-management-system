@@ -1,35 +1,53 @@
 /**
  * Created by nicholas on 8/9/17.
  */
-import React, { Component } from 'react'
-import ArticleForm from './ArticleForm'
-import Paper from 'material-ui/Paper'
-import { connect } from 'react-redux'
-import { editArticleSelectors } from '../selectors'
-import { editArticleActions } from '../actions'
-import { randomUserSelector } from '../../users/selectors'
-import injectSheet from 'react-jss'
+import React, { Component } from "react";
+import ArticleForm from "./ArticleForm";
+import Paper from "material-ui/Paper";
+import { connect } from "react-redux";
+import { editArticleSelectors } from "../selectors";
+import { editArticleActions } from "../actions";
+import { randomUserSelector } from "../../users/selectors";
+import { push } from "connected-react-router";
+import injectSheet from "react-jss";
 
 const styles = {
-  editArticlePage:{
+  editArticlePage: {
     padding: "5%"
   }
-}
+};
 
 class EditArticlePage extends Component {
 
   constructor(props) {
     super(props);
-    const { articlesToEdit } = this.props;
-    const { id, title, content, section } = articlesToEdit[0];
-    this.state = {
-      id,
-      title,
-      content,
-      section,
-      titleError: "",
-      contributorsError: ""
-    };
+    const { articlesToEdit, popArticleDraft, addContributors } = this.props;
+    if (articlesToEdit.length > 0) {
+      const { id, title, content, section, contributors } = articlesToEdit[0];
+      popArticleDraft();
+      addContributors(contributors);
+      this.state = {
+        id,
+        title,
+        content,
+        section,
+        titleError: "",
+        contributorsError: ""
+      };
+    }
+  }
+
+  componentWillMount() {
+    const { articlesToEdit, push } = this.props;
+    if (articlesToEdit.length === 0) {
+      push("/404");
+    }
+  }
+
+  componentWillUnmount() {
+    const { id, title, content, section } = this.state;
+    const { contributors } = this.props;
+    this.pushArticleDraft(id, title, content, section, contributors);
   }
 
   handleContentChange = content => {
@@ -44,14 +62,13 @@ class EditArticlePage extends Component {
     this.setState({ section: value });
   };
 
-
   render() {
     const {
       contributors,
       formErrors,
       addContributor,
       removeContributor,
-      availableUsers,
+      availableUsernames,
       randomUser,
       onSubmit,
       sections,
@@ -59,17 +76,10 @@ class EditArticlePage extends Component {
       clearError,
       classes
     } = this.props;
-    const {
-      title,
-      content,
-      section
-    } = this.state;
+    const { title, content, section } = this.state;
     return (
-      <Paper
-        className={classes.createArticlePage}
-        zDepth={2}
-      >
-        <h2> Create Article </h2>
+      <Paper className={classes.editArticlePage} zDepth={2}>
+        <h2> Editing "{ title }"</h2>
         <ArticleForm
           contributors={contributors}
           title={title}
@@ -83,7 +93,7 @@ class EditArticlePage extends Component {
           removeContributor={removeContributor}
           throwError={throwError}
           clearError={clearError}
-          availableUsers={availableUsers}
+          availableUsernames={availableUsernames}
           randomUser={randomUser}
           onSubmit={onSubmit}
           sections={sections}
@@ -93,15 +103,14 @@ class EditArticlePage extends Component {
   }
 }
 
-
 const mapStateToProps = state => ({
   articlesToEdit: state.articles.forms.edit.articlesToEdit,
   formErrors: state.articles.forms.edit.errors,
-  availableUsers: editArticleSelectors.availableUsernamesSelector(state),
+  availableUsernames: editArticleSelectors.availableUsernamesSelector(state),
   contributors: editArticleSelectors.contributorsUsersSelector(state),
   randomUser: randomUserSelector(state),
   sections: state.sections.list
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: formData => {
@@ -114,17 +123,35 @@ const mapDispatchToProps = dispatch => ({
     dispatch(editArticleActions.clearError());
   },
   throwError: error => {
-    dispatch(editArticleActions.throwError(error))
+    dispatch(editArticleActions.throwError(error));
   },
-  addContributor: (contributorUsername) => {
-    dispatch(editArticleActions.addContributor(contributorUsername))
+  popArticleDraft: () => {
+    dispatch(editArticleActions.popArticleDraft());
+  },
+  pushArticleDraft: (articleId, title, content, section) => {
+    dispatch(
+      editArticleActions.pushArticleDraft({
+        title,
+        content,
+        section,
+        articleId
+      })
+    );
+  },
+  addContributor: contributorUsername => {
+    dispatch(editArticleActions.addContributor(contributorUsername));
+  },
+  addContributors: contributorIds => {
+    dispatch(editArticleActions.addContributors(contributorIds))
   },
   removeContributor: id => {
     dispatch(editArticleActions.removeContributor(id));
+  },
+  push: route => {
+    dispatch(push(route));
   }
-})
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectSheet(styles)(EditArticlePage))
+export default connect(mapStateToProps, mapDispatchToProps)(
+  injectSheet(styles)(EditArticlePage)
+);

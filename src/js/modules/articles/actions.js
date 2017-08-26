@@ -8,6 +8,7 @@ import {
   fetchAuthorships,
   updateAuthorships } from '../authorships/actions'
 import { push } from 'connected-react-router'
+import { getSelectedArticlesWithContributors } from './selectors'
 
 // The reason these are two different objects is because the actions
 // have subtly different error handling. If I can find a way to collapse
@@ -121,11 +122,11 @@ editArticleActions.clearError = () => ({
   type: t.EDIT_ARTICLE_FORM.CLEAR_ERROR
 });
 
-editArticleActions.addContributor = contributorName =>
+editArticleActions.addContributor = contributorUsername =>
   (dispatch, getState) => {
     const users = usersSelector(getState());
     const contributor = users.find(
-      user => `${user.firstName} ${user.lastName}` === contributorName
+      user => user.username === contributorUsername
     );
     const contributorId = contributor.id;
 
@@ -134,6 +135,12 @@ editArticleActions.addContributor = contributorName =>
       payload: { contributorId }
     });
   };
+
+editArticleActions.addContributors = contributorIds => ({
+  type: t.EDIT_ARTICLE_FORM.ADD_CONTRIBUTORS,
+  payload: { contributorIds }
+})
+
 
 editArticleActions.removeContributor = contributorId => ({
   type: t.EDIT_ARTICLE_FORM.REMOVE_CONTRIBUTOR,
@@ -177,9 +184,10 @@ editArticleActions.submitForm = ({ title,
 };
 
 editArticleActions.editSelectedArticles = () => (dispatch, getState) => {
+  const selectedArticles = getSelectedArticlesWithContributors(getState());
   dispatch({
     type: t.EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFTS,
-    payload: getState().articles.selected
+    payload: selectedArticles
   })
   dispatch(push("/articles/edit"))
 }
