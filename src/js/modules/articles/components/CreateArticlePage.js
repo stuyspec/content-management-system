@@ -51,6 +51,13 @@ class CreateArticlePage extends Component {
     this.setState({ section: value });
   };
 
+  handleSubmit = () => {
+    const { title, content, section } = this.state;
+    const { contributors } = this.props;
+    const formData = { title, content, sectionId: section, contributors }
+    this.props.onSubmit(formData);
+  }
+
   render() {
     const {
       contributors,
@@ -59,7 +66,6 @@ class CreateArticlePage extends Component {
       removeContributor,
       availableUsernames,
       randomUser,
-      onSubmit,
       sections,
       classes,
       enqueueError,
@@ -72,7 +78,6 @@ class CreateArticlePage extends Component {
       titleError,
       contributorsError
     } = this.state;
-    console.log(availableUsernames)
     return (
       <Paper className={classes.createArticlePage} zDepth={2}>
         <h2> Create Article </h2>
@@ -93,7 +98,7 @@ class CreateArticlePage extends Component {
           handleTitleError={this.handleTitleError}
           handleContributorsError={this.handleContributorsError}
           randomUser={randomUser}
-          onSubmit={onSubmit}
+          onSubmit={this.handleSubmit}
           sections={sections}
           enqueueError={enqueueError}
           dequeueError={dequeueError}

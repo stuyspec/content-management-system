@@ -24,24 +24,17 @@ class ArticleForm extends Component {
     const {
       title,
       content,
+      sections,
       section,
       contributors,
-      onSubmit,
-      sections
+      onSubmit
     } = this.props;
-    const formData = {
-      title,
-      content,
-      sections,
-      contributors,
-      sectionId: section
-    };
-    if (this.validateForm(formData)) {
+    if (this.validateForm(title, content, sections, section, contributors)) {
       onSubmit();
     }
   };
 
-  validateForm = ({ title, content, sections, sectionId, contributors }) => {
+  validateForm = ( title, content, sections, sectionId, contributors ) => {
     // TODO: Make errors a stack, not just a string
     let validForm = true;
     const { handleTitleError, handleContributorsError } = this.props;
