@@ -94,7 +94,7 @@ const reducer = (state={...initialState}, action)=>
         ...state,
         editArticle: {
           ...state.editArticle,
-          drafts: [...state.editArticle.drafts, action.payload]
+          drafts: [action.payload, ...state.editArticle.drafts]
         }
       }
 
@@ -104,7 +104,7 @@ const reducer = (state={...initialState}, action)=>
         editArticle: {
           ...state.editArticle,
           contributors: [],
-          drafts: state.articles.drafts.slice(0, -1)
+          drafts: state.articles.drafts.slice(1)
         }
       }
     case CREATE_ARTICLE_FORM.SAVE_FORM_DATA:

@@ -6,7 +6,7 @@ import ContributorsList from "./ContributorsList";
 import ContributorsInput from "./ArticleInputs/ContributorsInput";
 import injectSheet from "react-jss";
 import RaisedButton from "material-ui/RaisedButton";
-import FormErrorDialog from '../../forms/components/FormErrorDialog'
+import FormErrorDialog from "../../forms/components/FormErrorDialog";
 
 const styles = {
   button: {
@@ -16,62 +16,53 @@ const styles = {
 };
 
 class ArticleForm extends Component {
-
-  constructor(props) {
-    super(props);
-    const { title, content } = this.props;
-    this.state = {
-      title,
-      content,
-      sectionId: 2
-    };
-  }
-  handleContentChange = content => {
-    this.setState({ content: content });
-  };
-
-  handleTitleChange = event => {
-    this.setState({ title: event.target.value });
-  };
-
-  handleSectionChange = (event, index, value) => {
-    this.setState({ sectionId: value });
-  };
-
   handleDialogCancel = () => {
     this.props.dequeueError();
-  }
+  };
 
   handleSubmit = event => {
-    const { title, content, sectionId } = this.state;
-    const { contributors, onSubmit, sections } = this.props;
-    const formData = { title, content, sections, sectionId, contributors };
+    const {
+      title,
+      content,
+      section,
+      contributors,
+      onSubmit,
+      sections
+    } = this.props;
+    const formData = {
+      title,
+      content,
+      sections,
+      contributors,
+      sectionId: section
+    };
     if (this.validateForm(formData)) {
-      onSubmit(formData);
+      onSubmit();
     }
   };
 
   validateForm = ({ title, content, sections, sectionId, contributors }) => {
     // TODO: Make errors a stack, not just a string
     let validForm = true;
+    const { handleTitleError, handleContributorsError } = this.props;
     if (title === undefined || !title.length > 0) {
-      this.setState({titleError: "Title cannot be blank"})
-      validForm = false
+      handleTitleError("Title cannot be blank");
+      validForm = false;
     }
     if (content === undefined || !content.length > 0) {
       this.props.enqueueError("Content cannot be blank");
-      validForm = false
+      validForm = false;
     }
     if (!sections.find(section => section.id === sectionId)) {
-      this.props.enqueueError("Please choose a valid section")
-      validForm = false
+      this.props.enqueueError("Please choose a valid section");
+      validForm = false;
     }
     if (!contributors.length > 0) {
-      this.setState({contributorsError: "Contributors cannot be blank"})
-      validForm = false
+      handleContributorsError("Contributors cannot be blank")
+      validForm = false;
     }
-    return validForm
-  }
+    return validForm;
+  };
 
   render() {
     const {
@@ -81,62 +72,63 @@ class ArticleForm extends Component {
       availableUsernames,
       randomUser,
       addContributor,
+      removeContributor,
       sections,
-      removeContributor } = this.props;
-    const {
+      handleTitleChange,
+      handleSectionChange,
+      handleContentChange,
       title,
-      sectionId,
       content,
+      section,
       titleError,
-      contributorsError } = this.state;
+      contributorsError
+    } = this.props;
     return (
-    <div>
+      <div>
         <FormErrorDialog
           formErrors={formErrors}
           onRetry={this.handleSubmit}
           onCancel={this.handleDialogCancel}
         />
         <form onSubmit={this.handleSubmit}>
-        <TitleInput
-          errorText={titleError}
-          title={title}
-          hintText={"Enter a title"}
-          handleTitleChange={this.handleTitleChange}
-        />
-        {
-          contributors.length > 0 &&
-          <ContributorsList
-            contributors={contributors}
-            removeContributor={removeContributor}
+          <TitleInput
+            errorText={titleError}
+            title={title}
+            hintText={"Enter a title"}
+            handleTitleChange={handleTitleChange}
           />
-        }
-        <ContributorsInput
-          errorText={contributorsError}
-          availableUsernames={availableUsernames}
-          contributors={contributors}
-          randomUser={randomUser}
-          addContributor={addContributor}
-        />
+          {contributors.length > 0 &&
+            <ContributorsList
+              contributors={contributors}
+              removeContributor={removeContributor}
+            />}
+          <ContributorsInput
+            errorText={contributorsError}
+            availableUsernames={availableUsernames}
+            contributors={contributors}
+            randomUser={randomUser}
+            addContributor={addContributor}
+          />
 
-            <SectionInput
-              section={sectionId}
-              sections={sections}
-              handleSectionChange={this.handleSectionChange}
+          <SectionInput
+            section={section}
+            sections={sections}
+            handleSectionChange={handleSectionChange}
+          />
+
+          <ContentInput
+            content={content}
+            handleContentChange={handleContentChange}
+          />
+
+          <div className={classes.button}>
+            <RaisedButton
+              primary={true}
+              label="Submit"
+              onClick={this.handleSubmit}
             />
-
-            <ContentInput
-              content={content}
-              handleContentChange={this.handleContentChange}
-            />
-
-            <div className={classes.button}>
-              <RaisedButton
-                primary={true}
-                label="Submit"
-                onClick={this.handleSubmit}
-              />
-            </div>
-          </form>
+          </div>
+        </form>
       </div>
     );
   }

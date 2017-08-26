@@ -16,25 +16,14 @@ const styles = {
   }
 }
 
-/*
-Props:
-  contributors,
-  title,
-  content,
-  errors,
-  classes,
-  addContributor,
-  availableUsers,
-  removeContributor,
-  randomUser,
-  onSubmit
-*/
 class EditArticlePage extends Component {
 
   constructor(props) {
     super(props);
-    const { title, content, section } = this.props;
+    const { articlesToEdit } = this.props;
+    const { id, title, content, section } = articlesToEdit[0];
     this.state = {
+      id,
       title,
       content,
       section,
@@ -43,11 +32,18 @@ class EditArticlePage extends Component {
     };
   }
 
-  componentWillMount(){
-    if () {
+  handleContentChange = content => {
+    this.setState({ content: content });
+  };
 
-    }
-  }
+  handleTitleChange = event => {
+    this.setState({ title: event.target.value });
+  };
+
+  handleSectionChange = (event, index, value) => {
+    this.setState({ section: value });
+  };
+
 
   render() {
     const {
@@ -78,6 +74,10 @@ class EditArticlePage extends Component {
           contributors={contributors}
           title={title}
           content={content}
+          section={section}
+          handleContentChange={this.handleContentChange}
+          handleTitleChange={this.handleTitleChange}
+          handleSectionChage={this.handleSectionChange}
           formErrors={formErrors}
           addContributor={addContributor}
           removeContributor={removeContributor}
@@ -87,7 +87,6 @@ class EditArticlePage extends Component {
           randomUser={randomUser}
           onSubmit={onSubmit}
           sections={sections}
-          section={section}
         />
       </Paper>
     );
