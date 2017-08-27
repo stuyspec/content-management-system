@@ -1,33 +1,34 @@
-import * as t from './actionTypes'
-import { STUY_SPEC_API_URL, AXIOS_CONFIG } from '../../constants'
-import axios from 'axios'
-import { push } from 'connected-react-router'
+import axios from "axios";
+import { push } from "connected-react-router";
+
+import { STUY_SPEC_API_URL, AXIOS_CONFIG } from "../../constants";
+import * as t from "./actionTypes";
 
 export const fetchSections = () => (
   dispatch => {
     // Start loading icon
     dispatch({
-      type: t.FETCH_SECTIONS_REQUESTED,
-    })
+      type: t.FETCH_SECTIONS_PENDING,
+    });
     axios.get(
       `${STUY_SPEC_API_URL}/sections`, AXIOS_CONFIG
     )
     .then(response => {
       dispatch({
-          type: t.FETCH_SECTIONS_SUCCEEDED,
+          type: t.FETCH_SECTIONS_FULFILLED,
           payload: response.data
-        })
+        });
       }
     )
     .catch(error => {
       dispatch({
-          type: t.FETCH_SECTIONS_FAILED,
+          type: t.FETCH_SECTIONS_REJECTED,
           payload: error
-        })
+        });
       }
-    )
+    );
   }
-)
+);
 
 export const createSection = section => dispatch => {
   // TODO: Create loading anims

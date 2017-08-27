@@ -73,6 +73,8 @@
     "react-ckeditor-wrapper": "^1.0.22",
     "react-inlinesvg": "^0.6.2",
     "react-svg": "^2.1.21",
+    "redux-form": "^7.0.3",
+    "redux-form-material-ui": "^4.2.0",
     "reselect": "^3.0.1",
     "yargs": "^8.0.2"
   }

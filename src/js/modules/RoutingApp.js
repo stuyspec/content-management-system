@@ -10,8 +10,10 @@ import store from "../store";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { Route, Switch } from "react-router-dom";
 import MainApp from "./main/components/MainApp";
-import NotFoundPage from "./main/components/NotFoundPage"
-import HomePage from "./main/components/HomePage"
+import NotFoundPage from "./main/components/NotFoundPage";
+import HomePage from "./main/components/HomePage";
+
+import SectionsTable from "./sections/components/SectionsTableForm";
 
 class RoutingApp extends Component {
   render() {
@@ -24,6 +26,7 @@ class RoutingApp extends Component {
                 <Route exact path="/articles" component={ArticlesTable} />
                 <Route path="/articles/new" component={CreateArticlePage} />
                 <Route exact path="/users" component={UsersList} />
+                <Route path="/sections" component={SectionsTable} />
                 <Route path="/sections/new" component={SectionForm} />
                 <Route exact path="/" component={HomePage} />
                 <Route component={NotFoundPage} />
