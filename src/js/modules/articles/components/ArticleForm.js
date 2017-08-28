@@ -34,7 +34,7 @@ class ArticleForm extends Component {
     }
   };
 
-  validateForm = ( title, content, sections, sectionId, contributors ) => {
+  validateForm = (title, content, sections, sectionId, contributors) => {
     // TODO: Make errors a stack, not just a string
     let validForm = true;
     const { handleTitleError, handleContributorsError } = this.props;
@@ -51,7 +51,7 @@ class ArticleForm extends Component {
       validForm = false;
     }
     if (!contributors.length > 0) {
-      handleContributorsError("Contributors cannot be blank")
+      handleContributorsError("Contributors cannot be blank");
       validForm = false;
     }
     return validForm;
