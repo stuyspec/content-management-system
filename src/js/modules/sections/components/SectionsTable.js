@@ -8,140 +8,106 @@ import {
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton'
-import { connect } from 'react-redux'
-import injectSheet from 'react-jss'
-import UserChip from '../../users/components/UserChip'
-import { articlesPreviewSelector } from '../selectors'
-import { getContributorsByArticle } from '../../authorships/selectors'
-import { setSelectedArticles, deleteArticles } from '../actions'
+  TableRowColumn
+} from "material-ui/Table";
+import RaisedButton from "material-ui/RaisedButton";
+import { connect } from "react-redux";
+import injectSheet from "react-jss";
+import { setSelectedSections, deleteSections } from '../actions'
 
 const styles = {
-  articlesTable: {
+  sectionsTable: {
     margin: "5%",
     maxWidth: "800px"
   }
-}
+};
 
-// TODO: Change selected logic to ids instead of indices
-class ArticlesTable extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  isSelected = id => {
-    const { selectedArticles } = this.props;
-    return selectedArticles.indexOf(id) !== -1;
+const SectionsTable = ({
+  classes,
+  sections,
+  selectedSections,
+  setSelectedSections,
+  deleteSelectedSections,
+  editSelectedSections
+}) => {
+  const isSelected = id => {
+    return selectedSections.indexOf(id) !== -1;
   };
 
-  handleRowSelection = rowsSelected => {
-    const { articles, setSelectedArticles } = this.props;
+  const handleRowSelection = rowsSelected => {
     if (rowsSelected === "none") {
-      setSelectedArticles([]);
+      setSelectedSections([]);
     } else if (rowsSelected === "all") {
-      const allArticleIds = articles.map(article => article.id);
-      setSelectedArticles(allArticleIds);
+      const allSectionIds = sections.map(section => section.id);
+      setSelectedSections(allSectionIds);
     } else {
-      const selectedArticleIds = rowsSelected.map(row => articles[row].id);
-      setSelectedArticles(selectedArticleIds);
+      const selectedSectionIds = rowsSelected.map(row => sections[row].id);
+      setSelectedSections(selectedSectionIds);
     }
   };
 
-  handleRowDeletion = () => {
-    const {
-      selectedArticles,
-      setSelectedArticles,
-      deleteSelectedArticles
-    } = this.props;
-
-    if (selectedArticles) {
-      deleteSelectedArticles(selectedArticles);
-      setSelectedArticles([]);
+  const handleRowDeletion = () => {
+    if (selectedSections) {
+      deleteSelectedSections(selectedSections);
+      setSelectedSections([]);
     }
   };
 
-  render() {
-    const {
-      articles,
-      classes,
-      contributors,
-      selectedArticles,
-      editSelectedArticles
-    } = this.props;
-    const deleteButtonLabel =
-      selectedArticles.length > 1 ? "Delete Articles" : "Delete Article";
-    const editButtonLabel =
-      selectedArticles.length > 1 ? "Edit Articles" : "Edit Article";
-    return (
-      <div className={classes.articlesTable}>
-        <h2> Articles Table </h2>
-        <RaisedButton
-          label={deleteButtonLabel}
-          onClick={this.handleRowDeletion}
-        />
-        <RaisedButton label={editButtonLabel} onClick={editSelectedArticles} />
-        <Table
-          fixedHeader={false}
-          onRowSelection={this.handleRowSelection}
-          multiSelectable
-        >
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn> Title </TableHeaderColumn>
-              <TableHeaderColumn> Contributors </TableHeaderColumn>
-              <TableHeaderColumn> Content </TableHeaderColumn>
+  const deleteButtonLabel =
+    selectedSections.length > 1 ? "Delete Sections" : "Delete Section";
+  const editButtonLabel =
+    selectedSections.length > 1 ? "Edit Sections" : "Edit Section";
+  return (
+    <div className={classes.sectionsTable}>
+      <h2> Sections Table </h2>
+      <RaisedButton
+        label={deleteButtonLabel}
+        onClick={handleRowDeletion}
+      />
+      <RaisedButton label={editButtonLabel} onClick={editSelectedSections} />
+      <Table
+        fixedHeader={false}
+        onRowSelection={handleRowSelection}
+        multiSelectable
+      >
+        <TableHeader>
+          <TableRow>
+            <TableHeaderColumn> Name </TableHeaderColumn>
+            <TableHeaderColumn> Description </TableHeaderColumn>
+            <TableHeaderColumn> No. of Articles </TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody deselectOnClickaway={false}>
+          {sections.map(section =>
+            <TableRow key={section.id} selected={isSelected(section.id)}>
+              <TableRowColumn>
+                {" "}{section.name}{" "}
+              </TableRowColumn>
+              <TableRowColumn>
+                {" "}{section.description}{" "}
+              </TableRowColumn>
+              <TableRowColumn />
             </TableRow>
-          </TableHeader>
-          <TableBody deselectOnClickaway={false}>
-            {articles.map(article =>
-              <TableRow
-                key={article.id}
-                selected={this.isSelected(article.id)}
-              >
-                <TableRowColumn>
-                  {" "}{article.title}{" "}
-                </TableRowColumn>
-                <TableRowColumn>
-                  {contributors[article.id].map(contributor =>
-                    <UserChip key={contributor.id} user={contributor} />
-                  )}
-                </TableRowColumn>
-                <TableRowColumn>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: article.content.slice(0, 200)
-                    }}
-                  />
-                </TableRowColumn>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    );
-  }
-}
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
 
 const mapStateToProps = state => ({
-  articles: articlesPreviewSelector(state),
-  users: state.users.list,
-  selectedArticles: state.articles.selected,
-  contributors: getContributorsByArticle(state)
-})
+  sections: state.sections.list,
+  selectedSections: state.sections.selected
+});
 
 const mapDispatchToProps = dispatch => ({
-  deleteSelectedArticles: selectedArticleIds =>
-    dispatch(deleteArticles(selectedArticleIds)),
-  setSelectedArticles: selectedArticles =>
-    dispatch(setSelectedArticles(selectedArticles)),
-  editSelectedArticles: () =>
-    dispatch(editArticleActions.editSelectedArticles())
+  deleteSelectedSections: selectedSectionIds =>
+    dispatch(deleteSections(selectedSectionIds)),
+  setSelectedSections: selectedSections =>
+    dispatch(setSelectedSections(selectedSections)),
+  editSelectedSections: () => console.log("TBD: Json implements editing")
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  injectSheet(styles)(ArticlesTable)
+  injectSheet(styles)(SectionsTable)
 );
-
-export default SectionTable;

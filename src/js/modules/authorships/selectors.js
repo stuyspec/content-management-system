@@ -2,7 +2,7 @@
  * Created by nicholas on 8/4/17.
  */
 import { createSelector } from "reselect";
-import { articlesSelector, getSelectedArticles } from "../articles/selectors";
+import { getSelectedArticles } from "../articles/selectors";
 import { usersSelector } from "../users/selectors";
 
 export const getAuthorships = state => state.authorships.list;
@@ -10,7 +10,7 @@ export const getAuthorships = state => state.authorships.list;
 // Returns object with the format articleId:[users]
 export const getContributorsByArticle = createSelector(
   getAuthorships,
-  articlesSelector,
+  getSelectedArticles,
   usersSelector,
   (authorships, articles, users) => {
     let contributors = {};

@@ -25,7 +25,6 @@ const styles = {
    }
 }
 
-// TODO: Change selected logic to ids instead of indices
 class ArticlesTable extends Component {
   constructor(props) {
     super(props);

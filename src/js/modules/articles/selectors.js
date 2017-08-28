@@ -4,12 +4,12 @@
 import { createSelector } from "reselect";
 import { usersSelector } from "../users/selectors";
 
-export const articlesSelector = state => state.articles.list;
+export const getSelectedArticles = state => state.articles.list;
 export const getSelected = state => state.articles.selected;
 
 
 export const articlesPreviewSelector = createSelector(
-  articlesSelector,
+  getSelectedArticles,
   articles =>
     articles.map(article => {
       const content = article.content;
@@ -28,17 +28,10 @@ export const articlesPreviewSelector = createSelector(
     })
 );
 
-export const getSelectedArticles = createSelector(
-  articlesSelector,
-  getSelected,
-  (articles, selected) =>
-    articles.filter(article => selected.includes(article.id))
-);
-
 
 // For fun
 export const randomArticleSelector = createSelector(
-  articlesSelector,
+  getSelectedArticles,
   articles => articles[Math.floor(Math.random() * articles.length)]
 );
 
