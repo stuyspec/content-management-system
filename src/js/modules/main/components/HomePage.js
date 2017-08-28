@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { currentUserSelector } from '../../users/selectors'
 
 const HomePage = ({ currentUser }) => (
-  <h1> Welcome {currentUser.name} </h1>
+  <h1> Welcome {currentUser.firstName} </h1>
 )
 
 const mapStateToProps = state => ({

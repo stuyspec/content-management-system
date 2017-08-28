@@ -3,7 +3,7 @@ import {
 } from './actionTypes'
 
   const initialState = {
-  currentUser: 0,
+  currentUser: 1,
   list: [
     {
       id: 0,
@@ -41,7 +41,8 @@ import {
         // Does nothing for rn, need to set up more infrastructure before this
         // can actually work
         case FETCH_USERS_SUCCEEDED:
-          return { ...state, list: action.payload }
+          const currentUser = action.payload[0].id
+          return { ...state, list: action.payload, currentUser }
         default:
               break;
       }

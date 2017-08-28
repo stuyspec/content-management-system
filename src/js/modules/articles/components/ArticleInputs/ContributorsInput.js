@@ -6,13 +6,6 @@ import AutoComplete from 'material-ui/AutoComplete';
 
 import injectSheet from 'react-jss'
 
-const styles = {
-  addContributorButton: {
-    margin: '10px',
-  }
-};
-
-
 class ContributorsInput extends Component {
   constructor(props) {
     super(props);
@@ -29,10 +22,12 @@ class ContributorsInput extends Component {
   };
 
   handleNewRequest = () => {
-    const { availableUsers, contributors } = this.props;
+    const { availableUsernames, contributors } = this.props;
     const { searchText } = this.state;
-    const contributorNames = contributors.map(contributor => contributor.name)
-    if (availableUsers.includes(searchText) &&
+    const contributorNames = contributors.map(
+      contributor => contributor.username
+    )
+    if (availableUsernames.includes(searchText) &&
       !contributorNames.includes(searchText)) {
       this.props.addContributor(searchText);
       this.setState({
@@ -42,7 +37,7 @@ class ContributorsInput extends Component {
   };
 
   render() {
-    const { availableUsers, randomUser, errorText } = this.props
+    const { availableUsernames, randomUser, errorText } = this.props
     return (
       <div>
         <AutoComplete
@@ -52,7 +47,7 @@ class ContributorsInput extends Component {
           searchText={this.state.searchText}
           onUpdateInput={this.handleUpdateInput}
           onNewRequest={this.handleNewRequest}
-          dataSource={availableUsers}
+          dataSource={availableUsernames}
           filter={AutoComplete.fuzzyFilter}
           openOnFocus={true}
         />
@@ -60,4 +55,4 @@ class ContributorsInput extends Component {
   }
 }
 
-export default injectSheet(styles)(ContributorsInput);
+export default ContributorsInput;
