@@ -38,7 +38,7 @@ export const createSection = section => dispatch => {
         payload: response.data
       });
       dispatch(fetchSections());
-      dispatch(push("/"));
+      dispatch(push("/sections"));
     })
     // TODO: Create error messages for requests
     .catch(error => {

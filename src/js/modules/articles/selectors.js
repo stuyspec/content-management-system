@@ -4,34 +4,37 @@
 import { createSelector } from "reselect";
 import { usersSelector } from "../users/selectors";
 
-export const getSelectedArticles = state => state.articles.list;
+export const getArticles = state => state.articles.list;
 export const getSelected = state => state.articles.selected;
 
-
-export const articlesPreviewSelector = createSelector(
-  getSelectedArticles,
-  articles =>
-    articles.map(article => {
-      const content = article.content;
-      // TODO: Make this more scientific on picking preview
-      let contentPreview;
-      if (content) {
-        const lastWordIndex = content.indexOf("</p>") + 4;
-        contentPreview = content.substring(0, lastWordIndex);
-      } else {
-        contentPreview = "Blank";
-      }
-      return {
-        ...article,
-        content: contentPreview
-      };
-    })
+export const getSelectedArticles = createSelector(
+  getArticles,
+  getSelected,
+  (articles, selected) =>
+    articles.filter(article => selected.includes(article.id))
 );
 
+export const articlesPreviewSelector = createSelector(getArticles, articles =>
+  articles.map(article => {
+    const content = article.content;
+    // TODO: Make this more scientific on picking preview
+    let contentPreview;
+    if (content) {
+      const lastWordIndex = content.indexOf("</p>") + 4;
+      contentPreview = content.substring(0, lastWordIndex);
+    } else {
+      contentPreview = "Blank";
+    }
+    return {
+      ...article,
+      content: contentPreview
+    };
+  })
+);
 
 // For fun
 export const randomArticleSelector = createSelector(
-  getSelectedArticles,
+  getArticles,
   articles => articles[Math.floor(Math.random() * articles.length)]
 );
 
