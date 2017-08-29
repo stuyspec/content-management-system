@@ -254,7 +254,7 @@ export const setSelectedArticles = selectedArticles => ({
   payload: selectedArticles
 })
 
-export const deleteArticles = articleSlugs => (
+export const deleteArticles = articleIds => (
   dispatch => {
     dispatch({
       type: t.DELETE_ARTICLES_REQUESTED
@@ -262,15 +262,15 @@ export const deleteArticles = articleSlugs => (
     axios
     .all(
 
-      articleSlugs.map(articleSlug =>
+      articleIds.map(articleId =>
         axios.delete(
-          `${STUY_SPEC_API_URL}/articles/${articleSlug}`
+          `${STUY_SPEC_API_URL}/articles/${articleId}`
         )
       )
     )
     .then(response => dispatch({
       type: t.DELETE_ARTICLES_SUCCEEDED,
-      payload: articleSlugs
+      payload: articleIds
       })
     )
     .catch(error => dispatch({
