@@ -8,35 +8,34 @@ import {
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton'
-import { connect } from 'react-redux'
-import injectSheet from 'react-jss'
-import UserChip from '../../users/components/UserChip'
-import { articlesPreviewSelector } from '../selectors'
-import { getContributorsByArticle } from '../../authorships/selectors'
-import { setSelectedArticles, deleteArticles } from '../actions'
+  TableRowColumn
+} from "material-ui/Table";
+import RaisedButton from "material-ui/RaisedButton";
+import { connect } from "react-redux";
+import injectSheet from "react-jss";
+import UserChip from "../../users/components/UserChip";
+import { articlesPreviewSelector } from "../selectors";
+import { getContributorsByArticle } from "../../authorships/selectors";
+import { setSelectedArticles, deleteArticles } from "../actions";
 
 const styles = {
   articlesTable: {
     margin: "5%",
     maxWidth: "800px"
-   }
-}
-
-class ArticlesTable extends Component {
-  constructor(props) {
-    super(props);
   }
+};
 
-  isSelected = id => {
-    const { selectedArticles } = this.props;
+const ArticlesTable = ({
+  articles,
+  selectedArticles,
+  classes,
+  setSelectedArticles,
+  deleteSelectedArticles
+}) => {
+  const isSelected = id => {
     return selectedArticles.indexOf(id) !== -1;
   };
-
-  handleRowSelection = rowsSelected => {
-    const { articles, setSelectedArticles } = this.props;
+  const handleRowSelection = rowsSelected => {
     if (rowsSelected === "none") {
       setSelectedArticles([]);
     } else if (rowsSelected === "all") {
@@ -48,87 +47,69 @@ class ArticlesTable extends Component {
     }
   };
 
-  handleRowDeletion = () => {
-    const {
-      selectedArticles,
-      setSelectedArticles,
-      deleteSelectedArticles
-    } = this.props;
-
+  const handleRowDeletion = () => {
     if (selectedArticles) {
       deleteSelectedArticles(selectedArticles);
       setSelectedArticles([]);
     }
   };
 
-  render() {
-    const {
-      articles,
-      classes,
-      contributors,
-      selectedArticles,
-      editSelectedArticles
-    } = this.props;
-    const deleteButtonLabel =
-      selectedArticles.length > 1 ? "Delete Articles" : "Delete Article";
-    const editButtonLabel =
-      selectedArticles.length > 1 ? "Edit Articles" : "Edit Article";
-    return (
-      <div className={classes.articlesTable}>
-        <h2> Articles Table </h2>
-        <RaisedButton
-          label={deleteButtonLabel}
-          onClick={this.handleRowDeletion}
-        />
-        <RaisedButton label={editButtonLabel} onClick={editSelectedArticles} />
-        <Table
-          fixedHeader={false}
-          onRowSelection={this.handleRowSelection}
-          multiSelectable
-        >
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn> Title </TableHeaderColumn>
-              <TableHeaderColumn> Contributors </TableHeaderColumn>
-              <TableHeaderColumn> Content </TableHeaderColumn>
+  const deleteButtonLabel =
+    selectedArticles.length > 1 ? "Delete Articles" : "Delete Article";
+  const editButtonLabel =
+    selectedArticles.length > 1 ? "Edit Articles" : "Edit Article";
+  return (
+    <div className={classes.articlesTable}>
+      <h2> Articles Table </h2>
+      <RaisedButton
+        label={deleteButtonLabel}
+        onClick={handleRowDeletion}
+      />
+      <RaisedButton label={editButtonLabel} onClick={editSelectedArticles} />
+      <Table
+        fixedHeader={false}
+        onRowSelection={handleRowSelection}
+        multiSelectable
+      >
+        <TableHeader>
+          <TableRow>
+            <TableHeaderColumn> Title </TableHeaderColumn>
+            <TableHeaderColumn> Contributors </TableHeaderColumn>
+            <TableHeaderColumn> Content </TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody deselectOnClickaway={false}>
+          {articles.map(article =>
+            <TableRow key={article.id} selected={isSelected(article.id)}>
+              <TableRowColumn>
+                {" "}{article.title}{" "}
+              </TableRowColumn>
+              <TableRowColumn>
+                {contributors[article.id].map(contributor =>
+                  <UserChip key={contributor.id} user={contributor} />
+                )}
+              </TableRowColumn>
+              <TableRowColumn>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: article.content.slice(0, 200)
+                  }}
+                />
+              </TableRowColumn>
             </TableRow>
-          </TableHeader>
-          <TableBody deselectOnClickaway={false}>
-            {articles.map(article =>
-              <TableRow
-                key={article.id}
-                selected={this.isSelected(article.id)}
-              >
-                <TableRowColumn>
-                  {" "}{article.title}{" "}
-                </TableRowColumn>
-                <TableRowColumn>
-                  {contributors[article.id].map(contributor =>
-                    <UserChip key={contributor.id} user={contributor} />
-                  )}
-                </TableRowColumn>
-                <TableRowColumn>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: article.content.slice(0, 200)
-                    }}
-                  />
-                </TableRowColumn>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    );
-  }
-}
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
 
 const mapStateToProps = state => ({
   articles: articlesPreviewSelector(state),
   users: state.users.list,
   selectedArticles: state.articles.selected,
   contributors: getContributorsByArticle(state)
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   deleteSelectedArticles: selectedArticleIds =>
