@@ -6,12 +6,13 @@ import {
 // so finding a section is not computationally difficult. Users, on the other
 // hand are really large so finding a user shouldn't be an O(n) task.
 const initialState = {
-  list: []
+  list: [],
+  selected: []
 };
 
 const reducer = (state = { ...initialState }, action) => {
   switch (action.type) {
-    case FETCH_SECTIONS_SUCCEEDED:
+    case FETCH_SECTIONS_FULFILLED:
       return { ...state, list: action.payload }
     default:
       break;

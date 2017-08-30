@@ -2,8 +2,10 @@ import Provider from "react-redux/lib/components/Provider";
 import React, { Component } from "react";
 import appHistory from "tools/appHistory";
 import CreateArticlePage from "./articles/components/CreateArticlePage"
+import EditArticlePage from "./articles/components/EditArticlePage"
 import SectionForm from "./sections/components/SectionForm";
 import ArticlesTable from "./articles/components/ArticlesTable";
+import SectionsTable from "./sections/components/SectionsTable";
 import UsersList from "./users/components/UsersList";
 import ConnectedRouter from "react-router-redux/ConnectedRouter";
 import store from "../store";
@@ -25,9 +27,11 @@ class RoutingApp extends Component {
               <Switch>
                 <Route exact path="/articles" component={ArticlesTable} />
                 <Route path="/articles/new" component={CreateArticlePage} />
+                <Route path="/articles/edit" component={EditArticlePage} />
                 <Route exact path="/users" component={UsersList} />
                 <Route path="/sections" component={SectionsTable} />
                 <Route path="/sections/new" component={SectionForm} />
+                <Route path="/sections" component={SectionsTable} />
                 <Route exact path="/" component={HomePage} />
                 <Route component={NotFoundPage} />
               </Switch>

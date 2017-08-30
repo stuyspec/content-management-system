@@ -8,25 +8,28 @@ import {
   fetchAuthorships,
   updateAuthorships } from '../authorships/actions'
 import { push } from 'connected-react-router'
+import { getSelectedArticlesWithContributors } from './selectors'
 
 // The reason these are two different objects is because the actions
 // have subtly different error handling. If I can find a way to collapse
 // the actions into one object, I will. But for now they're separate
 let createArticleActions = {};
 
-createArticleActions.throwError = error => ({
-  type: t.CREATE_ARTICLE_FORM.THROW_ERROR,
+createArticleActions.dequeueError = () => ({
+  type: t.CREATE_ARTICLE_FORM.DEQUEUE_ERROR,
+});
+
+createArticleActions.enqueueError = error => ({
+  type: t.CREATE_ARTICLE_FORM.ENQUEUE_ERROR,
   payload: error
 });
 
-createArticleActions.clearError = () => ({
-  type: t.CREATE_ARTICLE_FORM.CLEAR_ERROR
-});
-
-createArticleActions.addContributor = contributorName =>
+createArticleActions.addContributor = contributorUsername =>
   (dispatch, getState) => {
     const users = usersSelector(getState());
-    const contributor = users.find(user => user.name === contributorName);
+    const contributor = users.find(
+      user => user.username === contributorUsername
+    );
     const contributorId = contributor.id;
 
     dispatch({
@@ -54,10 +57,10 @@ createArticleActions.clearFormData =
 createArticleActions.submitForm = ({
                                           title,
                                           content,
-                                          section,
+                                          sectionId,
                                           contributors
                                         }) => dispatch => {
-  dispatch(createArticle({ title, content, section }))
+  dispatch(createArticle({ title, content, sectionId }))
   .then(response => {
     return dispatch(createAuthorships(contributors, response.data.id));
   })
@@ -82,12 +85,12 @@ createArticleActions.submitForm = ({
 export { createArticleActions }
 
 // Not part of the createArticleActions because it's not ambiguous
-export const createArticle = ({ title, content, section }) => dispatch => {
+export const createArticle = ({ title, content, sectionId }) => dispatch => {
   // TODO: Create loading anims
   dispatch({
     type: t.CREATE_ARTICLE_REQUESTED
   });
-  const article = { title, content, section };
+  const article = { title, content, section: sectionId };
   return (
     axios
     .post(`${STUY_SPEC_API_URL}/articles`, article)
@@ -119,10 +122,12 @@ editArticleActions.clearError = () => ({
   type: t.EDIT_ARTICLE_FORM.CLEAR_ERROR
 });
 
-editArticleActions.addContributor = contributorName =>
+editArticleActions.addContributor = contributorUsername =>
   (dispatch, getState) => {
     const users = usersSelector(getState());
-    const contributor = users.find(user => user.name === contributorName);
+    const contributor = users.find(
+      user => user.username === contributorUsername
+    );
     const contributorId = contributor.id;
 
     dispatch({
@@ -130,6 +135,12 @@ editArticleActions.addContributor = contributorName =>
       payload: { contributorId }
     });
   };
+
+editArticleActions.addContributors = contributorIds => ({
+  type: t.EDIT_ARTICLE_FORM.ADD_CONTRIBUTORS,
+  payload: { contributorIds }
+})
+
 
 editArticleActions.removeContributor = contributorId => ({
   type: t.EDIT_ARTICLE_FORM.REMOVE_CONTRIBUTOR,
@@ -172,7 +183,17 @@ editArticleActions.submitForm = ({ title,
   });
 };
 
+editArticleActions.editSelectedArticles = () => (dispatch, getState) => {
+  const selectedArticles = getSelectedArticlesWithContributors(getState());
+  dispatch({
+    type: t.EDIT_ARTICLE_FORM.PUSH_ARTICLE_DRAFTS,
+    payload: selectedArticles
+  })
+  dispatch(push("/articles/edit"))
+}
+
 export { editArticleActions };
+
 
 export const updateArticle = ({ title,
                                 content,
@@ -233,7 +254,7 @@ export const setSelectedArticles = selectedArticles => ({
   payload: selectedArticles
 })
 
-export const deleteArticles = articleSlugs => (
+export const deleteArticles = articleIds => (
   dispatch => {
     dispatch({
       type: t.DELETE_ARTICLES_REQUESTED
@@ -241,15 +262,15 @@ export const deleteArticles = articleSlugs => (
     axios
     .all(
 
-      articleSlugs.map(articleSlug =>
+      articleIds.map(articleId =>
         axios.delete(
-          `${STUY_SPEC_API_URL}/articles/${articleSlug}`
+          `${STUY_SPEC_API_URL}/articles/${articleId}`
         )
       )
     )
     .then(response => dispatch({
       type: t.DELETE_ARTICLES_SUCCEEDED,
-      payload: articleSlugs
+      payload: articleIds
       })
     )
     .catch(error => dispatch({

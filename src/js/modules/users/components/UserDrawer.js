@@ -33,7 +33,7 @@ const UserDrawer = ({ currentUser,
     onRequestChange={closeUserDrawer}
   >
     <h2 className={classes.currentUserName}>
-      { currentUser.name }
+      { currentUser.firstName }
     </h2>
     <Avatar
       src={currentUser.largePhoto}
