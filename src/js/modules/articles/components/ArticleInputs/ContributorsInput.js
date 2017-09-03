@@ -9,7 +9,6 @@ import injectSheet from 'react-jss'
 class ContributorsInput extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       searchText: '',
     };

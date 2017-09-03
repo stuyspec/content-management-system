@@ -1,23 +1,35 @@
 /**
  * Created by nicholas on 7/5/17.
  */
-import React from 'react'
-import injectSheet from 'react-jss';
-import CKEditor from "react-ckeditor-wrapper";
+import React, { Component } from 'react'
+import ImageUploadButton from './ImageUploadButton';
+import { Editor, createEditorState } from 'medium-draft';
 
-const styles = {
-    ckeditor: {
-      maxWidth: "1000px",
-      paddingTop: "5%"
-    },
-};
-const ContentInput = ({handleContentChange, content, classes}) => (
-    <div className={classes.ckeditor}>
-        <CKEditor
-          value={content}
-          onChange={handleContentChange}
-        />
-    </div>
-)
+class ContentInput extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      files: [],
+      editorState: createEditorState() // for empty content
+    };
+    this.sideButtons = [{
+      title: 'Image',
+      component: ImageUploadButton,
+    }];
+  }
 
-export default injectSheet(styles)(ContentInput)
+  handleChange = editorState => {
+    this.setState({ editorState });
+  }
+
+  render() {
+   return (<Editor
+      ref="editor"
+      editorState={this.state.editorState}
+      onChange={this.handleChange}
+      sideButtons={this.sideButtons}
+    />);
+  }
+}
+
+export default ContentInput
