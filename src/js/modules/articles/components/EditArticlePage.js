@@ -2,8 +2,10 @@
  * Created by nicholas on 8/9/17.
  */
 import React, { Component } from "react";
-import ArticleForm from "./ArticleForm";
 import Paper from "material-ui/Paper";
+import TextField from "material-ui/TextField"
+import { reduxForm, Field } from "redux-form";
+import SectionInput from "./ArticleInputs/SectionInput"
 import { connect } from "react-redux";
 import { editArticleSelectors } from "../selectors";
 import { editArticleActions } from "../actions";
@@ -18,7 +20,6 @@ const styles = {
 };
 
 class EditArticlePage extends Component {
-
   constructor(props) {
     super(props);
     const { articlesToEdit, popArticleDraft, addContributors } = this.props;
@@ -79,25 +80,13 @@ class EditArticlePage extends Component {
     const { title, content, section } = this.state;
     return (
       <Paper className={classes.editArticlePage} zDepth={2}>
-        <h2> Editing "{ title }"</h2>
-        <ArticleForm
-          contributors={contributors}
-          title={title}
-          content={content}
-          section={section}
-          handleContentChange={this.handleContentChange}
-          handleTitleChange={this.handleTitleChange}
-          handleSectionChage={this.handleSectionChange}
-          formErrors={formErrors}
-          addContributor={addContributor}
-          removeContributor={removeContributor}
-          throwError={throwError}
-          clearError={clearError}
-          availableUsernames={availableUsernames}
-          randomUser={randomUser}
-          onSubmit={onSubmit}
-          sections={sections}
-        />
+        <h2>
+          {" "}Editing "{title}"
+        </h2>
+        <form>
+          <Field name="Title" component={<TextField hintText="Title"/>} />
+          <Field name="Section" component={<SectionInput sections={sections}/>} />
+        </form>
       </Paper>
     );
   }
@@ -142,7 +131,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(editArticleActions.addContributor(contributorUsername));
   },
   addContributors: contributorIds => {
-    dispatch(editArticleActions.addContributors(contributorIds))
+    dispatch(editArticleActions.addContributors(contributorIds));
   },
   removeContributor: id => {
     dispatch(editArticleActions.removeContributor(id));
@@ -152,6 +141,10 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  injectSheet(styles)(EditArticlePage)
+export default reduxForm({
+  form: "editArticlePage"
+})(
+  connect(mapStateToProps, mapDispatchToProps)(
+    injectSheet(styles)(EditArticlePage)
+  )
 );

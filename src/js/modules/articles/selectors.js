@@ -7,7 +7,6 @@ import { usersSelector } from "../users/selectors";
 export const articlesSelector = state => state.articles.list;
 export const getSelected = state => state.articles.selected;
 
-
 export const articlesPreviewSelector = createSelector(
   articlesSelector,
   articles =>

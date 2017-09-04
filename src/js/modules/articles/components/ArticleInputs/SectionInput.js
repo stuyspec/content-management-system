@@ -15,24 +15,11 @@ const styles = {
 
 
 const SectionInput = ({ classes,
-                        section,
-                        handleSectionChange,
+                        value,
+                        onChange,
                         sections }) => (
   <div className={classes.ArticleDepartmentInput}>
-    <SelectField
-      floatingLabelText="Section"
-      value={section}
-      onChange={handleSectionChange}
-    >
-      { sections.map(section => (
-          <MenuItem
-            value={section.id}
-            key={section.id}
-            primaryText={section.name}
-          />
-        )
-      )}
-    </SelectField>
+
   </div>
 );
 

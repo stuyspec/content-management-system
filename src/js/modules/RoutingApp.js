@@ -1,7 +1,7 @@
 import Provider from "react-redux/lib/components/Provider";
 import React, { Component } from "react";
 import appHistory from "tools/appHistory";
-import CreateArticlePage from "./articles/components/CreateArticlePage"
+import CreateArticlePage from "./articles/components/CreateArticlePage";
 import EditArticlePage from "./articles/components/EditArticlePage"
 import SectionForm from "./sections/components/SectionForm";
 import ArticlesTable from "./articles/components/ArticlesTable";

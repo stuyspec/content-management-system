@@ -3,10 +3,10 @@
  */
 import { createSelector } from 'reselect'
 
-export const sectionsSelector = state => state.sections.list
+export const getSections = state => state.sections.list
 
-export const topLevelSectionsSelector = createSelector(
-  sectionsSelector,
+export const getTopLevelSections = createSelector(
+  getSections,
   sections => sections.filter(section => section.parentId === null)
 )
 
