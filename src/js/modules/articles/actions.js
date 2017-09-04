@@ -24,11 +24,11 @@ createArticleActions.enqueueError = error => ({
   payload: error
 });
 
-createArticleActions.addContributor = contributorUsername =>
+createArticleActions.addContributor = contributorEmail =>
   (dispatch, getState) => {
     const users = usersSelector(getState());
     const contributor = users.find(
-      user => user.username === contributorUsername
+      user => user.email === contributorEmail
     );
     const contributorId = contributor.id;
 

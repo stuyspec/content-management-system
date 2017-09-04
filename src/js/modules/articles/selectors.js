@@ -59,9 +59,9 @@ createArticle.availableUsersSelector = createSelector(
   }
 );
 
-createArticle.availableUsernamesSelector = createSelector(
+createArticle.getAvailableEmails = createSelector(
   createArticle.availableUsersSelector,
-  availableUsers => availableUsers.map(user => user.username)
+  availableUsers => availableUsers.map(user => user.email)
 );
 
 export { createArticle };
