@@ -14,6 +14,8 @@ const reducer = (state={...initialState}, action)=>
     {
       case FETCH_SECTIONS_SUCCEEDED:
         return { ...state, list: action.payload}
+      default:
+        return state;
     }
 
     return state;
