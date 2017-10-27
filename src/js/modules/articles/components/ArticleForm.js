@@ -5,8 +5,8 @@ import { AutoComplete as MUIAutoComplete, RaisedButton } from "material-ui";
 import { Field, reduxForm, change } from "redux-form";
 import { createArticle } from "../selectors";
 import { SelectField, TextField, AutoComplete } from "redux-form-material-ui";
-import RichTextEditor from "react-rte";
 import { getSections } from "../../sections/selectors";
+import ContentEditor from "./ContentEditor";
 import ContributorsList from "./ContributorsList";
 
 /* Props:
@@ -27,7 +27,7 @@ class ArticleForm extends Component {
   }
 
   handleNewRequest = email => {
-    const { addContributor, clearContributorField } = this.props;
+    const { addContributor, clearContributorField, form } = this.props;
     addContributor(email);
     clearContributorField(form);
   };
@@ -82,10 +82,7 @@ class ArticleForm extends Component {
             />}
         </div>
         <div>
-          <Field
-          name="content"
-          component={RichTextEditor}
-          />
+          <ContentEditor />
         </div>
         <RaisedButton type="submit" label="Submit" />
       </form>
