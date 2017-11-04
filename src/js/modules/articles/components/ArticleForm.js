@@ -6,7 +6,7 @@ import { Field, reduxForm, change } from "redux-form";
 import { createArticle } from "../selectors";
 import { SelectField, TextField, AutoComplete } from "redux-form-material-ui";
 import { getSections } from "../../sections/selectors";
-import ContentInput from "ArticleInputs/ContentInput";
+import { ContentEditor } from "spec-content-editor";
 import ContributorsList from "./ContributorsList";
 
 /* Props:
@@ -83,7 +83,7 @@ class ArticleForm extends Component {
             />}
         </div>
         <div>
-          <ContentInput/>
+          <ContentEditor/>
         </div>
         <RaisedButton type="submit" label="Submit" />
       </form>

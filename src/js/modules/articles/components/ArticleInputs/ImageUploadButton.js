@@ -28,7 +28,7 @@ class ImageUploadButton extends ImageSideButton {
         this.props.setEditorState(addNewBlock(
           this.props.getEditorState(),
           Block.IMAGE, {
-            src: response.data.attachment_url,
+            src: response.data.medium_attachment_url,
           }
         ));
       });
