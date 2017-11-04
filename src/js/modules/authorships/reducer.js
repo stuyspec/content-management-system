@@ -4,9 +4,7 @@
 import {
   FETCH_AUTHORSHIPS_SUCCEEDED
 } from './actionTypes'
-import {
-  CREATE_AUTHORSHIPS_SUCCEEDED
-} from '../forms/actionTypes'
+
 
 const initialState = {
   list: [
@@ -27,10 +25,6 @@ const reducer = (state={...initialState}, action)=>
   {
     case FETCH_AUTHORSHIPS_SUCCEEDED:
       return { ...state, list: action.payload }
-    case CREATE_AUTHORSHIPS_SUCCEEDED:
-      return { ...state, list: [...state.list, action.payload]}
-    default:
-      break;
   }
   return state;
 };

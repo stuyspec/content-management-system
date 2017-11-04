@@ -7,6 +7,7 @@ import {
   CREATE_ARTICLE_FORM
 } from "./actionTypes";
 
+
 const initialState = {
   selected: [],
   list: [],
@@ -16,23 +17,9 @@ const initialState = {
       // This needs to be in the Redux state because otherwise selectors
       // won't be able to find it
       contributors: [],
-      errors: [],
-      currentDraft: {
-        title: "",
-        content: ""
-      }
     },
 
     edit: {
-      /*
-       This is a stack of article drafts. You can select multiple and
-       edit them in sequence. A stack is LIFO or last in first out
-       This is because if you navigate away from an article,
-       you probably want to see it again when you come back
-       Not a great name but, whatever
-       */
-      articlesToEdit: [],
-      errors: [],
       contributors: []
     }
   }
@@ -76,8 +63,8 @@ const reducer = (state = { ...initialState }, action) => {
           action.payload.contributorId
         );
         const newContributors = contributors
-        .slice(0, contributorIndex)
-        .concat(contributors.slice(contributorIndex + 1));
+          .slice(0, contributorIndex)
+          .concat(contributors.slice(contributorIndex + 1));
         return {
           ...state,
           forms: {
@@ -207,8 +194,8 @@ const reducer = (state = { ...initialState }, action) => {
           action.payload.contributorId
         );
         const newContributors = contributors
-        .slice(0, contributorIndex)
-        .concat(contributors.slice(contributorIndex + 1));
+          .slice(0, contributorIndex)
+          .concat(contributors.slice(contributorIndex + 1));
         return {
           ...state,
           forms: {
@@ -219,8 +206,9 @@ const reducer = (state = { ...initialState }, action) => {
             }
           }
         };
-      })()
+      })();
     default:
+      return state;
       break;
   }
 

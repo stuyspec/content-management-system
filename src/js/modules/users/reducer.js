@@ -44,9 +44,9 @@ import {
           const currentUser = action.payload[0].id
           return { ...state, list: action.payload, currentUser }
         default:
-              break;
+          return state;
+          break;
       }
-
       return state;
   };
 

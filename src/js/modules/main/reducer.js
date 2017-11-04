@@ -66,6 +66,7 @@ const reducer = (state={...initialState}, action)=>
     case CLOSE_USER_DRAWER :
       return { ...state, isUserDrawerOpen: false }
     default:
+      return state;
       break;
   }
 

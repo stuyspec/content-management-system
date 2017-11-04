@@ -1,130 +1,107 @@
 import React, { Component } from "react";
-import TitleInput from "./ArticleInputs/TitleInput";
-import ContentInput from "./ArticleInputs/ContentInput";
-import SectionInput from "./ArticleInputs/SectionInput";
+import { connect } from "react-redux";
+import MenuItem from "material-ui/MenuItem";
+import { AutoComplete as MUIAutoComplete, RaisedButton } from "material-ui";
+import { Field, reduxForm, change } from "redux-form";
+import { createArticle } from "../selectors";
+import { SelectField, TextField, AutoComplete } from "redux-form-material-ui";
+import { getSections } from "../../sections/selectors";
+import ContentInput from "ArticleInputs/ContentInput";
 import ContributorsList from "./ContributorsList";
-import ContributorsInput from "./ArticleInputs/ContributorsInput";
-import injectSheet from "react-jss";
-import RaisedButton from "material-ui/RaisedButton";
-import FormErrorDialog from "../../forms/components/FormErrorDialog";
 
-const styles = {
-  button: {
-    maxWidth: "100px",
-    paddingTop: "5%"
-  }
-};
-
+/* Props:
+     sections,
+     availableEmails,
+     addContributor,
+     removeContributor,
+     clearContributorField,
+     contributors,
+     handleSubmit,
+     fields,
+     initialValues,
+     form
+  */
 class ArticleForm extends Component {
-  handleDialogCancel = () => {
-    this.props.dequeueError();
-  };
+  constructor(props) {
+    super(props);
+  }
 
-  handleSubmit = event => {
-    const {
-      title,
-      content,
-      sections,
-      section,
-      contributors,
-      onSubmit
-    } = this.props;
-    if (this.validateForm(title, content, sections, section, contributors)) {
-      onSubmit();
-    }
-  };
-
-  validateForm = (title, content, sections, sectionId, contributors) => {
-    // TODO: Make errors a stack, not just a string
-    let validForm = true;
-    const { handleTitleError, handleContributorsError } = this.props;
-    if (title === undefined || !title.length > 0) {
-      handleTitleError("Title cannot be blank");
-      validForm = false;
-    }
-    if (content === undefined || !content.length > 0) {
-      this.props.enqueueError("Content cannot be blank");
-      validForm = false;
-    }
-    if (!sections.find(section => section.id === sectionId)) {
-      this.props.enqueueError("Please choose a valid section");
-      validForm = false;
-    }
-    if (!contributors.length > 0) {
-      handleContributorsError("Contributors cannot be blank");
-      validForm = false;
-    }
-    return validForm;
+  handleNewRequest = email => {
+    const { addContributor, clearContributorField, form } = this.props;
+    addContributor(email);
+    clearContributorField(form);
   };
 
   render() {
     const {
-      classes,
-      contributors,
-      formErrors,
-      availableUsernames,
-      randomUser,
-      addContributor,
-      removeContributor,
+      handleSubmit,
+      availableEmails,
       sections,
-      handleTitleChange,
-      handleSectionChange,
-      handleContentChange,
-      title,
-      content,
-      section,
-      titleError,
-      contributorsError
+      removeContributor,
+      contributors
     } = this.props;
     return (
-      <div>
-        <FormErrorDialog
-          formErrors={formErrors}
-          onRetry={this.handleSubmit}
-          onCancel={this.handleDialogCancel}
-        />
-        <form onSubmit={this.handleSubmit}>
-          <TitleInput
-            errorText={titleError}
-            title={title}
-            hintText={"Enter a title"}
-            handleTitleChange={handleTitleChange}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <Field name="title" component={TextField} hintText="Title" />
+        </div>
+        <div>
+          <Field name="section" component={SelectField} hintText="Section">
+            {sections.map(section =>
+              <MenuItem value={section.id} primaryText={section.name} />
+            )}
+          </Field>
+        </div>
+        <div>
+          <Field
+            name="volume"
+            type="number"
+            component={TextField}
+            hintText="Volume"
+          />
+          <Field
+            name="issue"
+            type="number"
+            component={TextField}
+            hintText="Issue"
+          />
+        </div>
+        <div>
+          <Field
+            name="contributors"
+            floatingLabelText="Add a contributor"
+            openOnFocus
+            filter={MUIAutoComplete.fuzzyFilter}
+            component={AutoComplete}
+            onNewRequest={this.handleNewRequest}
+            dataSource={availableEmails}
           />
           {contributors.length > 0 &&
             <ContributorsList
               contributors={contributors}
               removeContributor={removeContributor}
             />}
-          <ContributorsInput
-            errorText={contributorsError}
-            availableUsernames={availableUsernames}
-            contributors={contributors}
-            randomUser={randomUser}
-            addContributor={addContributor}
-          />
-
-          <SectionInput
-            section={section}
-            sections={sections}
-            handleSectionChange={handleSectionChange}
-          />
-
-          <ContentInput
-            content={content}
-            handleContentChange={handleContentChange}
-          />
-
-          <div className={classes.button}>
-            <RaisedButton
-              primary={true}
-              label="Submit"
-              onClick={this.handleSubmit}
-            />
-          </div>
-        </form>
-      </div>
+        </div>
+        <div>
+          <ContentInput/>
+        </div>
+        <RaisedButton type="submit" label="Submit" />
+      </form>
     );
   }
 }
 
-export default injectSheet(styles)(ArticleForm);
+const mapStateToProps = state => ({
+  sections: getSections(state),
+  availableEmails: createArticle.getAvailableEmails(state),
+  contributors: createArticle.contributorsUsersSelector(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  clearContributorField: formName =>
+    dispatch(change(formName, "contributors", ""))
+});
+
+export default reduxForm({})(
+  connect(mapStateToProps, mapDispatchToProps)(ArticleForm)
+);

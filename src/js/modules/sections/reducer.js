@@ -1,6 +1,5 @@
 import {
   FETCH_SECTIONS_SUCCEEDED,
-  DELETE_SECTIONS_SUCCEEDED,
   CREATE_SECTION_SUCCEEDED,
   SET_SELECTED_SECTIONS
 } from './actionTypes'
@@ -23,10 +22,8 @@ const reducer = (state={...initialState}, action)=>
       case SET_SELECTED_SECTIONS:
         return { ...state, selected: action.payload.sectionIds }
       default:
-        break;
+        return state;
     }
-
-    return state;
 };
 
 export default reducer

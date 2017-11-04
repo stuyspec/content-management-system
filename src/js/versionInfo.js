@@ -4,5 +4,9 @@
  * @type {{VERSION: string}}
  */
 
-let VersionInfo = { VERSION : '0.0.2184' };
+<<<<<<< HEAD
+let VersionInfo = { VERSION : '0.0.2185' };
+=======
+let VersionInfo = { VERSION : '0.0.2420' };
+>>>>>>> feature/redux-form
 export default VersionInfo
