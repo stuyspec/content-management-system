@@ -59,6 +59,7 @@
     "redux-thunk": "^2.2.0",
     "regenerator-runtime": "^0.11.0",
     "run-sequence": "^1.2.2",
+    "spec-content-editor": "0.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"

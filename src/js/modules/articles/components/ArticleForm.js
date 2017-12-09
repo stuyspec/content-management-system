@@ -4,6 +4,7 @@ import MenuItem from "material-ui/MenuItem";
 import { AutoComplete as MUIAutoComplete, RaisedButton } from "material-ui";
 import { Field, reduxForm, change } from "redux-form";
 import { createArticle } from "../selectors";
+import { EditorState } from "draft-js";
 import { SelectField, TextField, AutoComplete } from "redux-form-material-ui";
 import { getSections } from "../../sections/selectors";
 import { ContentEditor } from "spec-content-editor";
@@ -24,12 +25,19 @@ import ContributorsList from "./ContributorsList";
 class ArticleForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      editorState: EditorState.createEmpty()
+    };
   }
 
   handleNewRequest = email => {
     const { addContributor, clearContributorField, form } = this.props;
     addContributor(email);
     clearContributorField(form);
+  };
+
+  handleChange = editorState => {
+    this.setState({ editorState });
   };
 
   render() {
@@ -83,7 +91,10 @@ class ArticleForm extends Component {
             />}
         </div>
         <div>
-          <ContentEditor/>
+          <ContentEditor
+            editorState={this.state.editorState}
+            onChange={this.handleChange}
+          />
         </div>
         <RaisedButton type="submit" label="Submit" />
       </form>
