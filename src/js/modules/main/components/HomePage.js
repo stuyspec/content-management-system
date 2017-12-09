@@ -4,9 +4,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { currentUserSelector } from '../../users/selectors'
+import ArticlesList from "../../articles/components/ArticlesList"
 
 const HomePage = ({ currentUser }) => (
-  <h1> Welcome {currentUser.firstName} </h1>
+  <div>
+    <ArticlesList/>
+  </div>
 )
 
 const mapStateToProps = state => ({

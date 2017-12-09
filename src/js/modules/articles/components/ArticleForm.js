@@ -7,7 +7,6 @@ import { createArticle } from "../selectors";
 import { EditorState } from "draft-js";
 import { SelectField, TextField, AutoComplete } from "redux-form-material-ui";
 import { getSections } from "../../sections/selectors";
-import { ContentEditor } from "spec-content-editor";
 import ContributorsList from "./ContributorsList";
 
 /* Props:
@@ -89,12 +88,6 @@ class ArticleForm extends Component {
               contributors={contributors}
               removeContributor={removeContributor}
             />}
-        </div>
-        <div>
-          <ContentEditor
-            editorState={this.state.editorState}
-            onChange={this.handleChange}
-          />
         </div>
         <RaisedButton type="submit" label="Submit" />
       </form>

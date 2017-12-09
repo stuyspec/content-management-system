@@ -65,6 +65,7 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
+    "apollo-client-preset": "^1.0.5",
     "aws-sdk": "^2.88.0",
     "axios": "^0.16.2",
     "cli-table": "^0.3.1",
@@ -74,8 +75,11 @@
     "ejs": "^2.5.6",
     "envify": "^4.0.0",
     "express": "^4.15.3",
+    "graphql": "^0.11.7",
+    "graphql-tag": "^2.6.0",
     "material-ui": "^0.18.6",
     "medium-draft": "^0.5.5",
+    "react-apollo": "^2.0.3",
     "react-avatar-editor": "^10.0.3",
     "react-inlinesvg": "^0.6.2",
     "react-rte": "^0.15.0",
